@@ -13,6 +13,17 @@
 		6DA1AAA52833EFF900AC0ABF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1AAA32833EFF900AC0ABF /* Main.storyboard */; };
 		6DA1AAA72833EFFB00AC0ABF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1AAA62833EFFB00AC0ABF /* Assets.xcassets */; };
 		6DA1AAAA2833EFFB00AC0ABF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1AAA82833EFFB00AC0ABF /* LaunchScreen.storyboard */; };
+		6DA1AAB32833FC3F00AC0ABF /* CreateGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAB12833FC3E00AC0ABF /* CreateGameViewController.swift */; };
+		6DA1AAB42833FC3F00AC0ABF /* CreateGameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1AAB22833FC3E00AC0ABF /* CreateGameViewController.xib */; };
+		6DA1AAB72833FDC300AC0ABF /* CreateGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAB62833FDC300AC0ABF /* CreateGameViewModel.swift */; };
+		6DA1AAB92833FDE500AC0ABF /* CreateGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAB82833FDE500AC0ABF /* CreateGameModel.swift */; };
+		6DA1AABB2833FDFA00AC0ABF /* PlayerClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AABA2833FDFA00AC0ABF /* PlayerClass.swift */; };
+		6DA1AABD2833FE1F00AC0ABF /* ShipClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AABC2833FE1F00AC0ABF /* ShipClass.swift */; };
+		6DA1AABF2833FE2F00AC0ABF /* FieldClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AABE2833FE2F00AC0ABF /* FieldClass.swift */; };
+		6DA1AAC12833FE5A00AC0ABF /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAC02833FE5A00AC0ABF /* Enums.swift */; };
+		6DA1AAC32833FE6A00AC0ABF /* GameClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAC22833FE6A00AC0ABF /* GameClass.swift */; };
+		6DA1AAC7283409B500AC0ABF /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAC5283409B500AC0ABF /* CustomCollectionViewCell.swift */; };
+		6DA1AAC8283409B500AC0ABF /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1AAC6283409B500AC0ABF /* CustomCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +35,17 @@
 		6DA1AAA62833EFFB00AC0ABF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6DA1AAA92833EFFB00AC0ABF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6DA1AAAB2833EFFB00AC0ABF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6DA1AAB12833FC3E00AC0ABF /* CreateGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameViewController.swift; sourceTree = "<group>"; };
+		6DA1AAB22833FC3E00AC0ABF /* CreateGameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateGameViewController.xib; sourceTree = "<group>"; };
+		6DA1AAB62833FDC300AC0ABF /* CreateGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameViewModel.swift; sourceTree = "<group>"; };
+		6DA1AAB82833FDE500AC0ABF /* CreateGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameModel.swift; sourceTree = "<group>"; };
+		6DA1AABA2833FDFA00AC0ABF /* PlayerClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerClass.swift; sourceTree = "<group>"; };
+		6DA1AABC2833FE1F00AC0ABF /* ShipClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipClass.swift; sourceTree = "<group>"; };
+		6DA1AABE2833FE2F00AC0ABF /* FieldClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldClass.swift; sourceTree = "<group>"; };
+		6DA1AAC02833FE5A00AC0ABF /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		6DA1AAC22833FE6A00AC0ABF /* GameClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClass.swift; sourceTree = "<group>"; };
+		6DA1AAC5283409B500AC0ABF /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
+		6DA1AAC6283409B500AC0ABF /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +63,8 @@
 			isa = PBXGroup;
 			children = (
 				6DA1AA9C2833EFF900AC0ABF /* ShipsMVVM */,
+				6DA1AAC42833FE8000AC0ABF /* GameMechanics */,
+				6DA1AAA62833EFFB00AC0ABF /* Assets.xcassets */,
 				6DA1AA9B2833EFF900AC0ABF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,15 +80,40 @@
 		6DA1AA9C2833EFF900AC0ABF /* ShipsMVVM */ = {
 			isa = PBXGroup;
 			children = (
+				6DA1AAAB2833EFFB00AC0ABF /* Info.plist */,
+				6DA1AAA82833EFFB00AC0ABF /* LaunchScreen.storyboard */,
+				6DA1AAA32833EFF900AC0ABF /* Main.storyboard */,
 				6DA1AA9D2833EFF900AC0ABF /* AppDelegate.swift */,
 				6DA1AA9F2833EFF900AC0ABF /* SceneDelegate.swift */,
 				6DA1AAA12833EFF900AC0ABF /* ViewController.swift */,
-				6DA1AAA32833EFF900AC0ABF /* Main.storyboard */,
-				6DA1AAA62833EFFB00AC0ABF /* Assets.xcassets */,
-				6DA1AAA82833EFFB00AC0ABF /* LaunchScreen.storyboard */,
-				6DA1AAAB2833EFFB00AC0ABF /* Info.plist */,
+				6DA1AAB52833FCD400AC0ABF /* CreateGame */,
 			);
 			path = ShipsMVVM;
+			sourceTree = "<group>";
+		};
+		6DA1AAB52833FCD400AC0ABF /* CreateGame */ = {
+			isa = PBXGroup;
+			children = (
+				6DA1AAB12833FC3E00AC0ABF /* CreateGameViewController.swift */,
+				6DA1AAB22833FC3E00AC0ABF /* CreateGameViewController.xib */,
+				6DA1AAC5283409B500AC0ABF /* CustomCollectionViewCell.swift */,
+				6DA1AAC6283409B500AC0ABF /* CustomCollectionViewCell.xib */,
+				6DA1AAB62833FDC300AC0ABF /* CreateGameViewModel.swift */,
+				6DA1AAB82833FDE500AC0ABF /* CreateGameModel.swift */,
+			);
+			path = CreateGame;
+			sourceTree = "<group>";
+		};
+		6DA1AAC42833FE8000AC0ABF /* GameMechanics */ = {
+			isa = PBXGroup;
+			children = (
+				6DA1AABA2833FDFA00AC0ABF /* PlayerClass.swift */,
+				6DA1AABE2833FE2F00AC0ABF /* FieldClass.swift */,
+				6DA1AABC2833FE1F00AC0ABF /* ShipClass.swift */,
+				6DA1AAC22833FE6A00AC0ABF /* GameClass.swift */,
+				6DA1AAC02833FE5A00AC0ABF /* Enums.swift */,
+			);
+			path = GameMechanics;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +176,8 @@
 			files = (
 				6DA1AAAA2833EFFB00AC0ABF /* LaunchScreen.storyboard in Resources */,
 				6DA1AAA72833EFFB00AC0ABF /* Assets.xcassets in Resources */,
+				6DA1AAB42833FC3F00AC0ABF /* CreateGameViewController.xib in Resources */,
+				6DA1AAC8283409B500AC0ABF /* CustomCollectionViewCell.xib in Resources */,
 				6DA1AAA52833EFF900AC0ABF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -138,8 +189,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DA1AAB72833FDC300AC0ABF /* CreateGameViewModel.swift in Sources */,
 				6DA1AAA22833EFF900AC0ABF /* ViewController.swift in Sources */,
+				6DA1AAC12833FE5A00AC0ABF /* Enums.swift in Sources */,
+				6DA1AABF2833FE2F00AC0ABF /* FieldClass.swift in Sources */,
 				6DA1AA9E2833EFF900AC0ABF /* AppDelegate.swift in Sources */,
+				6DA1AABB2833FDFA00AC0ABF /* PlayerClass.swift in Sources */,
+				6DA1AABD2833FE1F00AC0ABF /* ShipClass.swift in Sources */,
+				6DA1AAC7283409B500AC0ABF /* CustomCollectionViewCell.swift in Sources */,
+				6DA1AAB92833FDE500AC0ABF /* CreateGameModel.swift in Sources */,
+				6DA1AAC32833FE6A00AC0ABF /* GameClass.swift in Sources */,
+				6DA1AAB32833FC3F00AC0ABF /* CreateGameViewController.swift in Sources */,
 				6DA1AAA02833EFF900AC0ABF /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,9 +11,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+     
     }
 
-
+    @IBAction func newGameButtonTapped(_ sender: UIButton) {
+        let vc = CreateGameViewController()
+        navigationController?.pushViewController(vc, animated: true)
 }
 
+}

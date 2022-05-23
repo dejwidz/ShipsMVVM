@@ -71,6 +71,9 @@
                                 <segment title="Horizontal"/>
                             </segments>
                             <color key="selectedSegmentTintColor" systemColor="systemTealColor"/>
+                            <connections>
+                                <action selector="orientationSegmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="xlv-p3-zcs"/>
+                            </connections>
                         </segmentedControl>
                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bWY-z1-T39">
                             <rect key="frame" x="0.0" y="61" width="414" height="32"/>
@@ -82,6 +85,9 @@
                                 <segment title="Ship5"/>
                             </segments>
                             <color key="selectedSegmentTintColor" systemColor="systemTealColor"/>
+                            <connections>
+                                <action selector="chooseShipSegmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="roK-NS-5X7"/>
+                            </connections>
                         </segmentedControl>
                     </subviews>
                 </stackView>

@@ -35,7 +35,52 @@ final class CreateGameViewController: UIViewController {
         projectSea.frame = frame
         projectSea.collectionViewLayout = layout
     }
+    
+    
+    @IBAction func orientationSegmentedControlValueChanged(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            viewModel.nextShipOrientation = .vertical
+        case 1:
+            viewModel.nextShipOrientation = .horizontal
+        default:
+            print("nothing")
+        }
+    }
+    
+    
+    @IBAction func chooseShipSegmentedControlValueChanged(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            viewModel.nextShipId = 2
+            viewModel.nextShipSize = 2
+        case 1:
+            viewModel.nextShipId = 3
+            viewModel.nextShipSize = 3
+        case 2:
+            viewModel.nextShipId = 32
+            viewModel.nextShipSize = 3
+        case 3:
+            viewModel.nextShipId = 4
+            viewModel.nextShipSize = 4
+        case 4:
+            viewModel.nextShipId = 5
+            viewModel.nextShipSize = 5
+        default:
+            print("nothing")
+        }
+    }
+    
+    
+    
+    
 }
+
+
+
+
+
+
 
 extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
                                         UICollectionViewDelegate,

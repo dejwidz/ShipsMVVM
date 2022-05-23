@@ -72,6 +72,20 @@ final class CreateGameViewController: UIViewController {
     }
     
     
+    @IBAction func generateShipSPositionsButtonTapped(_ sender: Any) {
+        
+    }
+    
+    
+    @IBAction func startGameButtonTapped(_ sender: Any) {
+        
+    }
+    
+    
+    
+    
+    
+    
     
     
 }
@@ -113,6 +127,7 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
         print("-----------------print komorka ale gracz", viewModel.sea[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].getState())
         projectSeaMatrix[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].setState(newState: .hitOccupied)
         print("-----------------print komorka ale gracz", viewModel.sea[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].getState())
+        print(indexPath.row)
         projectSea.reloadData()
     }
 }

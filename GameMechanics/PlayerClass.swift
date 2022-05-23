@@ -29,6 +29,7 @@ final class Player {
         self.ship5 = ship5
         ships = []
         addShips()
+//        print("player utowrzony, \(self.sea)")
     }
     
     func addShips() {
@@ -60,9 +61,11 @@ final class Player {
     
     func actualizeSeaBeforeGame() {
         print("gracz - aktualizacja morza")
+        print(self.sea)
         for i in 0...9 {
             for j in 0...9 {
-                sea[i][j].setState(newState: .free)
+//                sea[i][j].setState(newState: .free)
+                print(sea[i][j].getState())
             }
         }
         for i in ships {

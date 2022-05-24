@@ -9,8 +9,14 @@ import Foundation
 
 final class Player {
     
+    weak var playerDelegate: PlayerDelegate?
+    
     private var name: String
-    private var sea: [[Field]]
+    private var sea: [[Field]] {
+        didSet {
+            playerDelegate?.notifyChangesOfPlayer(self)
+        }
+    }
     
     private var ships: [Ship]
     private var ship2: Ship
@@ -29,6 +35,14 @@ final class Player {
         self.ship5 = ship5
         ships = []
         addShips()
+        
+        ship2.shipDelegate = self
+        ship3.shipDelegate = self
+        ship32.shipDelegate = self
+        ship4.shipDelegate = self
+        ship5.shipDelegate = self
+        
+        
 //        print("player utowrzony, \(self.sea)")
     }
     
@@ -45,15 +59,19 @@ final class Player {
         switch id {
         case 2:
             ship2.setFields(fields: fields)
-            ship2.actualizeFields()
+//            ship2.actualizeFields()
         case 3:
             ship3.setFields(fields: fields)
+//            ship3.actualizeFields()
         case 32:
             ship32.setFields(fields: fields)
+//            ship32.actualizeFields()
         case 4:
             ship4.setFields(fields: fields)
+//            ship4.actualizeFields()
         case 5:
             ship5.setFields(fields: fields)
+//            ship5.actualizeFields()
         default:
             print("nothing")
         }
@@ -61,17 +79,17 @@ final class Player {
     
     func actualizeSeaBeforeGame() {
         print("gracz - aktualizacja morza")
-        print(self.sea)
+//        print(self.sea)
         for i in 0...9 {
             for j in 0...9 {
-//                sea[i][j].setState(newState: .free)
-                print(sea[i][j].getState())
+                sea[i][j].setState(newState: .free)
+//                print(sea[i][j].getState())
             }
         }
         for i in ships {
             i.actualizeFields()
 //            print( "aktualizacja morza w graczu", i.getFields()[0].getState())
-         
+            playerDelegate?.notifyChangesOfPlayer(self)
         }
     }
     
@@ -87,7 +105,29 @@ final class Player {
         sea = newSea
     }
     
+    func cleaSea() {
+        for i in 0...9 {
+            for j in 0...9 {
+                self.sea[i][j].setState(newState: .free)
+            }
+        }
+        for i in ships {
+            i.clearFields()
+        }
+    }
+    
 
 }
+
+protocol PlayerDelegate: AnyObject {
+    func notifyChangesOfPlayer(_ player: Player)
+}
+    
+extension Player: ShipDelegate {
+    func notifyShipChanges(_ ship: Ship) {
+        print("++++++++++++++++++++++++++++++++++++++wywolanie przez statek w graczu")
+        playerDelegate?.notifyChangesOfPlayer(self)
+    }
     
     
+}

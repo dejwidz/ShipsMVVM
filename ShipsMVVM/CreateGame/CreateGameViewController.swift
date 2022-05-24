@@ -73,7 +73,7 @@ final class CreateGameViewController: UIViewController {
     
     
     @IBAction func generateShipSPositionsButtonTapped(_ sender: Any) {
-        
+        viewModel.replaceShipsAutomatically(player: viewModel.humanPlayer!)
     }
     
     
@@ -124,11 +124,17 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        print("-----------------print komorka ale gracz", viewModel.sea[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].getState())
-        projectSeaMatrix[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].setState(newState: .hitOccupied)
-        print("-----------------print komorka ale gracz", viewModel.sea[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].getState())
-        print(indexPath.row)
-        projectSea.reloadData()
+        print("PLANSZA NUMER POLA RANDOM: ", projectSeaMatrix[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].randomNumber, "VM ", viewModel.humanPlayer?.getSea()[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].randomNumber, "MODEL ")
+        
+        viewModel.checkDeployingPossibility(index: indexPath.row, shipId: viewModel.nextShipId, shipSize: viewModel.nextShipSize, orientation: viewModel.nextShipOrientation)
+        
+        
+        
+//        print("-----------------print komorka ale gracz", viewModel.sea[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].getState())
+//        projectSeaMatrix[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].setState(newState: .hitOccupied)
+//        print("-----------------print komorka ale gracz", viewModel.sea[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].getState())
+//        print(indexPath.row)
+//        projectSea.reloadData()
     }
 }
 

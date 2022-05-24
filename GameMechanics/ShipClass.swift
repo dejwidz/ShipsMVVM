@@ -10,12 +10,14 @@ import Foundation
 
 final class Ship {
     
+    private let owner: String
     private let id: Int
     private let size: Int
     private var fields: [Field]
     private var isLive: Bool
     
-    init(id: Int, size: Int, fields: [Field]) {
+    init(owner: String,id: Int, size: Int, fields: [Field]) {
+        self.owner = owner
         self.id = id
         self.size = size
         self.fields = fields

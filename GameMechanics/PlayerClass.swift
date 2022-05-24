@@ -9,9 +9,8 @@ import Foundation
 
 final class Player {
     
-    
+    private var name: String
     private var sea: [[Field]]
-    
     
     private var ships: [Ship]
     private var ship2: Ship
@@ -20,7 +19,8 @@ final class Player {
     private var ship4: Ship
     private var ship5: Ship
     
-    init(sea: [[Field]], ship2: Ship, ship3: Ship, ship32: Ship, ship4: Ship, ship5: Ship) {
+    init(name: String, sea: [[Field]], ship2: Ship, ship3: Ship, ship32: Ship, ship4: Ship, ship5: Ship) {
+        self.name = name
         self.sea = sea
         self.ship2 = ship2
         self.ship3 = ship3

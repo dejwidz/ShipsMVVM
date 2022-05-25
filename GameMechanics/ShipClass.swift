@@ -16,7 +16,6 @@ final class Ship {
     private let id: Int
     private let size: Int
     private var fields: [Field]
-    
     private var isLive: Bool
     
     init(owner: String,id: Int, size: Int, fields: [Field]) {
@@ -39,9 +38,7 @@ final class Ship {
     }
     
     func setFields(fields: [Field]) {
-        print("HUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUJ ", fields[0].randomNumber, fields[fields.count - 1].randomNumber)
         self.fields = fields
-//        print("setFields", fields[0].getState())
         actualizeFields()
         shipDelegate?.notifyShipChanges(self)
     }
@@ -54,10 +51,7 @@ final class Ship {
     
         for i in fields {
             i.setState(newState: .occupied)
-            print("aktulizacja pol w statku", i.getState(), "       RANDOM: \(i.randomNumber)")
         }
-//        print(fields[0].getState())
-        
     }
     
     func getId() -> Int {

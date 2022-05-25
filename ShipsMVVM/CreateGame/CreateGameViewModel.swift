@@ -35,8 +35,8 @@ final class CreateGameViewModel: CreateGameViewModelProtocol {
     
     init(model: CreateGameModelProtocol){
         self.model = model
-        nextShipId = 0
-        nextShipSize = 0
+        nextShipId = 2
+        nextShipSize = 2
         nextShipOrientation = .vertical
         row = 0
         column = 0
@@ -48,15 +48,15 @@ final class CreateGameViewModel: CreateGameViewModelProtocol {
     }
     
     func sendHumanSea() {
-        print("VM sendHumanSea")
-        model.sendHumanPlayerSea()    }
-    
-    
+        model.sendHumanPlayerSea()
+        
+    }
 }
 
 extension CreateGameViewModel: CreateGameModelDelegate {
     func sendHumanPlayer(_ createGameModel: CreateGameModelProtocol, humanPlayer: Player) {
         self.humanPlayer = humanPlayer
+        
     }
     
     func sendComputerPlayer(_ createGameModel: CreateGameModelProtocol, computerPlayer: Player) {
@@ -65,7 +65,6 @@ extension CreateGameViewModel: CreateGameModelDelegate {
     
     func sendHumanPlayerSea(_ createGameModel: CreateGameModelProtocol, humanPlayerSea: [[Field]]) {
         sea = humanPlayerSea
-        print("VM 54", humanPlayerSea[5][4].getState())
         createGameViewModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayerSea)
     }
     
@@ -75,9 +74,8 @@ extension CreateGameViewModel: CreateGameModelDelegate {
 extension CreateGameViewModel {
     
     func checkDeployingPossibility(index: Int, shipId: Int, shipSize: Int, orientation: orientation) {
-        print("checkdeploy pissibility")
         tryReplaceShip(player: humanPlayer!, field: index, orientation: nextShipOrientation, size: nextShipSize, id: nextShipId)
-    
+    // DOPISAC KOMUNIKAT O NIEMOZLIWOSCI I WYSLAC DELEGATEM
     }
 
     func saveAcces(sea: [[Field]], column: Int, row: Int) -> Bool {
@@ -89,23 +87,20 @@ extension CreateGameViewModel {
         guard saveAcces(sea: sea, column: column, row: row) else {
             return false
         }
-        let fieldIsFree = sea[column][row].getState() == .free &&  checkIfSurroundingFieldsAreFree(sea: sea, column: column, row: row)
-        print("fieldisfree",fieldIsFree, column, row)
+        let fieldIsFree = sea[row][column].getState() == .free &&  checkIfSurroundingFieldsAreFree(sea: sea, column: column, row: row)
         return fieldIsFree
     }
 
     func checkIfSurroudingFieldIsFree(sea: [[Field]], column: Int,  row: Int) -> Bool {
-        print("check & surround")
         var fieldISFree = true
         guard saveAcces(sea: sea, column: column, row: row) else {
             return fieldISFree
         }
-        fieldISFree = sea[column][row].getState() == .free
+        fieldISFree = sea[row][column].getState() == .free
         return fieldISFree
     }
 
     func checkIfSurroundingFieldsAreFree(sea: [[Field]], column: Int, row: Int) -> Bool {
-        print("checkifsurrondingsarefree")
         var replacingPossibility = checkIfSurroudingFieldIsFree(sea: sea, column: column - 1, row: row - 1) &&
         checkIfSurroudingFieldIsFree(sea: sea, column: column, row: row - 1) &&
         checkIfSurroudingFieldIsFree(sea: sea, column: column + 1, row: row - 1) &&
@@ -118,7 +113,6 @@ extension CreateGameViewModel {
     }
 
     func checkVerticalReplacementPossibility(sea: [[Field]], column: Int, row: Int, shipSize: Int) -> Bool {
-        print("checkvertical")
 
         var verticalPerplacementPossibility = false
         var sizeCounter = 1
@@ -135,14 +129,13 @@ extension CreateGameViewModel {
                 return verticalPerplacementPossibility
             }
             sizeCounter += 1
-            column += 1
+            row -= 1
         }
 
         return verticalPerplacementPossibility
     }
 
     func checkHorizontalReplacementPossibility(sea: [[Field]], column: Int, row: Int, shipSize: Int) -> Bool {
-        print("checkhorizontal")
 
         var horizontalReplacementPossibility = false
         var sizeCounter = 1
@@ -160,14 +153,13 @@ extension CreateGameViewModel {
                 return horizontalReplacementPossibility
             }
             sizeCounter += 1
-            row -= 1
+            column += 1
         }
 
         return horizontalReplacementPossibility
     }
 
     func placeShipVertically(sea: [[Field]], column: Int, row: Int, size: Int, id: Int, player: Player) {
-        print("placevertically")
 
         var temporaryFields: [Field] = []
         var column = column
@@ -176,15 +168,14 @@ extension CreateGameViewModel {
         var temporaryRow = row
         for _ in 0...size - 1 {
             
-            var temporaryField = sea[column][row]
+            var temporaryField = sea[row][column]
             temporaryFields.append(temporaryField)
-            column += 1
+            row -= 1
         }
         createShip(player: player, size: size, fields: temporaryFields, id: id)
           }
 
     func placeShipHorizontally(sea: [[Field]], column: Int, row: Int, size: Int, id: Int, player: Player) {
-        print("placehirizontally")
 
         var temporaryFields: [Field] = []
         var temporaryColumn = column
@@ -193,48 +184,34 @@ extension CreateGameViewModel {
         var temporaryRow = row
         for _ in 0...size - 1 {
             
-            var temporaryField = sea[column][row]
+            var temporaryField = sea[row][column]
             temporaryFields.append(temporaryField)
-            row -= 1
+            column += 1
             
-            
-//            temporaryFields.append(temporaryField)
-//            temporaryField = sea[temporaryColumn][temporaryRow - 1]
         }
         createShip(player: player, size: size, fields: temporaryFields, id: id)
     }
 
     func createShip(player: Player, size: Int, fields: [Field], id: Int){
-        print("createship --- fields ", fields)
-
-
         switch id {
         case 2:
             player.setShipFields(id: 2, fields: fields)
-//            model.actualizePlayer(player: player)
         case 3:
             player.setShipFields(id: 3, fields: fields)
-//            model.actualizePlayer(player: player)
         case 32:
             player.setShipFields(id: 32, fields: fields)
-//            model.actualizePlayer(player: player)
         case 4:
             player.setShipFields(id: 4, fields: fields)
-//            model.actualizePlayer(player: player)
         case 5:
             player.setShipFields(id: 5, fields: fields)
-//            model.actualizePlayer(player: player)
         default :
             print("there's no id like that")
         }
         player.actualizeSeaBeforeGame()
-    //        delegate?.humanPlayerSeaChanged(self, seaData: model.getHumanPlayerSea())
-
     }
 
 
     func tryReplaceShip(player: Player, field: Int, orientation: orientation, size: Int, id: Int) -> Bool {
-        print("tryreplaceship")
         let row = getRow(enter: field)
         let column = getColumn(enter: field)
 
@@ -261,21 +238,13 @@ extension CreateGameViewModel {
             replaceAutomatically(player: player, ship: player.getShipAt(index: counter))
             counter -= 1
         }
-        
-        
-//        for i in 0...4 {
-//            replaceAutomatically(player: player, ship: player.getShipAt(index: i))
-//        }
     }
 
 
     func replaceAutomatically(player: Player, ship: Ship) {
         var isPossibleToReplaceShipOnThisField = false
         
-        var temporaryCounterdowyjebania = 0
-
         while !isPossibleToReplaceShipOnThisField {
-            print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", temporaryCounterdowyjebania, "   ", ship.getId())
             let field = Int.random(in: 0..<100)
             let orientation: orientation
             let orientationRandomizer = Int.random(in: 0...1)
@@ -286,7 +255,6 @@ extension CreateGameViewModel {
             }
 
             isPossibleToReplaceShipOnThisField = tryReplaceShip(player: player, field: field, orientation: orientation, size: ship.getSize(), id: ship.getId())
-            temporaryCounterdowyjebania += 1
         }
     }
     

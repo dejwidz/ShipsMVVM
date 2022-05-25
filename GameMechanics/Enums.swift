@@ -30,12 +30,12 @@ enum turn {
     
 var asd = CreateGameViewController()
 
-func getRow(enter: Int) -> Int {
+func getColumn(enter: Int) -> Int {
     let numberOfTheRow = Int(enter/10)
     return numberOfTheRow
 }
 
-func getColumn(enter: Int) -> Int {
+func getRow(enter: Int) -> Int {
     let numberOfTheColumn: Int = enter % 10
     return numberOfTheColumn
 }

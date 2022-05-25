@@ -108,8 +108,8 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
                                                   for: indexPath) as! CustomCollectionViewCell
         cell.contentView.backgroundColor = .red
         
-        let row = getRow(enter: indexPath.row)
-        let column = getColumn(enter: indexPath.row)
+        let row = getColumn(enter: indexPath.row)
+        let column = getRow(enter: indexPath.row)
         
         let temporaryState = projectSeaMatrix[column][row].getState()
         cell.actualizeState(newState: temporaryState)
@@ -123,18 +123,7 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        print("PLANSZA NUMER POLA RANDOM: ", projectSeaMatrix[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].randomNumber, "VM ", viewModel.humanPlayer?.getSea()[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].randomNumber, "MODEL ")
-        
         viewModel.checkDeployingPossibility(index: indexPath.row, shipId: viewModel.nextShipId, shipSize: viewModel.nextShipSize, orientation: viewModel.nextShipOrientation)
-        
-        
-        
-//        print("-----------------print komorka ale gracz", viewModel.sea[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].getState())
-//        projectSeaMatrix[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].setState(newState: .hitOccupied)
-//        print("-----------------print komorka ale gracz", viewModel.sea[getColumn(enter: indexPath.row)][getRow(enter: indexPath.row)].getState())
-//        print(indexPath.row)
-//        projectSea.reloadData()
     }
 }
 
@@ -143,8 +132,6 @@ extension CreateGameViewController: CreateGameViewModelDelegate {
     func sendHumanPlayerSea(_ createGameViewModel: CreateGameViewModelProtocol, humanPlayerSea: [[Field]]) {
         projectSeaMatrix = humanPlayerSea
         projectSea.reloadData()
-        print("VC 54", humanPlayerSea[5][4].getState())
-        print("koniec")
     }
     
     

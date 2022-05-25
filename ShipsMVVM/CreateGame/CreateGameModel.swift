@@ -35,8 +35,7 @@ final class CreateGameModel: CreateGameModelProtocol {
         for _ in 0...9 {
             var tempArray: [Field] = []
             for _ in 0...9 {
-                var y = Int.random(in: 0...999)
-                var x = Field(random: y)
+                var x = Field()
                 tempArray.append(x)
             }
             humanPlayerSea.append(tempArray)
@@ -46,9 +45,7 @@ final class CreateGameModel: CreateGameModelProtocol {
         for _ in 0...9 {
             var tempArray: [Field] = []
             for _ in 0...9 {
-                var y = Int.random(in: 0...999)
-                var x = Field(random: y)
-                
+                var x = Field()
                 tempArray.append(x)
             }
             computerPlayerSea.append(tempArray)
@@ -63,7 +60,6 @@ final class CreateGameModel: CreateGameModelProtocol {
 }
     
     func sendHumanPlayerSea() {
-        print("MODEL 54",humanPlayerSea[5][4].getState())
         createGameModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayerSea)
     }
     

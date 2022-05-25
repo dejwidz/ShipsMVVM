@@ -78,18 +78,13 @@ final class Player {
     }
     
     func actualizeSeaBeforeGame() {
-        print("gracz - aktualizacja morza")
-//        print(self.sea)
         for i in 0...9 {
             for j in 0...9 {
                 sea[i][j].setState(newState: .free)
-//                print(sea[i][j].getState())
             }
         }
         for i in ships {
             i.actualizeFields()
-//            print( "aktualizacja morza w graczu", i.getFields()[0].getState())
-            playerDelegate?.notifyChangesOfPlayer(self)
         }
     }
     

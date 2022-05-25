@@ -9,11 +9,9 @@ import Foundation
 
 final class Field {
     private var state: fieldState
-    var randomNumber: Int
     
-    init(random: Int) {
+    init() {
         state = .free
-        randomNumber = random
     }
     
     func getState() -> fieldState {

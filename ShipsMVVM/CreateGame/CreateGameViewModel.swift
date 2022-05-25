@@ -10,6 +10,7 @@ import UIKit
 
 protocol CreateGameViewModelDelegate: AnyObject {
     func sendHumanPlayerSea(_ createGameViewModel: CreateGameViewModelProtocol, humanPlayerSea: [[Field]])
+    func sayNoYouCantDeployHere(_ createGameViewModel: CreateGameViewModelProtocol, message: String)
 }
 
 protocol CreateGameViewModelProtocol: AnyObject {
@@ -49,14 +50,12 @@ final class CreateGameViewModel: CreateGameViewModelProtocol {
     
     func sendHumanSea() {
         model.sendHumanPlayerSea()
-        
     }
 }
 
 extension CreateGameViewModel: CreateGameModelDelegate {
     func sendHumanPlayer(_ createGameModel: CreateGameModelProtocol, humanPlayer: Player) {
         self.humanPlayer = humanPlayer
-        
     }
     
     func sendComputerPlayer(_ createGameModel: CreateGameModelProtocol, computerPlayer: Player) {
@@ -74,8 +73,12 @@ extension CreateGameViewModel: CreateGameModelDelegate {
 extension CreateGameViewModel {
     
     func checkDeployingPossibility(index: Int, shipId: Int, shipSize: Int, orientation: orientation) {
-        tryReplaceShip(player: humanPlayer!, field: index, orientation: nextShipOrientation, size: nextShipSize, id: nextShipId)
-    // DOPISAC KOMUNIKAT O NIEMOZLIWOSCI I WYSLAC DELEGATEM
+        
+        let deployPosiibility = tryReplaceShip(player: humanPlayer!, field: index, orientation: nextShipOrientation, size: nextShipSize, id: nextShipId)
+        
+        if !deployPosiibility {
+            createGameViewModelDelegate?.sayNoYouCantDeployHere(self, message: "You can't deploy ship here")
+        }
     }
 
     func saveAcces(sea: [[Field]], column: Int, row: Int) -> Bool {

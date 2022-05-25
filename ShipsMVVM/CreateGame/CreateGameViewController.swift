@@ -78,16 +78,9 @@ final class CreateGameViewController: UIViewController {
     
     
     @IBAction func startGameButtonTapped(_ sender: Any) {
+        viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
         
-    }
-    
-    
-    
-    
-    
-    
-    
-    
+    } 
 }
 
 
@@ -129,6 +122,12 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
 
 
 extension CreateGameViewController: CreateGameViewModelDelegate {
+    func sayNoYouCantDeployHere(_ createGameViewModel: CreateGameViewModelProtocol, message: String) {
+        let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(alert, animated: true)
+    }
+    
     func sendHumanPlayerSea(_ createGameViewModel: CreateGameViewModelProtocol, humanPlayerSea: [[Field]]) {
         projectSeaMatrix = humanPlayerSea
         projectSea.reloadData()

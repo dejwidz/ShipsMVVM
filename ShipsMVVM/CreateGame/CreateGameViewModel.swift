@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol CreateGameViewModelDelegate: AnyObject {
-    func sendHumanPlayerSea(_ createGameViewModel: CreateGameViewModelProtocol, humanPlayerSea: [[Field]])
+    func sendHumanPlayerSea(_ createGameViewModel: CreateGameViewModelProtocol, humanPlayerSea: [[Field]], humanPlayer: Player)
     func sayNoYouCantDeployHere(_ createGameViewModel: CreateGameViewModelProtocol, message: String)
 }
 
@@ -64,7 +64,7 @@ extension CreateGameViewModel: CreateGameModelDelegate {
     
     func sendHumanPlayerSea(_ createGameModel: CreateGameModelProtocol, humanPlayerSea: [[Field]]) {
         sea = humanPlayerSea
-        createGameViewModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayerSea)
+        createGameViewModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayerSea, humanPlayer: humanPlayer!)
     }
     
     

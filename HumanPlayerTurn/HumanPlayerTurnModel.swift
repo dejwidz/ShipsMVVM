@@ -33,6 +33,7 @@ final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
     }
     
     func sendHumanPlayer() {
+        print("MODEL SENDING PLAYER")
         humanPlayerTurnModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer!)
     }
     

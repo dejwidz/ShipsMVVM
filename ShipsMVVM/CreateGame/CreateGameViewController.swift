@@ -16,6 +16,7 @@ final class CreateGameViewController: UIViewController {
     @IBOutlet private weak var startGameButton: UIButton!
     private let viewModel = CreateGameViewModel(model: CreateGameModel())
     private var projectSeaMatrix: [[Field]] = []
+    private var humanPlayer: Player?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,7 +80,9 @@ final class CreateGameViewController: UIViewController {
     
     @IBAction func startGameButtonTapped(_ sender: Any) {
         viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
-        
+        let vcHumanPlayerTurn = HumanPlayerTurnViewController()
+        vcHumanPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
+        navigationController?.pushViewController(vcHumanPlayerTurn, animated: true)
     } 
 }
 
@@ -101,10 +104,10 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
                                                   for: indexPath) as! CustomCollectionViewCell
         cell.contentView.backgroundColor = .red
         
-        let row = getColumn(enter: indexPath.row)
-        let column = getRow(enter: indexPath.row)
+        let row = getRow(enter: indexPath.row)
+        let column = getColumn(enter: indexPath.row)
         
-        let temporaryState = projectSeaMatrix[column][row].getState()
+        let temporaryState = (humanPlayer?.getSea()[row][column].getState())!
         cell.actualizeState(newState: temporaryState)
         
         return cell
@@ -128,9 +131,10 @@ extension CreateGameViewController: CreateGameViewModelDelegate {
         present(alert, animated: true)
     }
     
-    func sendHumanPlayerSea(_ createGameViewModel: CreateGameViewModelProtocol, humanPlayerSea: [[Field]]) {
+    func sendHumanPlayerSea(_ createGameViewModel: CreateGameViewModelProtocol, humanPlayerSea: [[Field]], humanPlayer: Player) {
         projectSeaMatrix = humanPlayerSea
         projectSea.reloadData()
+        self.humanPlayer = humanPlayer
     }
     
     

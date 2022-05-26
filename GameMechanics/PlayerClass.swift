@@ -120,7 +120,6 @@ protocol PlayerDelegate: AnyObject {
     
 extension Player: ShipDelegate {
     func notifyShipChanges(_ ship: Ship) {
-        print("++++++++++++++++++++++++++++++++++++++wywolanie przez statek w graczu-- \(self.name)")
         playerDelegate?.notifyChangesOfPlayer(self)
     }
     

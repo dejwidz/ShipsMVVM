@@ -42,14 +42,16 @@ class HumanPlayerTurnViewController: UIViewController {
 
     func setHumanPlayer(humanPlayer: Player) {
         self.humanPlayer = humanPlayer
-        viewModel.updateHumanPlayerInModel(humanPlayer: humanPlayer)
+//        viewModel.updateHumanPlayerInModel(humanPlayer: humanPlayer)
     }
 
 }
 
 extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
     func sendHumanPlayer(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayer: Player) {
+        print("VC SENDED")
         self.humanPlayer = humanPlayer
+        
     }
     
     

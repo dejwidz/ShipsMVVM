@@ -21,7 +21,11 @@ final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
     
     var humanPlayerTurnModelDelegate: HumanPlayerTurnModelDelegate?
     
-    private var humanPlayer: Player?
+    private var humanPlayer: Player? {
+        didSet {
+            print("MODEL player set")
+        }
+    }
     
     init(){
         humanPlayer?.playerDelegate = self

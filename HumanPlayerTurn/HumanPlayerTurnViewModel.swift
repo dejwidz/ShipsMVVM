@@ -42,6 +42,8 @@ final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
 
 extension HumanPlayerTurnViewModel: HumanPlayerTurnModelDelegate {
     func sendHumanPlayer(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayer: Player) {
+        print("SENDY VM")
+
         self.humanPlayer = humanPlayer
         humanPlayerTurnViewModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer)
     }

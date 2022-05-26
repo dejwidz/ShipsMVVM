@@ -14,6 +14,8 @@ final class CreateGameViewController: UIViewController {
     @IBOutlet private weak var chooseShipSegmentedControl: UISegmentedControl!
     @IBOutlet private weak var generateShipPositionsButton: UIButton!
     @IBOutlet private weak var startGameButton: UIButton!
+    let vcHumanPlayerTurn = HumanPlayerTurnViewController()
+
     private let viewModel = CreateGameViewModel(model: CreateGameModel())
     private var projectSeaMatrix: [[Field]] = []
     private var humanPlayer: Player?
@@ -80,7 +82,6 @@ final class CreateGameViewController: UIViewController {
     
     @IBAction func startGameButtonTapped(_ sender: Any) {
         viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
-        let vcHumanPlayerTurn = HumanPlayerTurnViewController()
         vcHumanPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
         navigationController?.pushViewController(vcHumanPlayerTurn, animated: true)
     } 

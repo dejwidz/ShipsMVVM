@@ -27,8 +27,6 @@ class ComputerTurnCustomCollectionViewCell: UICollectionViewCell {
                 contentView.backgroundColor = .systemTeal
             case .occupied:
                 contentView.backgroundColor = .systemGray
-            case .nearToOccupied:
-                contentView.backgroundColor = .orange
             case .hit:
                 contentView.backgroundColor = .yellow
             case .hitOccupied:

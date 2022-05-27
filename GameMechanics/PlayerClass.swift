@@ -25,6 +25,13 @@ final class Player {
     private var ship4: Ship
     private var ship5: Ship
     
+    private var firstHitIndicator = false
+    private var hitIndicator = false
+    private var possibleNorth: [Field] = []
+    private var possibleSouth: [Field] = []
+    private var possibleWest: [Field] = []
+    private var possibleEast: [Field] = []
+    
     init(name: String, sea: [[Field]], ship2: Ship, ship3: Ship, ship32: Ship, ship4: Ship, ship5: Ship) {
         self.name = name
         self.sea = sea
@@ -59,19 +66,14 @@ final class Player {
         switch id {
         case 2:
             ship2.setFields(fields: fields)
-//            ship2.actualizeFields()
         case 3:
             ship3.setFields(fields: fields)
-//            ship3.actualizeFields()
         case 32:
             ship32.setFields(fields: fields)
-//            ship32.actualizeFields()
         case 4:
             ship4.setFields(fields: fields)
-//            ship4.actualizeFields()
         case 5:
             ship5.setFields(fields: fields)
-//            ship5.actualizeFields()
         default:
             print("nothing")
         }
@@ -111,6 +113,53 @@ final class Player {
         }
     }
     
+    func setFirstHitIndicator(newValueOfFirstHitIndicator: Bool){
+        firstHitIndicator = newValueOfFirstHitIndicator
+    }
+    
+    func getFirstHitIndicator() -> Bool {
+        return firstHitIndicator
+    }
+    
+    func setHitIndicator(newValueOfHitIndicator: Bool) {
+        hitIndicator = newValueOfHitIndicator
+    }
+    
+    func getHitIndicator() -> Bool {
+        return hitIndicator
+    }
+    
+    func setPossibleNorth(newNorth: [Field]) {
+        possibleNorth = newNorth
+    }
+    
+    func getPossibleNorth() -> [Field] {
+        return possibleNorth
+    }
+    
+    func setPossibleSouth(newSouth: [Field]) {
+        possibleSouth = newSouth
+    }
+    
+    func getPossibleSouth() -> [Field] {
+        return possibleSouth
+    }
+    
+    func setPossibleWest(newWest: [Field]) {
+        possibleWest = newWest
+    }
+    
+    func getPossibleWest() -> [Field] {
+        return possibleWest
+    }
+    
+    func setPossibleEast(newEast: [Field]) {
+        possibleEast = newEast
+    }
+    
+    func getPossibleEast() -> [Field] {
+        return possibleEast
+    }
 
 }
 

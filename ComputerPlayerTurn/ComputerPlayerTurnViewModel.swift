@@ -11,6 +11,7 @@ protocol ComputerPlayerTurnViewModelProtocol: AnyObject {
     var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate? {get set}
     func updateComputerPlayerInModel(computerPlayer: Player)
     func sendComputerPlayer()
+    func computerPlayerShot()
 }
 
 protocol ComputerPlayerTurnViewModelDelegate: AnyObject {
@@ -21,6 +22,7 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     weak var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate?
     private var computerPlayer: Player?
     private var model: ComputerPlayerTurnModelProtocol
+    
     
     init(model: ComputerPlayerTurnModelProtocol) {
         self.model = model
@@ -49,4 +51,10 @@ extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
     }
     
     
+}
+
+extension ComputerPlayerTurnViewModel {
+    func computerPlayerShot() {
+        <#code#>
+    }
 }

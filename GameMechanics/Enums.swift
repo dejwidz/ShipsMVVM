@@ -13,7 +13,6 @@ import Foundation
 enum fieldState {
     case free
     case occupied
-    case nearToOccupied
     case hit
     case hitOccupied
     }

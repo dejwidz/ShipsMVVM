@@ -19,12 +19,18 @@ final class CreateGameViewController: UIViewController {
     private let viewModel = CreateGameViewModel(model: CreateGameModel())
     private var projectSeaMatrix: [[Field]] = []
     private var humanPlayer: Player?
+    private var computerPlayer: Player? {
+        didSet {
+            print("COMPI COMPI")
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         viewModel.createGameViewModelDelegate = self
         viewModel.sendHumanSea()
+        viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
         
         projectSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "customCell")
         projectSea.delegate = self
@@ -81,7 +87,7 @@ final class CreateGameViewController: UIViewController {
     
     
     @IBAction func startGameButtonTapped(_ sender: Any) {
-        viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
+        vcHumanPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
         vcHumanPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
         navigationController?.pushViewController(vcHumanPlayerTurn, animated: true)
     } 
@@ -126,6 +132,10 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
 
 
 extension CreateGameViewController: CreateGameViewModelDelegate {
+    func sendComputerPlayer(_ createGameViewModel: CreateGameViewModelProtocol, computerPlayer: Player) {
+        self.computerPlayer = computerPlayer
+    }
+    
     func sayNoYouCantDeployHere(_ createGameViewModel: CreateGameViewModelProtocol, message: String) {
         let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))

@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 protocol CreateGameViewModelDelegate: AnyObject {
+    func sendComputerPlayer(_ createGameViewModel: CreateGameViewModelProtocol, computerPlayer: Player)
     func sendHumanPlayerSea(_ createGameViewModel: CreateGameViewModelProtocol, humanPlayerSea: [[Field]], humanPlayer: Player)
     func sayNoYouCantDeployHere(_ createGameViewModel: CreateGameViewModelProtocol, message: String)
 }
@@ -60,6 +61,7 @@ extension CreateGameViewModel: CreateGameModelDelegate {
     
     func sendComputerPlayer(_ createGameModel: CreateGameModelProtocol, computerPlayer: Player) {
         self.computerPlayer = computerPlayer
+        createGameViewModelDelegate?.sendComputerPlayer(self, computerPlayer: computerPlayer)
     }
     
     func sendHumanPlayerSea(_ createGameModel: CreateGameModelProtocol, humanPlayerSea: [[Field]]) {

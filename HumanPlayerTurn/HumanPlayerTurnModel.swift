@@ -11,6 +11,7 @@ protocol HumanPlayerTurnModelProtocol: AnyObject {
     var humanPlayerTurnModelDelegate: HumanPlayerTurnModelDelegate? {get set}
     func updateHumanPlayer(humanPlayer: Player)
     func sendHumanPlayer()
+    
 }
 
 protocol HumanPlayerTurnModelDelegate: AnyObject {

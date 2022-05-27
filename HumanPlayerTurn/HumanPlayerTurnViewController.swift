@@ -13,10 +13,11 @@ class HumanPlayerTurnViewController: UIViewController {
             print("DIDSET PLAYER")
         }
     }
+    private var computerPlayer: Player?
     private var viewModel = HumanPlayerTurnViewModel(model: HumanPlayerTurnModel())
 
     @IBOutlet weak var humanPlayerSea: UICollectionView!
-    
+    let vcComputerPlayerTurn = ComputerPlayerTurnViewController()
     
     
     override func viewDidLoad() {
@@ -43,6 +44,10 @@ class HumanPlayerTurnViewController: UIViewController {
     func setHumanPlayer(humanPlayer: Player) {
         self.humanPlayer = humanPlayer
 //        viewModel.updateHumanPlayerInModel(humanPlayer: humanPlayer)
+    }
+    
+    func setComputerPlayer(computerPlayer: Player) {
+        self.computerPlayer = computerPlayer
     }
 
 }
@@ -83,4 +88,9 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
         return CGSize(width: size, height: size)
     }
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        vcComputerPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
+        navigationController?.pushViewController(vcComputerPlayerTurn, animated: true)
+    }
+    
 }

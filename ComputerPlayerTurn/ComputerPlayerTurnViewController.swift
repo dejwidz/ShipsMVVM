@@ -10,7 +10,7 @@ import UIKit
 class ComputerPlayerTurnViewController: UIViewController {
     private var computerPlayer: Player? {
         didSet {
-            print("DIDSET PLAYER")
+            print("DIDSET  COMPUTER  PLAYER")
         }
     }
     private var viewModel = ComputerPlayerTurnViewModel(model: ComputerPlayerTurnModel())
@@ -23,6 +23,8 @@ class ComputerPlayerTurnViewController: UIViewController {
         super.viewDidLoad()
         viewModel.computerPlayerTurnViewModelDelegate = self
         viewModel.updateComputerPlayerInModel(computerPlayer: computerPlayer!)
+        
+        
 
         computerPlayerSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "ComputerTurnCustomCollectionViewCell")
         computerPlayerSea.delegate = self
@@ -65,7 +67,7 @@ func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection s
 }
 
 func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = computerPlayerSea.dequeueReusableCell(withReuseIdentifier: "computerTurnCustomCollectionViewCell",
+    let cell = computerPlayerSea.dequeueReusableCell(withReuseIdentifier: "ComputerTurnCustomCollectionViewCell",
                                               for: indexPath) as! CustomCollectionViewCell
     cell.contentView.backgroundColor = .red
     
@@ -81,6 +83,14 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = view.frame.width * 0.08
         return CGSize(width: size, height: size)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        computerPlayer?.getSea()[getRow(enter: indexPath.row)][getColumn(enter: indexPath.row)].setState(newState: .hit)
+        computerPlayerSea.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 
 }

@@ -46,6 +46,10 @@ class ComputerPlayerTurnViewController: UIViewController {
         self.computerPlayer = computerPlayer
 //        viewModel.updateHumanPlayerInModel(humanPlayer: humanPlayer)
     }
+    
+    func setHumanPlayer(humanPlayer: Player) {
+        viewModel.setHumanPlayer(humanPlayer: humanPlayer)
+    }
 
 }
 

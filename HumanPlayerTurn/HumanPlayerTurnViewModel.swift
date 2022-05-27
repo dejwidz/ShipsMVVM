@@ -10,6 +10,7 @@ import Foundation
 protocol HumanPlayerTurnViewModelProtocol: AnyObject {
     var humanPlayerTurnViewModelDelegate: HumanPlayerTurnViewModelDelegate? {get set}
     func updateHumanPlayerInModel(humanPlayer: Player)
+    func updateComputerPlayer(computerPlayer: Player)
     func sendHumanPlayer()
 }
 
@@ -20,6 +21,7 @@ protocol HumanPlayerTurnViewModelDelegate: AnyObject {
 final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
     weak var humanPlayerTurnViewModelDelegate: HumanPlayerTurnViewModelDelegate?
     private var humanPlayer: Player?
+    private var computerPlayer: Player?
     private var model: HumanPlayerTurnModelProtocol
     
     init(model: HumanPlayerTurnModelProtocol) {
@@ -31,6 +33,10 @@ final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
     func updateHumanPlayerInModel(humanPlayer: Player) {
         self.humanPlayer = humanPlayer
         model.updateHumanPlayer(humanPlayer: humanPlayer)
+    }
+    
+    func updateComputerPlayer(computerPlayer: Player) {
+        self.computerPlayer = computerPlayer
     }
     
     func sendHumanPlayer() {

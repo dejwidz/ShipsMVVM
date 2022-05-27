@@ -33,6 +33,8 @@ final class Player {
     private var possibleWest: [Field] = []
     private var possibleEast: [Field] = []
     
+    private var turnIndicator: turn
+    
     init(name: String, sea: [[Field]], enemySea: [[Field]], ship2: Ship, ship3: Ship, ship32: Ship, ship4: Ship, ship5: Ship) {
         self.name = name
         self.sea = sea
@@ -42,9 +44,10 @@ final class Player {
         self.ship32 = ship32
         self.ship4 = ship4
         self.ship5 = ship5
+        self.turnIndicator = .humanPlayerTurn
         ships = []
         addShips()
-        
+
         ship2.shipDelegate = self
         ship3.shipDelegate = self
         ship32.shipDelegate = self
@@ -131,32 +134,16 @@ final class Player {
         return hitIndicator
     }
     
-    func setPossibleNorth(newNorth: [Field]) {
-        possibleNorth = newNorth
-    }
-    
     func getPossibleNorth() -> [Field] {
         return possibleNorth
-    }
-    
-    func setPossibleSouth(newSouth: [Field]) {
-        possibleSouth = newSouth
     }
     
     func getPossibleSouth() -> [Field] {
         return possibleSouth
     }
     
-    func setPossibleWest(newWest: [Field]) {
-        possibleWest = newWest
-    }
-    
     func getPossibleWest() -> [Field] {
         return possibleWest
-    }
-    
-    func setPossibleEast(newEast: [Field]) {
-        possibleEast = newEast
     }
     
     func getPossibleEast() -> [Field] {
@@ -169,6 +156,52 @@ final class Player {
     
     func addFieldToPossibleNorth(field: Field) {
         possibleNorth.append(field)
+    }
+    
+    func addFieldToPossibleSouth(field: Field) {
+        possibleSouth.append(field)
+    }
+    
+    func addFieldToPossibleWest(field: Field) {
+        possibleWest.append(field)
+    }
+    
+    func addFieldToPossibleEast(field: Field) {
+        possibleEast.append(field)
+    }
+    
+    func removeLastFieldFromNorth() {
+        possibleNorth.remove(at: 0)
+    }
+    
+    func removeLastFieldFromSouth() {
+        possibleSouth.remove(at: 0)
+    }
+    
+    func removeLastFieldFromWest() {
+        possibleWest.remove(at: 0)
+    }
+    
+    func removeLastFieldFromEast() {
+        possibleEast.remove(at: 0)
+    }
+    
+    
+    
+    func clearNorth() {
+        possibleNorth = []
+    }
+    
+    func clearSouth() {
+        possibleSouth = []
+    }
+    
+    func clearWest() {
+        possibleWest = []
+    }
+    
+    func clearEast() {
+        possibleEast = []
     }
 
 }

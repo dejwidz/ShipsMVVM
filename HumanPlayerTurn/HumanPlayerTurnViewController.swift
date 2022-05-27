@@ -24,6 +24,7 @@ class HumanPlayerTurnViewController: UIViewController {
         super.viewDidLoad()
         viewModel.humanPlayerTurnViewModelDelegate = self
         viewModel.updateHumanPlayerInModel(humanPlayer: humanPlayer!)
+        viewModel.updateComputerPlayer(computerPlayer: computerPlayer!)
 
         humanPlayerSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "PlayerTurnCustomCollectionViewCell")
         humanPlayerSea.delegate = self
@@ -90,6 +91,7 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         vcComputerPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
+        vcComputerPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
         navigationController?.pushViewController(vcComputerPlayerTurn, animated: true)
     }
     

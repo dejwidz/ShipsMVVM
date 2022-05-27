@@ -11,6 +11,7 @@ protocol ComputerPlayerTurnViewModelProtocol: AnyObject {
     var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate? {get set}
     func updateComputerPlayerInModel(computerPlayer: Player)
     func sendComputerPlayer()
+    func setHumanPlayer(humanPlayer: Player)
     func computerPlayerShot()
 }
 
@@ -21,6 +22,7 @@ protocol ComputerPlayerTurnViewModelDelegate: AnyObject {
 final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     weak var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate?
     private var computerPlayer: Player?
+    private var humanPlayer: Player?
     private var model: ComputerPlayerTurnModelProtocol
     
     
@@ -39,6 +41,9 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
         computerPlayerTurnViewModelDelegate?.sendComputerPlayer(self, computerPlayer: computerPlayer!)
     }
     
+    func setHumanPlayer(humanPlayer: Player) {
+        self.humanPlayer = humanPlayer
+    }
     
 }
 
@@ -63,6 +68,15 @@ extension ComputerPlayerTurnViewModel {
         return isAccesToThisIndexSave
     }
     
+    func isShootingToThisFieldWise(row: Int, column: Int) -> Bool {
+        let okYouCanShoot = true
+        
+        
+        
+        
+        return okYouCanShoot
+    }
+    
     func radarNorth(row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {return}
         let field = computerPlayer?.getEnemySea()[row][column]
@@ -72,5 +86,35 @@ extension ComputerPlayerTurnViewModel {
         }
     }
     
+    func radarSouth(row: Int, column: Int) {
+        guard saveAccess(row: row, column: column) else {return}
+        let field = computerPlayer?.getEnemySea()[row][column]
+        if field!.getState() == .free {
+            computerPlayer?.addFieldToPossibleNorth(field: field!)
+            radarSouth(row: row + 1, column: column)
+        }
+    }
+    
+    func radarWest(row: Int, column: Int) {
+        guard saveAccess(row: row, column: column) else {return}
+        let field = computerPlayer?.getEnemySea()[row][column]
+        if field!.getState() == .free {
+            computerPlayer?.addFieldToPossibleNorth(field: field!)
+            radarWest(row: row, column: column - 1)
+        }
+    }
+    
+    func radarEast(row: Int, column: Int) {
+        guard saveAccess(row: row, column: column) else {return}
+        let field = computerPlayer?.getEnemySea()[row][column]
+        if field!.getState() == .free {
+            computerPlayer?.addFieldToPossibleNorth(field: field!)
+            radarEast(row: row, column: column + 1)
+        }
+    }
+    
+    func iVeGotNothingOnRadar() {
+        
+    }
     
 }

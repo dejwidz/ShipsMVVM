@@ -11,7 +11,7 @@ protocol ComputerPlayerTurnViewModelProtocol: AnyObject {
     var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate? {get set}
     func updateComputerPlayerInModel(computerPlayer: Player)
     func sendComputerPlayer()
-    func computerPlayerShot()
+    func computerPlayerShot(index: Int)
 }
 
 protocol ComputerPlayerTurnViewModelDelegate: AnyObject {
@@ -54,7 +54,15 @@ extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
 }
 
 extension ComputerPlayerTurnViewModel {
-    func computerPlayerShot() {
-        <#code#>
+    func computerPlayerShot(index: Int) {
+        
     }
+    
+    func saveAcces(sea: [[Field]], column: Int, row: Int) -> Bool {
+        let isAccesToThisIndexSave = column >= 0 && column <= 9 && row >= 0 && row <= 9 ? true : false
+        return isAccesToThisIndexSave
+    }
+    
+    
+    
 }

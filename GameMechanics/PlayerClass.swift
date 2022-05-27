@@ -17,6 +17,7 @@ final class Player {
             playerDelegate?.notifyChangesOfPlayer(self)
         }
     }
+    private var enemySea: [[Field]]
     
     private var ships: [Ship]
     private var ship2: Ship
@@ -32,9 +33,10 @@ final class Player {
     private var possibleWest: [Field] = []
     private var possibleEast: [Field] = []
     
-    init(name: String, sea: [[Field]], ship2: Ship, ship3: Ship, ship32: Ship, ship4: Ship, ship5: Ship) {
+    init(name: String, sea: [[Field]], enemySea: [[Field]], ship2: Ship, ship3: Ship, ship32: Ship, ship4: Ship, ship5: Ship) {
         self.name = name
         self.sea = sea
+        self.enemySea = enemySea
         self.ship2 = ship2
         self.ship3 = ship3
         self.ship32 = ship32

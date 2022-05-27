@@ -27,7 +27,6 @@ enum turn {
     case computerPlayerTurn
 }
     
-var asd = CreateGameViewController()
 
 func getColumn(enter: Int) -> Int {
     let numberOfTheRow = Int(enter/10)

@@ -11,7 +11,7 @@ protocol ComputerPlayerTurnViewModelProtocol: AnyObject {
     var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate? {get set}
     func updateComputerPlayerInModel(computerPlayer: Player)
     func sendComputerPlayer()
-    func computerPlayerShot(index: Int)
+    func computerPlayerShot()
 }
 
 protocol ComputerPlayerTurnViewModelDelegate: AnyObject {
@@ -54,15 +54,23 @@ extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
 }
 
 extension ComputerPlayerTurnViewModel {
-    func computerPlayerShot(index: Int) {
+    func computerPlayerShot() {
         
     }
     
-    func saveAcces(sea: [[Field]], column: Int, row: Int) -> Bool {
+    func saveAccess(row: Int, column: Int) -> Bool {
         let isAccesToThisIndexSave = column >= 0 && column <= 9 && row >= 0 && row <= 9 ? true : false
         return isAccesToThisIndexSave
     }
     
+    func radarNorth(row: Int, column: Int) {
+        guard saveAccess(row: row, column: column) else {return}
+        let field = computerPlayer?.getEnemySea()[row][column]
+        if field!.getState() == .free {
+            computerPlayer?.addFieldToPossibleNorth(field: field!)
+            radarNorth(row: row - 1, column: column)
+        }
+    }
     
     
 }

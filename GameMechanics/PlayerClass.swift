@@ -162,6 +162,14 @@ final class Player {
     func getPossibleEast() -> [Field] {
         return possibleEast
     }
+    
+    func getEnemySea() -> [[Field]] {
+        return enemySea
+    }
+    
+    func addFieldToPossibleNorth(field: Field) {
+        possibleNorth.append(field)
+    }
 
 }
 

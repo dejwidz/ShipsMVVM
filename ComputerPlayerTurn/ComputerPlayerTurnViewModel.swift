@@ -63,9 +63,8 @@ extension ComputerPlayerTurnViewModel {
         
     }
     
-    func prepareToShot() {
-        guard computerPlayer?.getTurnIndicator() == .computerPlayerTurn else {return}
-        let indexOfNextFieldToShot: Int
+    func prepareToShot() -> Int {
+        var indexOfNextFieldToShot = 0
         if !(computerPlayer?.getHitIndicator())! {
             indexOfNextFieldToShot = iVeGotNothingOnRadar()
         } else {
@@ -80,7 +79,8 @@ extension ComputerPlayerTurnViewModel {
     }
     
     func isShootingToThisFieldWise(row: Int, column: Int) -> Bool {
-        let okYouCanShoot = checkIfSurroundingFieldIsFree(row: row - 1, column: column - 1) &&
+        let okYouCanShoot = checkIfSurroundingFieldIsFree(row: row, column: column) &&
+        checkIfSurroundingFieldIsFree(row: row - 1, column: column - 1) &&
         checkIfSurroundingFieldIsFree(row: row - 1, column: column) &&
         checkIfSurroundingFieldIsFree(row: row - 1, column: column + 1) &&
         checkIfSurroundingFieldIsFree(row: row, column: column - 1) &&
@@ -99,11 +99,20 @@ extension ComputerPlayerTurnViewModel {
         return okYouCanShot
     }
     
+    func combineTwoIntegersIntoOne(firstOne: Int, secondOne: Int) -> Int {
+        let firstString = "\(firstOne)"
+        let secondString = "\(secondOne)"
+        let combineString = firstString + secondString
+        let combineInteger = Int(combineString)
+        return combineInteger!
+    }
+    
     func radarNorth(row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {return}
         let field = computerPlayer?.getEnemySea()[row][column]
         if field!.getState() == .free {
-            computerPlayer?.addFieldToPossibleNorth(field: field!)
+            let index = combineTwoIntegersIntoOne(firstOne: row, secondOne: column)
+            computerPlayer?.addFieldToPossibleNorth(fieldIndex: index)
             radarNorth(row: row - 1, column: column)
         }
     }
@@ -112,7 +121,8 @@ extension ComputerPlayerTurnViewModel {
         guard saveAccess(row: row, column: column) else {return}
         let field = computerPlayer?.getEnemySea()[row][column]
         if field!.getState() == .free {
-            computerPlayer?.addFieldToPossibleNorth(field: field!)
+            let index = combineTwoIntegersIntoOne(firstOne: row, secondOne: column)
+            computerPlayer?.addFieldToPossibleSouth(fieldIndex: index)
             radarSouth(row: row + 1, column: column)
         }
     }
@@ -121,7 +131,8 @@ extension ComputerPlayerTurnViewModel {
         guard saveAccess(row: row, column: column) else {return}
         let field = computerPlayer?.getEnemySea()[row][column]
         if field!.getState() == .free {
-            computerPlayer?.addFieldToPossibleNorth(field: field!)
+            let index = combineTwoIntegersIntoOne(firstOne: row, secondOne: column)
+            computerPlayer?.addFieldToPossibleWest(fieldIndex: index)
             radarWest(row: row, column: column - 1)
         }
     }
@@ -130,7 +141,8 @@ extension ComputerPlayerTurnViewModel {
         guard saveAccess(row: row, column: column) else {return}
         let field = computerPlayer?.getEnemySea()[row][column]
         if field!.getState() == .free {
-            computerPlayer?.addFieldToPossibleNorth(field: field!)
+            let index = combineTwoIntegersIntoOne(firstOne: row, secondOne: column)
+            computerPlayer?.addFieldToPossibleEast(fieldIndex: index)
             radarEast(row: row, column: column + 1)
         }
     }

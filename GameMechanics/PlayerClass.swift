@@ -28,10 +28,10 @@ final class Player {
     
     private var firstHitIndicator = false
     private var hitIndicator = false
-    private var possibleNorth: [Field] = []
-    private var possibleSouth: [Field] = []
-    private var possibleWest: [Field] = []
-    private var possibleEast: [Field] = []
+    private var possibleNorth: [Int] = []
+    private var possibleSouth: [Int] = []
+    private var possibleWest: [Int] = []
+    private var possibleEast: [Int] = []
     
     private var turnIndicator: turn
     
@@ -134,19 +134,19 @@ final class Player {
         return hitIndicator
     }
     
-    func getPossibleNorth() -> [Field] {
+    func getPossibleNorth() -> [Int] {
         return possibleNorth
     }
     
-    func getPossibleSouth() -> [Field] {
+    func getPossibleSouth() -> [Int] {
         return possibleSouth
     }
     
-    func getPossibleWest() -> [Field] {
+    func getPossibleWest() -> [Int] {
         return possibleWest
     }
     
-    func getPossibleEast() -> [Field] {
+    func getPossibleEast() -> [Int] {
         return possibleEast
     }
     
@@ -154,20 +154,20 @@ final class Player {
         return enemySea
     }
     
-    func addFieldToPossibleNorth(field: Field) {
-        possibleNorth.append(field)
+    func addFieldToPossibleNorth(fieldIndex: Int) {
+        possibleNorth.append(fieldIndex)
     }
     
-    func addFieldToPossibleSouth(field: Field) {
-        possibleSouth.append(field)
+    func addFieldToPossibleSouth(fieldIndex: Int) {
+        possibleSouth.append(fieldIndex)
     }
     
-    func addFieldToPossibleWest(field: Field) {
-        possibleWest.append(field)
+    func addFieldToPossibleWest(fieldIndex: Int) {
+        possibleWest.append(fieldIndex)
     }
     
-    func addFieldToPossibleEast(field: Field) {
-        possibleEast.append(field)
+    func addFieldToPossibleEast(fieldIndex: Int) {
+        possibleEast.append(fieldIndex)
     }
     
     func removeLastFieldFromNorth() {

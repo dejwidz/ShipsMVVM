@@ -63,18 +63,40 @@ extension ComputerPlayerTurnViewModel {
         
     }
     
+    func prepareToShot() {
+        guard computerPlayer?.getTurnIndicator() == .computerPlayerTurn else {return}
+        let indexOfNextFieldToShot: Int
+        if !(computerPlayer?.getHitIndicator())! {
+            indexOfNextFieldToShot = iVeGotNothingOnRadar()
+        } else {
+            
+        }
+        return indexOfNextFieldToShot
+    }
+    
     func saveAccess(row: Int, column: Int) -> Bool {
         let isAccesToThisIndexSave = column >= 0 && column <= 9 && row >= 0 && row <= 9 ? true : false
         return isAccesToThisIndexSave
     }
     
     func isShootingToThisFieldWise(row: Int, column: Int) -> Bool {
-        let okYouCanShoot = true
-        
-        
-        
-        
+        let okYouCanShoot = checkIfSurroundingFieldIsFree(row: row - 1, column: column - 1) &&
+        checkIfSurroundingFieldIsFree(row: row - 1, column: column) &&
+        checkIfSurroundingFieldIsFree(row: row - 1, column: column + 1) &&
+        checkIfSurroundingFieldIsFree(row: row, column: column - 1) &&
+        checkIfSurroundingFieldIsFree(row: row, column: column + 1) &&
+        checkIfSurroundingFieldIsFree(row: row + 1, column: column - 1) &&
+        checkIfSurroundingFieldIsFree(row: row + 1, column: column) &&
+        checkIfSurroundingFieldIsFree(row: row + 1, column: column + 1)
         return okYouCanShoot
+    }
+    
+    func checkIfSurroundingFieldIsFree(row: Int, column: Int) -> Bool {
+        var okYouCanShot = true
+        guard saveAccess(row: row, column: column) else {return okYouCanShot}
+        okYouCanShot = computerPlayer?.getEnemySea()[row][column].getState() == .free ||
+        computerPlayer?.getEnemySea()[row][column].getState() == .hit
+        return okYouCanShot
     }
     
     func radarNorth(row: Int, column: Int) {
@@ -113,8 +135,23 @@ extension ComputerPlayerTurnViewModel {
         }
     }
     
-    func iVeGotNothingOnRadar() {
-        
+    func radar(row: Int, column: Int) {
+        radarNorth(row: row - 1, column: column)
+        radarSouth(row: row + 1, column: column)
+        radarWest(row: row, column: column - 1)
+        radarEast(row: row, column: column + 1)
+    }
+    
+    func iVeGotNothingOnRadar() -> Int {
+        var indexOfNextFieldToShot: Int
+        var nextShotPossibility = false
+        while nextShotPossibility == false {
+            indexOfNextFieldToShot = Int.random(in: 0...99)
+            var row = getRow(enter: indexOfNextFieldToShot)
+            var column = getColumn(enter: indexOfNextFieldToShot)
+            nextShotPossibility = isShootingToThisFieldWise(row: row, column: column)
+        }
+        return indexOfNextFieldToShot
     }
     
 }

@@ -203,6 +203,14 @@ final class Player {
     func clearEast() {
         possibleEast = []
     }
+    
+    func setTurnIndicator(newTurnIndicatorValue: turn) {
+        turnIndicator = newTurnIndicatorValue
+    }
+    
+    func getTurnIndicator() -> turn {
+        return turnIndicator
+    }
 
 }
 

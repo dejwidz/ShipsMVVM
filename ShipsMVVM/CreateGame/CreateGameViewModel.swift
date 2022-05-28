@@ -121,7 +121,7 @@ extension CreateGameViewModel {
 
         var verticalPerplacementPossibility = false
         var sizeCounter = 1
-        var column = column
+        let column = column
         var row = row
         guard shipSize - 1 <= row else {
             verticalPerplacementPossibility = false
@@ -145,7 +145,7 @@ extension CreateGameViewModel {
         var horizontalReplacementPossibility = false
         var sizeCounter = 1
         var column = column
-        var row = row
+        let row = row
 
         guard shipSize <= 10 - column else {
             horizontalReplacementPossibility = false

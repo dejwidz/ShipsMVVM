@@ -16,7 +16,12 @@ final class Ship {
     private let id: Int
     private let size: Int
     private var fields: [Field]
-    private var isLive: Bool
+    private var isLive: Bool {
+        didSet {
+            guard isLive == false else {return}
+            shipDelegate?.sayIHaveBeenDestroyed(self, owner: owner, message: "Ship of size \(size) has been destroyed")
+        }
+    }
     
     init(owner: String,id: Int, size: Int, fields: [Field]) {
         self.owner = owner
@@ -33,7 +38,9 @@ final class Ship {
                 shipIsStillAlive = true
                 break
             }
+            print(isLive, size )
         }
+        self.isLive = shipIsStillAlive
         return shipIsStillAlive
     }
     
@@ -73,5 +80,6 @@ final class Ship {
 
 protocol ShipDelegate: AnyObject {
     func notifyShipChanges(_ ship: Ship)
+    func sayIHaveBeenDestroyed(_ ship: Ship, owner: String, message: String)
 }
 

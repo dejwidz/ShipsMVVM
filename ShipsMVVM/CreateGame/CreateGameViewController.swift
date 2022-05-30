@@ -19,11 +19,7 @@ final class CreateGameViewController: UIViewController {
     private let viewModel = CreateGameViewModel(model: CreateGameModel())
     private var projectSeaMatrix: [[Field]] = []
     private var humanPlayer: Player?
-    private var computerPlayer: Player? {
-        didSet {
-            print("COMPI COMPI")
-        }
-    }
+    private var computerPlayer: Player?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,6 +128,10 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
 
 
 extension CreateGameViewController: CreateGameViewModelDelegate {
+    func sendMessage(_ createGameViewModel: CreateGameViewModelProtocol, owner: String, message: String) {
+        vcHumanPlayerTurn.showAlert(message: message)
+    }
+    
     func sendComputerPlayer(_ createGameViewModel: CreateGameViewModelProtocol, computerPlayer: Player) {
         self.computerPlayer = computerPlayer
     }

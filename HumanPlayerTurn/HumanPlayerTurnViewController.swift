@@ -10,7 +10,7 @@ import UIKit
 class HumanPlayerTurnViewController: UIViewController {
     private var humanPlayer: Player? {
         didSet {
-            print("DIDSET PLAYER")
+            print("DIDSET PLAYER - HUMANVC")
         }
     }
     private var computerPlayer: Player?
@@ -38,6 +38,8 @@ class HumanPlayerTurnViewController: UIViewController {
         humanPlayerSea.frame = frame
         humanPlayerSea.collectionViewLayout = layout
         
+        vcComputerPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
+        vcComputerPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
         
         // Do any additional setup after loading the view.
     }
@@ -50,10 +52,22 @@ class HumanPlayerTurnViewController: UIViewController {
     func setComputerPlayer(computerPlayer: Player) {
         self.computerPlayer = computerPlayer
     }
+    
+    func showAlert(message:String) {
+            let alert = UIAlertController(title: "Nice", message: message, preferredStyle: .alert)
+            
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            present(alert, animated: true)
+        }
+
 
 }
 
 extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
+    func sendMessage(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, message: String) {
+        showAlert(message: message)
+    }
+    
     func sendHumanPlayer(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayer: Player) {
         print("VC SENDED")
         self.humanPlayer = humanPlayer
@@ -90,8 +104,15 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        vcComputerPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
-        vcComputerPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
+//        vcComputerPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
+//        vcComputerPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
+//        let nextVC = viewModel.humanPlayerShot(index: indexPath.row)
+//
+//        guard nextVC else {return}
+        
+        computerPlayer?.getSea()[getRow(enter: indexPath.row)][getColumn(enter: indexPath.row)].setState(newState: .hitOccupied)
+        computerPlayer?.checkShips()
+        
         navigationController?.pushViewController(vcComputerPlayerTurn, animated: true)
     }
     

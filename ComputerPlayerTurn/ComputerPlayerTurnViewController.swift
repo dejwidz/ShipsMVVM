@@ -8,11 +8,8 @@
 import UIKit
 
 class ComputerPlayerTurnViewController: UIViewController {
-    private var computerPlayer: Player? {
-        didSet {
-            print("DIDSET  COMPUTER  PLAYER")
-        }
-    }
+    private var computerPlayer: Player?
+    private var humanPlayer: Player?
     private var viewModel = ComputerPlayerTurnViewModel(model: ComputerPlayerTurnModel())
 
     @IBOutlet weak var computerPlayerSea: UICollectionView!
@@ -23,7 +20,7 @@ class ComputerPlayerTurnViewController: UIViewController {
         super.viewDidLoad()
         viewModel.computerPlayerTurnViewModelDelegate = self
         viewModel.updateComputerPlayerInModel(computerPlayer: computerPlayer!)
-        
+        viewModel.setHumanPlayer(humanPlayer: humanPlayer!)
         
 
         computerPlayerSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "ComputerTurnCustomCollectionViewCell")
@@ -37,17 +34,14 @@ class ComputerPlayerTurnViewController: UIViewController {
         let frame = CGRect(x: 25, y: 70, width: width, height: width * 1)
         computerPlayerSea.frame = frame
         computerPlayerSea.collectionViewLayout = layout
-        
-        
-        // Do any additional setup after loading the view.
-    }
+        }
 
     func setComputerPlayer(computerPlayer: Player) {
         self.computerPlayer = computerPlayer
-//        viewModel.updateHumanPlayerInModel(humanPlayer: humanPlayer)
     }
     
     func setHumanPlayer(humanPlayer: Player) {
+        self.humanPlayer = humanPlayer
         viewModel.setHumanPlayer(humanPlayer: humanPlayer)
     }
 
@@ -55,9 +49,7 @@ class ComputerPlayerTurnViewController: UIViewController {
 
 extension ComputerPlayerTurnViewController: ComputerPlayerTurnViewModelDelegate {
     func sendComputerPlayer(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, computerPlayer: Player) {
-        print("VC SENDED")
         self.computerPlayer = computerPlayer
-        
     }
     
     
@@ -77,7 +69,6 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
     
     let row = getRow(enter: indexPath.row)
     let column = getColumn(enter: indexPath.row)
-    
     let temporaryState = (computerPlayer?.getSea()[row][column].getState())!
     cell.actualizeState(newState: temporaryState)
     

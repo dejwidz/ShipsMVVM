@@ -19,6 +19,7 @@ protocol CreateGameModelDelegate: AnyObject {
     func sendHumanPlayerSea(_ createGameModel: CreateGameModelProtocol, humanPlayerSea: [[Field]])
     func sendHumanPlayer(_ createGameModel: CreateGameModelProtocol, humanPlayer: Player)
     func sendComputerPlayer(_ createGameModel: CreateGameModelProtocol, computerPlayer: Player)
+    func sendMessage(_ createGameModel: CreateGameModelProtocol, owner: String, message: String)
 }
 
 final class CreateGameModel: CreateGameModelProtocol {
@@ -98,8 +99,13 @@ final class CreateGameModel: CreateGameModelProtocol {
 }
 
 extension CreateGameModel: PlayerDelegate {
+    func sendMessage(_ player: Player, owner: String, message: String) {
+        print("STATEK PO INICJALIZACJI GRACZA ZDECH")
+        createGameModelDelegate?.sendMessage(self, owner: owner, message: message)
+    }
+    
+    
     func notifyChangesOfPlayer(_ player: Player) {
-        print("playerdelegate w modelu- notify changes")
         createGameModelDelegate?.sendComputerPlayer(self, computerPlayer: computerPlayer)
         createGameModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer)
         createGameModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayerSea)

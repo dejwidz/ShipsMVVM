@@ -12,6 +12,7 @@ protocol CreateGameViewModelDelegate: AnyObject {
     func sendComputerPlayer(_ createGameViewModel: CreateGameViewModelProtocol, computerPlayer: Player)
     func sendHumanPlayerSea(_ createGameViewModel: CreateGameViewModelProtocol, humanPlayerSea: [[Field]], humanPlayer: Player)
     func sayNoYouCantDeployHere(_ createGameViewModel: CreateGameViewModelProtocol, message: String)
+    func sendMessage(_ createGameViewModel: CreateGameViewModelProtocol, owner: String, message: String)
 }
 
 protocol CreateGameViewModelProtocol: AnyObject {
@@ -55,6 +56,10 @@ final class CreateGameViewModel: CreateGameViewModelProtocol {
 }
 
 extension CreateGameViewModel: CreateGameModelDelegate {
+    func sendMessage(_ createGameModel: CreateGameModelProtocol, owner: String, message: String) {
+        createGameViewModelDelegate?.sendMessage(self, owner: owner, message: message)
+    }
+    
     func sendHumanPlayer(_ createGameModel: CreateGameModelProtocol, humanPlayer: Player) {
         self.humanPlayer = humanPlayer
     }

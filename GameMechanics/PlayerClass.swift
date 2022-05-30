@@ -53,10 +53,7 @@ final class Player {
         ship32.shipDelegate = self
         ship4.shipDelegate = self
         ship5.shipDelegate = self
-        
-        
-//        print("player utowrzony, \(self.sea)")
-    }
+        }
     
     func addShips() {
         ships.append(ship2)
@@ -211,14 +208,27 @@ final class Player {
     func getTurnIndicator() -> turn {
         return turnIndicator
     }
+    
+    func checkShips() {
+        ships.forEach {$0.checkIfTheShipisStillAlive()}
+    }
 
 }
 
 protocol PlayerDelegate: AnyObject {
     func notifyChangesOfPlayer(_ player: Player)
+    func sendMessage(_ player: Player, owner: String, message: String)
 }
-    
+
 extension Player: ShipDelegate {
+    func sayIHaveBeenDestroyed(_ ship: Ship, owner: String, message: String) {
+        print("JUSZ MNIE NIE MA")
+        playerDelegate?.sendMessage(self, owner: owner, message: message)
+        hitIndicator = false
+        firstHitIndicator = false
+        playerDelegate?.notifyChangesOfPlayer(self)
+    }
+    
     func notifyShipChanges(_ ship: Ship) {
         playerDelegate?.notifyChangesOfPlayer(self)
     }

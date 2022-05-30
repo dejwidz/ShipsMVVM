@@ -43,14 +43,13 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     
     func setHumanPlayer(humanPlayer: Player) {
         self.humanPlayer = humanPlayer
+        model.updateHumanPlayer(humanPlayer: humanPlayer)
     }
     
 }
 
 extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
     func sendComputerPlayer(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, computerPlayer: Player) {
-        print("SENDY VM")
-
         self.computerPlayer = computerPlayer
         computerPlayerTurnViewModelDelegate?.sendComputerPlayer(self, computerPlayer: computerPlayer)
     }
@@ -102,9 +101,9 @@ extension ComputerPlayerTurnViewModel {
     func combineTwoIntegersIntoOne(firstOne: Int, secondOne: Int) -> Int {
         let firstString = "\(firstOne)"
         let secondString = "\(secondOne)"
-        let combineString = firstString + secondString
-        let combineInteger = Int(combineString)
-        return combineInteger!
+        let combinedString = firstString + secondString
+        let combinedInteger = Int(combinedString)
+        return combinedInteger!
     }
     
     func radarNorth(row: Int, column: Int) {
@@ -155,7 +154,7 @@ extension ComputerPlayerTurnViewModel {
     }
     
     func iVeGotNothingOnRadar() -> Int {
-        var indexOfNextFieldToShot: Int
+        var indexOfNextFieldToShot: Int = 0
         var nextShotPossibility = false
         while nextShotPossibility == false {
             indexOfNextFieldToShot = Int.random(in: 0...99)

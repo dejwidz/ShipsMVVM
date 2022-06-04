@@ -241,7 +241,7 @@ extension CreateGameViewModel {
     }
 
     func replaceShipsAutomatically(player: Player) {
-        player.cleaSea()
+        player.clearSea()
         var counter = 4
         
         while counter >= 0 {

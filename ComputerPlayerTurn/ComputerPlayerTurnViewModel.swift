@@ -22,7 +22,7 @@ protocol ComputerPlayerTurnViewModelDelegate: AnyObject {
 final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     weak var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate?
     private var computerPlayer: Player?
-    private var humanPlayer: Player?
+//    private var humanPlayer: Player?
     private var model: ComputerPlayerTurnModelProtocol
     
     
@@ -42,7 +42,7 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     }
     
     func setHumanPlayer(humanPlayer: Player) {
-        self.humanPlayer = humanPlayer
+//        self.humanPlayer = humanPlayer
         model.updateHumanPlayer(humanPlayer: humanPlayer)
     }
     
@@ -50,7 +50,7 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
 
 extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
     func sendComputerPlayer(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, computerPlayer: Player) {
-        self.computerPlayer = computerPlayer
+//        self.computerPlayer = computerPlayer
         computerPlayerTurnViewModelDelegate?.sendComputerPlayer(self, computerPlayer: computerPlayer)
     }
     

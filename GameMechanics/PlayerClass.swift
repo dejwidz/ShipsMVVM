@@ -104,7 +104,7 @@ final class Player {
         sea = newSea
     }
     
-    func cleaSea() {
+    func clearSea() {
         for i in 0...9 {
             for j in 0...9 {
                 self.sea[i][j].setState(newState: .free)

@@ -14,9 +14,11 @@ class HumanPlayerTurnViewController: UIViewController {
         }
     }
     private var computerPlayer: Player?
+    private var humanPlayerEnemySeaMatrix: [[Field]]?
+    
     private var viewModel = HumanPlayerTurnViewModel(model: HumanPlayerTurnModel())
 
-    @IBOutlet weak var humanPlayerSea: UICollectionView!
+    @IBOutlet weak var humanPlayerSeaCollectionView: UICollectionView!
     let vcComputerPlayerTurn = ComputerPlayerTurnViewController()
     
     
@@ -24,19 +26,19 @@ class HumanPlayerTurnViewController: UIViewController {
         super.viewDidLoad()
         viewModel.humanPlayerTurnViewModelDelegate = self
         viewModel.updateHumanPlayerInModel(humanPlayer: humanPlayer!)
-        viewModel.updateComputerPlayer(computerPlayer: computerPlayer!)
+        viewModel.updateComputerPlayerInModel(computerPlayer: computerPlayer!)
 
-        humanPlayerSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "PlayerTurnCustomCollectionViewCell")
-        humanPlayerSea.delegate = self
-        humanPlayerSea.dataSource = self
+        humanPlayerSeaCollectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "PlayerTurnCustomCollectionViewCell")
+        humanPlayerSeaCollectionView.delegate = self
+        humanPlayerSeaCollectionView.dataSource = self
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 4
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 4
         let width: CGFloat = view.frame.width
         let frame = CGRect(x: 25, y: 70, width: width, height: width * 1)
-        humanPlayerSea.frame = frame
-        humanPlayerSea.collectionViewLayout = layout
+        humanPlayerSeaCollectionView.frame = frame
+        humanPlayerSeaCollectionView.collectionViewLayout = layout
         
         vcComputerPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
         vcComputerPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
@@ -64,6 +66,16 @@ class HumanPlayerTurnViewController: UIViewController {
 }
 
 extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
+    func setTurnIndicatorInComputerPlayerVC(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, currentStateOfTurnIndicator: turn) {
+        vcComputerPlayerTurn.setTurnIndicator(currentTurn: currentStateOfTurnIndicator)
+    }
+    
+    func sendHumanPlayerEnemySea(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerEnemySea: [[Field]]) {
+        humanPlayerEnemySeaMatrix = humanPlayerEnemySea
+        humanPlayerSeaCollectionView.reloadData()
+        print("=====================================================ZMIANA W VC")
+    }
+    
     func sendMessage(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, message: String) {
         showAlert(message: message)
     }
@@ -85,14 +97,14 @@ func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection s
 }
 
 func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = humanPlayerSea.dequeueReusableCell(withReuseIdentifier: "PlayerTurnCustomCollectionViewCell",
+    let cell = humanPlayerSeaCollectionView.dequeueReusableCell(withReuseIdentifier: "PlayerTurnCustomCollectionViewCell",
                                               for: indexPath) as! CustomCollectionViewCell
     cell.contentView.backgroundColor = .red
     
     let row = getRow(enter: indexPath.row)
     let column = getColumn(enter: indexPath.row)
     
-    let temporaryState = (humanPlayer?.getSea()[row][column].getState())!
+    let temporaryState = (humanPlayerEnemySeaMatrix![row][column].getState())
     cell.actualizeState(newState: temporaryState)
     
     return cell
@@ -104,16 +116,13 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        vcComputerPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
-//        vcComputerPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
-//        let nextVC = viewModel.humanPlayerShot(index: indexPath.row)
-//
-//        guard nextVC else {return}
+        var nextScreenDisplayPossibility = viewModel.humanPlayerShot(index: indexPath.row)
         
-        computerPlayer?.getSea()[getRow(enter: indexPath.row)][getColumn(enter: indexPath.row)].setState(newState: .hitOccupied)
-        computerPlayer?.checkShips()
+        guard nextScreenDisplayPossibility else {return}
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [self] in
+            navigationController?.pushViewController(vcComputerPlayerTurn, animated: true)
+        }
         
-        navigationController?.pushViewController(vcComputerPlayerTurn, animated: true)
     }
     
 }

@@ -151,6 +151,10 @@ final class Player {
         return enemySea
     }
     
+    func setEnemySea(newEnemySea: [[Field]]) {
+        enemySea = newEnemySea
+    }
+    
     func addFieldToPossibleNorth(fieldIndex: Int) {
         possibleNorth.append(fieldIndex)
     }
@@ -211,6 +215,14 @@ final class Player {
     
     func checkShips() {
         ships.forEach {$0.checkIfTheShipisStillAlive()}
+    }
+    
+    func setShips(newShips: [Ship]) {
+        ships = newShips
+    }
+    
+    func getShips() -> [Ship] {
+        return ships
     }
 
 }

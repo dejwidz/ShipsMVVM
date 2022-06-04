@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HumanPlayerTurnViewController" customModule="ShipsMVVM" customModuleProvider="target">
             <connections>
-                <outlet property="humanPlayerSea" destination="ahu-oB-yv3" id="TgF-tX-R9Q"/>
+                <outlet property="humanPlayerSeaCollectionView" destination="ahu-oB-yv3" id="TgF-tX-R9Q"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

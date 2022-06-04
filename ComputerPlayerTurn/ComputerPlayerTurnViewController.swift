@@ -44,6 +44,10 @@ class ComputerPlayerTurnViewController: UIViewController {
         self.humanPlayer = humanPlayer
         viewModel.setHumanPlayer(humanPlayer: humanPlayer)
     }
+    
+    func setTurnIndicator(currentTurn: turn) {
+        viewModel.setTurnIndicator(currentTurn: currentTurn)
+    }
 
 }
 
@@ -81,8 +85,8 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        computerPlayer?.getSea()[getRow(enter: indexPath.row)][getColumn(enter: indexPath.row)].setState(newState: .hit)
-        computerPlayerSea.reloadData()
+//        computerPlayer?.getSea()[getRow(enter: indexPath.row)][getColumn(enter: indexPath.row)].setState(newState: .hit)
+//        computerPlayerSea.reloadData()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
             self.navigationController?.popViewController(animated: true)
         }

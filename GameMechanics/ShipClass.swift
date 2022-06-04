@@ -17,8 +17,8 @@ final class Ship {
     private let size: Int
     private var fields: [Field]
     private var isLive: Bool {
-        didSet {
-            guard isLive == false else {return}
+        willSet {
+            guard newValue != isLive else {return}
             shipDelegate?.sayIHaveBeenDestroyed(self, owner: owner, message: "Ship of size \(size) has been destroyed")
         }
     }
@@ -40,6 +40,8 @@ final class Ship {
             }
             print(isLive, size )
         }
+        print("\(owner)     \(size)+++++++++++++++++++++++++++++________________-------------_____---__---__-")
+
         self.isLive = shipIsStillAlive
         return shipIsStillAlive
     }

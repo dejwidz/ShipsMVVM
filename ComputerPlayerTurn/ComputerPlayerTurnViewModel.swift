@@ -13,6 +13,7 @@ protocol ComputerPlayerTurnViewModelProtocol: AnyObject {
     func sendComputerPlayer()
     func setHumanPlayer(humanPlayer: Player)
     func computerPlayerShot()
+    func setTurnIndicator(currentTurn: turn)
 }
 
 protocol ComputerPlayerTurnViewModelDelegate: AnyObject {
@@ -21,6 +22,7 @@ protocol ComputerPlayerTurnViewModelDelegate: AnyObject {
 
 final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     weak var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate?
+    private var turnIndicator: turn?
     private var computerPlayer: Player?
 //    private var humanPlayer: Player?
     private var model: ComputerPlayerTurnModelProtocol
@@ -44,6 +46,10 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     func setHumanPlayer(humanPlayer: Player) {
 //        self.humanPlayer = humanPlayer
         model.updateHumanPlayer(humanPlayer: humanPlayer)
+    }
+    
+    func setTurnIndicator(currentTurn: turn) {
+        turnIndicator = currentTurn
     }
     
 }

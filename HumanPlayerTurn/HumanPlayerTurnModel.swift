@@ -12,12 +12,20 @@ protocol HumanPlayerTurnModelProtocol: AnyObject {
     func updateHumanPlayer(humanPlayer: Player)
     func updateComputerPlayer(computerPlayer: Player)
     func sendHumanPlayer()
-    
+    func sendHumanPlayerProperties()
+    func updateHumanPlayerEnemySea(newEnemySea: [[Field]])
+    func sendComputerPlayerSea()
+    func updateComputerPlayerSea(newComputerPlayerSea: [[Field]])
+    func updateComputerPlayerShips(newShips: [Ship])
+    func checkComputerPlayerShips()
 }
 
 protocol HumanPlayerTurnModelDelegate: AnyObject {
     func sendHumanPlayer(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayer: Player)
     func sendMessage(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, message: String)
+    func sendHumanPlayerEnemySea(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayerEnemySea: [[Field]])
+    func sendComputerPlayerSea(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, computerPlayerSea: [[Field]])
+    func sendComputerPlayerShips(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, computerPlayerShips: [Ship])
 }
 
 final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
@@ -37,14 +45,43 @@ final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
     func updateHumanPlayer(humanPlayer: Player) {
         self.humanPlayer = humanPlayer
         sendHumanPlayer()
+        sendHumanPlayerProperties()
     }
     
     func sendHumanPlayer() {
         humanPlayerTurnModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer!)
     }
     
+    func sendHumanPlayerProperties() {
+        humanPlayerTurnModelDelegate?.sendHumanPlayerEnemySea(self, humanPlayerEnemySea: (humanPlayer?.getEnemySea())!)
+    }
+    
+    func updateHumanPlayerEnemySea(newEnemySea: [[Field]]) {
+        humanPlayer?.setEnemySea(newEnemySea: newEnemySea)
+        humanPlayerTurnModelDelegate?.sendHumanPlayerEnemySea(self, humanPlayerEnemySea: (humanPlayer?.getEnemySea())!)
+    }
+    
     func updateComputerPlayer(computerPlayer: Player) {
         self.computerPlayer = computerPlayer
+        sendComputerPlayerSea()
+    }
+    
+    func sendComputerPlayerSea() {
+        humanPlayerTurnModelDelegate?.sendComputerPlayerSea(self, computerPlayerSea: (computerPlayer?.getSea())!)
+    }
+    
+    func updateComputerPlayerSea(newComputerPlayerSea: [[Field]]) {
+        computerPlayer?.setSea(newSea: newComputerPlayerSea)
+        humanPlayerTurnModelDelegate?.sendComputerPlayerSea(self, computerPlayerSea: (computerPlayer?.getSea())!)
+    }
+    
+    func updateComputerPlayerShips(newShips: [Ship]) {
+        computerPlayer?.setShips(newShips: newShips)
+        humanPlayerTurnModelDelegate?.sendComputerPlayerShips(self, computerPlayerShips: (computerPlayer?.getShips())!)
+    }
+    
+    func checkComputerPlayerShips() {
+        computerPlayer?.getShips().forEach {$0.checkIfTheShipisStillAlive()}
     }
     
     

@@ -95,7 +95,6 @@ extension HumanPlayerTurnModel: PlayerDelegate {
     }
     
     func notifyChangesOfPlayer(_ player: Player) {
-        print("ZMIANA GRACZA W MODELU")
         self.humanPlayer = player
         humanPlayerTurnModelDelegate?.sendHumanPlayer(self, humanPlayer: player)
     }

@@ -7,37 +7,55 @@
 
 import UIKit
 
+protocol ComputerTurnVCSendInfoBackDelegate: AnyObject {
+    func sayComputerPlayerHaveMissed(_ computerPlayerTurnViewController: ComputerPlayerTurnViewController)
+}
+
 class ComputerPlayerTurnViewController: UIViewController {
     private var computerPlayer: Player?
     private var humanPlayer: Player?
     private var viewModel = ComputerPlayerTurnViewModel(model: ComputerPlayerTurnModel())
+    private var computerPlayerEnemySeaMatrix: [[Field]]?
+    weak var computerVCDelegate: ComputerTurnVCSendInfoBackDelegate?
 
-    @IBOutlet weak var computerPlayerSea: UICollectionView!
+    @IBOutlet weak var computerPlayerSeaCollectionView: UICollectionView!
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.computerPlayerTurnViewModelDelegate = self
-        viewModel.updateComputerPlayerInModel(computerPlayer: computerPlayer!)
+        viewModel.setComputerPlayer(computerPlayer: computerPlayer!)
         viewModel.setHumanPlayer(humanPlayer: humanPlayer!)
         
 
-        computerPlayerSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "ComputerTurnCustomCollectionViewCell")
-        computerPlayerSea.delegate = self
-        computerPlayerSea.dataSource = self
+        computerPlayerSeaCollectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "ComputerTurnCustomCollectionViewCell")
+        computerPlayerSeaCollectionView.delegate = self
+        computerPlayerSeaCollectionView.dataSource = self
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 4
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 4
         let width: CGFloat = view.frame.width
         let frame = CGRect(x: 25, y: 70, width: width, height: width * 1)
-        computerPlayerSea.frame = frame
-        computerPlayerSea.collectionViewLayout = layout
+        computerPlayerSeaCollectionView.frame = frame
+        computerPlayerSeaCollectionView.collectionViewLayout = layout
+        
+//        viewModel.computerPlayerShot()
         }
+    
+    override func viewDidAppear(_ animated: Bool) {
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+//            self.viewModel.computerPlayerShot()
+//
+//        }
+        viewModel.computerPlayerShot()
+        
+    }
 
     func setComputerPlayer(computerPlayer: Player) {
         self.computerPlayer = computerPlayer
+        viewModel.setComputerPlayer(computerPlayer: computerPlayer)
     }
     
     func setHumanPlayer(humanPlayer: Player) {
@@ -48,13 +66,28 @@ class ComputerPlayerTurnViewController: UIViewController {
     func setTurnIndicator(currentTurn: turn) {
         viewModel.setTurnIndicator(currentTurn: currentTurn)
     }
+    
+    func humanPlayerShipHasBeenDestroyed() {
+        viewModel.resetEverythingWhenHumanPlayerShipHaveBeenDestroyed()
+    }
 
 }
 
 extension ComputerPlayerTurnViewController: ComputerPlayerTurnViewModelDelegate {
-    func sendComputerPlayer(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, computerPlayer: Player) {
-        self.computerPlayer = computerPlayer
+    func sayIHaveMissed(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol) {
+        computerVCDelegate?.sayComputerPlayerHaveMissed(self)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+            self.navigationController?.popViewController(animated: true)
+        }
+        
     }
+    
+    func sendComputerPlayerEnemySea(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, computerPlayerEnemySea: [[Field]]) {
+        computerPlayerEnemySeaMatrix = computerPlayerEnemySea
+        computerPlayerSeaCollectionView.reloadData()
+    }
+    
+   
     
     
 }
@@ -67,13 +100,12 @@ func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection s
 }
 
 func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = computerPlayerSea.dequeueReusableCell(withReuseIdentifier: "ComputerTurnCustomCollectionViewCell",
+    let cell = computerPlayerSeaCollectionView.dequeueReusableCell(withReuseIdentifier: "ComputerTurnCustomCollectionViewCell",
                                               for: indexPath) as! CustomCollectionViewCell
-    cell.contentView.backgroundColor = .red
     
     let row = getRow(enter: indexPath.row)
     let column = getColumn(enter: indexPath.row)
-    let temporaryState = (computerPlayer?.getSea()[row][column].getState())!
+    let temporaryState = computerPlayerEnemySeaMatrix![row][column].getState()
     cell.actualizeState(newState: temporaryState)
     
     return cell

@@ -8,11 +8,7 @@
 import UIKit
 
 class HumanPlayerTurnViewController: UIViewController {
-    private var humanPlayer: Player? {
-        didSet {
-            print("DIDSET PLAYER - HUMANVC")
-        }
-    }
+    private var humanPlayer: Player? 
     private var computerPlayer: Player?
     private var humanPlayerEnemySeaMatrix: [[Field]]?
     
@@ -27,6 +23,7 @@ class HumanPlayerTurnViewController: UIViewController {
         viewModel.humanPlayerTurnViewModelDelegate = self
         viewModel.updateHumanPlayerInModel(humanPlayer: humanPlayer!)
         viewModel.updateComputerPlayerInModel(computerPlayer: computerPlayer!)
+        vcComputerPlayerTurn.computerVCDelegate = self
 
         humanPlayerSeaCollectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "PlayerTurnCustomCollectionViewCell")
         humanPlayerSeaCollectionView.delegate = self
@@ -62,6 +59,9 @@ class HumanPlayerTurnViewController: UIViewController {
             present(alert, animated: true)
         }
 
+    func sendInfoToComputerVCThatShipHasBeenDestroyed() {
+        vcComputerPlayerTurn.humanPlayerShipHasBeenDestroyed()
+    }
 
 }
 
@@ -73,7 +73,6 @@ extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
     func sendHumanPlayerEnemySea(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerEnemySea: [[Field]]) {
         humanPlayerEnemySeaMatrix = humanPlayerEnemySea
         humanPlayerSeaCollectionView.reloadData()
-        print("=====================================================ZMIANA W VC")
     }
     
     func sendMessage(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, message: String) {
@@ -81,7 +80,6 @@ extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
     }
     
     func sendHumanPlayer(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayer: Player) {
-        print("VC SENDED")
         self.humanPlayer = humanPlayer
         
     }
@@ -124,5 +122,13 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
         }
         
     }
+    
+}
+
+extension HumanPlayerTurnViewController: ComputerTurnVCSendInfoBackDelegate {
+    func sayComputerPlayerHaveMissed(_ computerPlayerTurnViewController: ComputerPlayerTurnViewController) {
+        viewModel.computerPlayerHaveMissed()
+    }
+    
     
 }

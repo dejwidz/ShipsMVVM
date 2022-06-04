@@ -40,7 +40,6 @@ final class Ship {
             }
             print(isLive, size )
         }
-        print("\(owner)     \(size)+++++++++++++++++++++++++++++________________-------------_____---__---__-")
 
         self.isLive = shipIsStillAlive
         return shipIsStillAlive

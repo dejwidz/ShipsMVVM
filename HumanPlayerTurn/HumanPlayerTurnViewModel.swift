@@ -13,6 +13,8 @@ protocol HumanPlayerTurnViewModelProtocol: AnyObject {
     func updateComputerPlayerInModel(computerPlayer: Player)
 //    func sendHumanPlayer()
     func humanPlayerShot(index: Int) -> Bool
+    func setAntiCunningProtector(newValueOfProtector: Bool)
+    func computerPlayerHaveMissed()
 }
 
 protocol HumanPlayerTurnViewModelDelegate: AnyObject {
@@ -37,11 +39,13 @@ final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
     private var computerPlayerShips: [Ship]?
     private var turnIndicator: turn?
     private var hitCounter: Int?
+    private var antiCunningProtector: Bool?
     
     init(model: HumanPlayerTurnModelProtocol) {
         self.model = model
         model.humanPlayerTurnModelDelegate = self
         turnIndicator = .humanPlayerTurn
+        antiCunningProtector = true
     }
     
     
@@ -57,6 +61,10 @@ final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
 //    func sendHumanPlayer() {
 //        humanPlayerTurnViewModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer!)
 //    }
+    
+    func setAntiCunningProtector(newValueOfProtector: Bool) {
+        antiCunningProtector = newValueOfProtector
+    }
     
     
 }
@@ -84,11 +92,19 @@ extension HumanPlayerTurnViewModel: HumanPlayerTurnModelDelegate {
         humanPlayerTurnViewModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer)
     }
     
+    func computerPlayerHaveMissed() {
+        antiCunningProtector = true
+        turnIndicator = .humanPlayerTurn
+    }
+    
     
 }
 
 extension HumanPlayerTurnViewModel {
     func humanPlayerShot(index: Int) -> Bool {
+        guard antiCunningProtector! else {return false}
+        
+        antiCunningProtector = false
         let row = getRow(enter: index)
         let column = getColumn(enter: index)
         var displayComputerViewController = true
@@ -97,7 +113,7 @@ extension HumanPlayerTurnViewModel {
         if computerPlayerSea![row][column].getState() == .free {
             humanPlayerEnemySea![row][column].setState(newState: .hit)
             model.updateHumanPlayerEnemySea(newEnemySea: humanPlayerEnemySea!)
-//            turnIndicator = .computerPlayerTurn
+            turnIndicator = .computerPlayerTurn
             humanPlayerTurnViewModelDelegate?.setTurnIndicatorInComputerPlayerVC(self, currentStateOfTurnIndicator: turnIndicator!)
             displayComputerViewController = true
         } else {
@@ -108,8 +124,9 @@ extension HumanPlayerTurnViewModel {
             model.updateComputerPlayerSea(newComputerPlayerSea: computerPlayerSea!)
             validateHitCounter()
             checkComputerPlayerShips()
-//            turnIndicator = .humanPlayerTurn
+            turnIndicator = .humanPlayerTurn
             humanPlayerTurnViewModelDelegate?.setTurnIndicatorInComputerPlayerVC(self, currentStateOfTurnIndicator: turnIndicator!)
+            antiCunningProtector = true
             displayComputerViewController = false
         }
         return displayComputerViewController
@@ -124,9 +141,7 @@ extension HumanPlayerTurnViewModel {
                 }
             }
         }
-        print("___--_____--_____--____-_____--____-_____-_____-_______------_HIT COUNTER \(hitCounter)")
         guard hitCounter! > 16 else {return}
-        print("KOKOKOKOKOKOKOKOOKOKOKOKKOKOKOKOKKO")
         humanPlayerTurnViewModelDelegate?.sendMessage(self, message: "You won, the game is Over")
     }
     
@@ -143,7 +158,7 @@ extension HumanPlayerTurnViewModel {
      }
      
      wtedy w ogóle nie widzi w statkach wywołania tej funkcji (sprawdzane printem), choć properka
-     computerPlayerShips poprawnie aktualizuje się delegatem z modelu
+     computerPlayerShips poprawnie aktualizuje się delegatem z modelu (sprawdzane printem)
   
      Wydaje mi się, że wywalenie tego do modelu jest błędne i niezgodne z koncepcją MVVM, ale tam juz działa
      

@@ -38,4 +38,12 @@ func getRow(enter: Int) -> Int {
     return numberOfTheColumn
 }
 
+infix operator ++
 
+func ++(firstValue: Int, secondValue: Int) -> Int {
+    let firstString = "\(firstValue)"
+    let secondString = "\(secondValue)"
+    let combinedString = firstString + secondString
+    let combinedInteger = Int(combinedString)
+    return combinedInteger!
+}

@@ -33,7 +33,6 @@ final class Player {
     private var possibleWest: [Int] = []
     private var possibleEast: [Int] = []
     
-    private var turnIndicator: turn
     
     init(name: String, sea: [[Field]], enemySea: [[Field]], ship2: Ship, ship3: Ship, ship32: Ship, ship4: Ship, ship5: Ship) {
         self.name = name
@@ -44,7 +43,6 @@ final class Player {
         self.ship32 = ship32
         self.ship4 = ship4
         self.ship5 = ship5
-        self.turnIndicator = .humanPlayerTurn
         ships = []
         addShips()
 
@@ -155,37 +153,40 @@ final class Player {
         enemySea = newEnemySea
     }
     
-    func addFieldToPossibleNorth(fieldIndex: Int) {
-        possibleNorth.append(fieldIndex)
+    func setPossibleNorth(possibleNorth: [Int]) {
+        self.possibleNorth = possibleNorth
     }
     
-    func addFieldToPossibleSouth(fieldIndex: Int) {
-        possibleSouth.append(fieldIndex)
+    func setPossibleSouth(possibleSouth: [Int]) {
+        self.possibleSouth = possibleSouth
+        
     }
     
-    func addFieldToPossibleWest(fieldIndex: Int) {
-        possibleWest.append(fieldIndex)
+    func setPossibleWest(possibleWest: [Int]) {
+        self.possibleWest = possibleWest
+        
     }
     
-    func addFieldToPossibleEast(fieldIndex: Int) {
-        possibleEast.append(fieldIndex)
+    func setPossibleEast(possibleEast: [Int]) {
+        self.possibleEast = possibleEast
+        
     }
     
-    func removeLastFieldFromNorth() {
-        possibleNorth.remove(at: 0)
-    }
-    
-    func removeLastFieldFromSouth() {
-        possibleSouth.remove(at: 0)
-    }
-    
-    func removeLastFieldFromWest() {
-        possibleWest.remove(at: 0)
-    }
-    
-    func removeLastFieldFromEast() {
-        possibleEast.remove(at: 0)
-    }
+//    func removeLastFieldFromNorth() {
+//        possibleNorth.remove(at: 0)
+//    }
+//
+//    func removeLastFieldFromSouth() {
+//        possibleSouth.remove(at: 0)
+//    }
+//    
+//    func removeLastFieldFromWest() {
+//        possibleWest.remove(at: 0)
+//    }
+//
+//    func removeLastFieldFromEast() {
+//        possibleEast.remove(at: 0)
+//    }
     
     
     
@@ -205,13 +206,6 @@ final class Player {
         possibleEast = []
     }
     
-    func setTurnIndicator(newTurnIndicatorValue: turn) {
-        turnIndicator = newTurnIndicatorValue
-    }
-    
-    func getTurnIndicator() -> turn {
-        return turnIndicator
-    }
     
     func checkShips() {
         ships.forEach {$0.checkIfTheShipisStillAlive()}
@@ -234,7 +228,6 @@ protocol PlayerDelegate: AnyObject {
 
 extension Player: ShipDelegate {
     func sayIHaveBeenDestroyed(_ ship: Ship, owner: String, message: String) {
-        print("JUSZ MNIE NIE MA")
         playerDelegate?.sendMessage(self, owner: owner, message: message)
         hitIndicator = false
         firstHitIndicator = false

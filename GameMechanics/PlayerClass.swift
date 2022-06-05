@@ -230,9 +230,6 @@ final class Player {
     func getEastIndicator() -> Bool {
         return eastIndicator
     }
-    
-        
-
 }
 
 protocol PlayerDelegate: AnyObject {
@@ -242,9 +239,7 @@ protocol PlayerDelegate: AnyObject {
 
 extension Player: ShipDelegate {
     func sayIHaveBeenDestroyed(_ ship: Ship, owner: String, message: String) {
-        
         playerDelegate?.sendMessage(self, owner: owner, message: message)
-        
         playerDelegate?.notifyChangesOfPlayer(self)
     }
     

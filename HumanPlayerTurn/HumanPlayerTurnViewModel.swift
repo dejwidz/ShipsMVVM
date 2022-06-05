@@ -11,7 +11,6 @@ protocol HumanPlayerTurnViewModelProtocol: AnyObject {
     var humanPlayerTurnViewModelDelegate: HumanPlayerTurnViewModelDelegate? {get set}
     func updateHumanPlayerInModel(humanPlayer: Player)
     func updateComputerPlayerInModel(computerPlayer: Player)
-//    func sendHumanPlayer()
     func humanPlayerShot(index: Int) -> Bool
     func setAntiCunningProtector(newValueOfProtector: Bool)
     func computerPlayerHaveMissed()
@@ -27,27 +26,23 @@ protocol HumanPlayerTurnViewModelDelegate: AnyObject {
 
 final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
    
-    
     weak var humanPlayerTurnViewModelDelegate: HumanPlayerTurnViewModelDelegate?
-//    private var humanPlayer: Player?
-//    private var computerPlayer: Player?
     private var model: HumanPlayerTurnModelProtocol
-    
     private var humanPlayerEnemySea: [[Field]]?
-//    private var humanPlayerShips: [Ship]?
     private var computerPlayerSea: [[Field]]?
     private var computerPlayerShips: [Ship]?
     private var turnIndicator: turn?
     private var hitCounter: Int?
     private var antiCunningProtector: Bool?
+    private var gameOverIndicator: Bool
     
     init(model: HumanPlayerTurnModelProtocol) {
         self.model = model
-        model.humanPlayerTurnModelDelegate = self
         turnIndicator = .humanPlayerTurn
         antiCunningProtector = true
+        gameOverIndicator = true
+        model.humanPlayerTurnModelDelegate = self
     }
-    
     
     func updateHumanPlayerInModel(humanPlayer: Player) {
         model.updateHumanPlayer(humanPlayer: humanPlayer)
@@ -60,7 +55,6 @@ final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
     func setAntiCunningProtector(newValueOfProtector: Bool) {
         antiCunningProtector = newValueOfProtector
     }
-    
     
 }
 
@@ -91,12 +85,11 @@ extension HumanPlayerTurnViewModel: HumanPlayerTurnModelDelegate {
         turnIndicator = .humanPlayerTurn
     }
     
-    
 }
 
 extension HumanPlayerTurnViewModel {
     func humanPlayerShot(index: Int) -> Bool {
-        guard antiCunningProtector! else {return false}
+        guard antiCunningProtector! && gameOverIndicator else {return false}
         
         antiCunningProtector = false
         let row = getRow(enter: index)
@@ -136,6 +129,7 @@ extension HumanPlayerTurnViewModel {
             }
         }
         guard hitCounter! > 16 else {return}
+        gameOverIndicator = false
         humanPlayerTurnViewModelDelegate?.sendMessage(self, message: "You won, the game is over")
     }
     

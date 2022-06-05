@@ -15,7 +15,6 @@ final class CreateGameViewController: UIViewController {
     @IBOutlet private weak var generateShipPositionsButton: UIButton!
     @IBOutlet private weak var startGameButton: UIButton!
     let vcHumanPlayerTurn = HumanPlayerTurnViewController()
-
     private let viewModel = CreateGameViewModel(model: CreateGameModel())
     private var projectSeaMatrix: [[Field]] = []
     private var humanPlayer: Player?
@@ -41,7 +40,6 @@ final class CreateGameViewController: UIViewController {
         projectSea.collectionViewLayout = layout
     }
     
-    
     @IBAction func orientationSegmentedControlValueChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
@@ -52,7 +50,6 @@ final class CreateGameViewController: UIViewController {
             print("nothing")
         }
     }
-    
     
     @IBAction func chooseShipSegmentedControlValueChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
@@ -76,24 +73,23 @@ final class CreateGameViewController: UIViewController {
         }
     }
     
-    
     @IBAction func generateShipSPositionsButtonTapped(_ sender: Any) {
         viewModel.replaceShipsAutomatically(player: viewModel.humanPlayer!)
     }
     
-    
     @IBAction func startGameButtonTapped(_ sender: Any) {
+        
+        guard viewModel.validateStartGamePossibility() else {return}
         vcHumanPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
         vcHumanPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
         navigationController?.pushViewController(vcHumanPlayerTurn, animated: true)
-    } 
+    }
+    func showMessage(message: String) {
+        let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(alert, animated: true)
+    }
 }
-
-
-
-
-
-
 
 extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
                                         UICollectionViewDelegate,
@@ -105,14 +101,10 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = projectSea.dequeueReusableCell(withReuseIdentifier: "customCell",
                                                   for: indexPath) as! CustomCollectionViewCell
-        cell.contentView.backgroundColor = .red
-        
         let row = getRow(enter: indexPath.row)
         let column = getColumn(enter: indexPath.row)
-        
         let temporaryState = (humanPlayer?.getSea()[row][column].getState())!
         cell.actualizeState(newState: temporaryState)
-        
         return cell
     }
     
@@ -129,27 +121,20 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
 
 extension CreateGameViewController: CreateGameViewModelDelegate {
     func sendMessage(_ createGameViewModel: CreateGameViewModelProtocol, owner: String, message: String) {
-        
-        print(owner, message)
-        
         if owner == "computerPlayer" {
             vcHumanPlayerTurn.showAlert(message: message)
         }
         else if owner == "humanPlayer" {
-            print("WYSYŁAM DO PLAYERVC")
             vcHumanPlayerTurn.sendInfoToComputerVCThatShipHasBeenDestroyed()
         }
-        
     }
     
     func sendComputerPlayer(_ createGameViewModel: CreateGameViewModelProtocol, computerPlayer: Player) {
         self.computerPlayer = computerPlayer
     }
     
-    func sayNoYouCantDeployHere(_ createGameViewModel: CreateGameViewModelProtocol, message: String) {
-        let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        present(alert, animated: true)
+    func sayNoYouCantDoingLikeThat(_ createGameViewModel: CreateGameViewModelProtocol, message: String) {
+        showMessage(message: message)
     }
     
     func sendHumanPlayerSea(_ createGameViewModel: CreateGameViewModelProtocol, humanPlayerSea: [[Field]], humanPlayer: Player) {

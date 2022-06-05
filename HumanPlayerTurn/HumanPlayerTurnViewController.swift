@@ -11,12 +11,9 @@ class HumanPlayerTurnViewController: UIViewController {
     private var humanPlayer: Player? 
     private var computerPlayer: Player?
     private var humanPlayerEnemySeaMatrix: [[Field]]?
-    
     private var viewModel = HumanPlayerTurnViewModel(model: HumanPlayerTurnModel())
-
     @IBOutlet weak var humanPlayerSeaCollectionView: UICollectionView!
-    let vcComputerPlayerTurn = ComputerPlayerTurnViewController()
-    
+    let vcComputerPlayerTurn = ComputerPlayerTurnViewController()    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,13 +36,10 @@ class HumanPlayerTurnViewController: UIViewController {
         
         vcComputerPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
         vcComputerPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
-        
-        // Do any additional setup after loading the view.
     }
 
     func setHumanPlayer(humanPlayer: Player) {
         self.humanPlayer = humanPlayer
-//        viewModel.updateHumanPlayerInModel(humanPlayer: humanPlayer)
     }
     
     func setComputerPlayer(computerPlayer: Player) {
@@ -54,7 +48,6 @@ class HumanPlayerTurnViewController: UIViewController {
     
     func showAlert(message:String) {
             let alert = UIAlertController(title: "Nice", message: message, preferredStyle: .alert)
-            
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
             present(alert, animated: true)
         }
@@ -84,11 +77,9 @@ extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
         
     }
     
-    
 }
 
 extension HumanPlayerTurnViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
 
 func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return 100
@@ -97,14 +88,10 @@ func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection s
 func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = humanPlayerSeaCollectionView.dequeueReusableCell(withReuseIdentifier: "PlayerTurnCustomCollectionViewCell",
                                               for: indexPath) as! CustomCollectionViewCell
-    cell.contentView.backgroundColor = .red
-    
     let row = getRow(enter: indexPath.row)
     let column = getColumn(enter: indexPath.row)
-    
     let temporaryState = (humanPlayerEnemySeaMatrix![row][column].getState())
     cell.actualizeState(newState: temporaryState)
-    
     return cell
 }
     
@@ -120,7 +107,6 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [self] in
             navigationController?.pushViewController(vcComputerPlayerTurn, animated: true)
         }
-        
     }
     
 }

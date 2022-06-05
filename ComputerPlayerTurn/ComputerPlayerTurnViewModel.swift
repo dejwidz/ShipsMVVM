@@ -19,19 +19,16 @@ protocol ComputerPlayerTurnViewModelProtocol: AnyObject {
 protocol ComputerPlayerTurnViewModelDelegate: AnyObject {
     func sendComputerPlayerEnemySea(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, computerPlayerEnemySea: [[Field]])
     func sayIHaveMissed(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol)
+    func sayComputerPlayerWon(_ computerPlayerTurnModel: ComputerPlayerTurnViewModelProtocol, message: String)
 }
 
 
 final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     weak var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate?
     private var turnIndicator: turn?
-    private var computerPlayerHitIndicator = false {
-        didSet {
-            print("HIT INDICATOR: \(computerPlayerHitIndicator)")
-        }
-    }
+    private var computerPlayerHitIndicator = false
     private var hitCounter: Int?
-    
+    private var gameOverIndicator: Bool
     private var computerPlayerEnemySea: [[Field]]?
     private var humanPlayerSea: [[Field]]?
     private var computerPlayerPossibleNorth: [Int]
@@ -44,9 +41,7 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     private var computerPlayerWestIndicator: Bool
     private var computerPlayerEastIndicator: Bool
     
-    
     private var model: ComputerPlayerTurnModelProtocol
-    
     
     init(model: ComputerPlayerTurnModelProtocol) {
         self.model = model
@@ -59,16 +54,15 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
         computerPlayerSouthIndicator = false
         computerPlayerWestIndicator = false
         computerPlayerEastIndicator = false
+        gameOverIndicator = true
         model.computerPlayerTurnModelDelegate = self
     }
-
     
     func setComputerPlayer(computerPlayer: Player) {
         model.setComputerPlayer(computerPlayer: computerPlayer)
     }
     
     func setHumanPlayer(humanPlayer: Player) {
-//        self.humanPlayer = humanPlayer
         model.setHumanPlayer(humanPlayer: humanPlayer)
     }
     
@@ -131,17 +125,9 @@ extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
     func sendHumanPlayerSea(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, humanPlayerSea: [[Field]]) {
         self.humanPlayerSea = humanPlayerSea
     }
-    
-  
-    
-    
-    
 }
 
 extension ComputerPlayerTurnViewModel {
-    
-    
-   
     
     func saveAccess(row: Int, column: Int) -> Bool {
         let isAccesToThisIndexSave = column >= 0 && column <= 9 && row >= 0 && row <= 9 ? true : false
@@ -245,8 +231,7 @@ extension ComputerPlayerTurnViewModel {
         let row = getRow(enter: nextShotField)
         let column = getColumn(enter: nextShotField)
         
-        
-        guard turnIndicator == .computerPlayerTurn else {return}
+        guard turnIndicator == .computerPlayerTurn && gameOverIndicator else {return}
         
         if humanPlayerSea![row][column].getState() == .free {
             computerPlayerEnemySea![row][column].setState(newState: .hit)
@@ -262,6 +247,7 @@ extension ComputerPlayerTurnViewModel {
             model.setHumanPlayerSea(newSea: humanPlayerSea!)
             model.setComputerPlayerEnemySea(newComputerPlayerEnemySea: computerPlayerEnemySea!)
             turnIndicator = .computerPlayerTurn
+            validateGameOverIndicator()
             if !computerPlayerHitIndicator {
                 model.setComputerPlayerHitIndicatorTrue()
                 radar(row: row, column: column)
@@ -338,7 +324,7 @@ extension ComputerPlayerTurnViewModel {
             model.computerPlayerClearNorth()
             model.setComputerPlayerNorthIndicator(newNorthIndicator: false)
         }
-        else if computerPlayerSouthIndicator{
+        else if computerPlayerSouthIndicator {
             model.computerPlayerClearSouth()
             model.setComputerPlayerSouthIndicator(newSouthIndicator: false)
         }
@@ -356,5 +342,19 @@ extension ComputerPlayerTurnViewModel {
         humanPlayerShips.forEach {$0.checkIfTheShipisStillAlive()}
     }
     
+    func validateGameOverIndicator() {
+        hitCounter = 0
+        for i in 0...9 {
+            for j in 0...9 {
+                if computerPlayerEnemySea![i][j].getState() == .hitOccupied {
+                    hitCounter! += 1
+                }
+            }
+        }
+        if hitCounter! > 16 {
+            gameOverIndicator = false
+            computerPlayerTurnViewModelDelegate?.sayComputerPlayerWon(self, message: "You loose")
+        }
+    }
     
 }

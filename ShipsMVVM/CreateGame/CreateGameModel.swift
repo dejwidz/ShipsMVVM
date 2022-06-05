@@ -35,7 +35,7 @@ final class CreateGameModel: CreateGameModelProtocol {
         for _ in 0...9 {
             var tempArray: [Field] = []
             for _ in 0...9 {
-                var x = Field()
+                let x = Field()
                 tempArray.append(x)
             }
             humanPlayerSea.append(tempArray)
@@ -45,7 +45,7 @@ final class CreateGameModel: CreateGameModelProtocol {
         for _ in 0...9 {
             var tempArray: [Field] = []
             for _ in 0...9 {
-                var x = Field()
+                let x = Field()
                 tempArray.append(x)
             }
             computerPlayerSea.append(tempArray)
@@ -55,7 +55,7 @@ final class CreateGameModel: CreateGameModelProtocol {
         for _ in 0...9 {
             var tempArray: [Field] = []
             for _ in 0...9 {
-                var x = Field()
+                let x = Field()
                 tempArray.append(x)
             }
             humanPlayerEnemySea.append(tempArray)
@@ -65,7 +65,7 @@ final class CreateGameModel: CreateGameModelProtocol {
         for _ in 0...9 {
             var tempArray: [Field] = []
             for _ in 0...9 {
-                var x = Field()
+                let x = Field()
                 tempArray.append(x)
             }
             computerPlayerEnemySea.append(tempArray)
@@ -77,7 +77,7 @@ final class CreateGameModel: CreateGameModelProtocol {
        
         humanPlayer.playerDelegate = self
         computerPlayer.playerDelegate = self
-}
+    }
     
     func sendHumanPlayerSea() {
         createGameModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayerSea)
@@ -94,22 +94,18 @@ final class CreateGameModel: CreateGameModelProtocol {
     func actualizePlayer(player: Player) {
         player.actualizeSeaBeforeGame()
     }
-
     
 }
 
 extension CreateGameModel: PlayerDelegate {
     func sendMessage(_ player: Player, owner: String, message: String) {
-        print("STATEK PO INICJALIZACJI GRACZA ZDECH")
         createGameModelDelegate?.sendMessage(self, owner: owner, message: message)
     }
-    
     
     func notifyChangesOfPlayer(_ player: Player) {
         createGameModelDelegate?.sendComputerPlayer(self, computerPlayer: computerPlayer)
         createGameModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer)
         createGameModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayerSea)
     }
-    
     
 }

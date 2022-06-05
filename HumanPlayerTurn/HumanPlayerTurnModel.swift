@@ -30,7 +30,6 @@ protocol HumanPlayerTurnModelDelegate: AnyObject {
 
 final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
     var humanPlayerTurnModelDelegate: HumanPlayerTurnModelDelegate?
-    
     private var humanPlayer: Player?
     private var computerPlayer: Player?
     
@@ -51,7 +50,7 @@ final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
     
     func sendHumanPlayerProperties() {
         humanPlayerTurnModelDelegate?.sendHumanPlayerEnemySea(self, humanPlayerEnemySea: (humanPlayer?.getEnemySea())!)
-//        humanPlayerTurnModelDelegate?.sendComputerPlayerShips(self, computerPlayerShips: (computerPlayer?.getShips())!)
+//        humanPlayerTurnModelDelegate?.sendComputerPlayerShips(self, computerPlayerShips: (computerPlayer?.getShips())!) ------ tu widziało nila, wymaga jeszcze poprawy
     }
     
     func updateHumanPlayerEnemySea(newEnemySea: [[Field]]) {

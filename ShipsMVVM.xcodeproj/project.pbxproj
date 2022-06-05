@@ -33,7 +33,6 @@
 		6DA1AABD2833FE1F00AC0ABF /* ShipClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AABC2833FE1F00AC0ABF /* ShipClass.swift */; };
 		6DA1AABF2833FE2F00AC0ABF /* FieldClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AABE2833FE2F00AC0ABF /* FieldClass.swift */; };
 		6DA1AAC12833FE5A00AC0ABF /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAC02833FE5A00AC0ABF /* Enums.swift */; };
-		6DA1AAC32833FE6A00AC0ABF /* GameClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAC22833FE6A00AC0ABF /* GameClass.swift */; };
 		6DA1AAC7283409B500AC0ABF /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAC5283409B500AC0ABF /* CustomCollectionViewCell.swift */; };
 		6DA1AAC8283409B500AC0ABF /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1AAC6283409B500AC0ABF /* CustomCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
@@ -67,7 +66,6 @@
 		6DA1AABC2833FE1F00AC0ABF /* ShipClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShipClass.swift; sourceTree = "<group>"; };
 		6DA1AABE2833FE2F00AC0ABF /* FieldClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldClass.swift; sourceTree = "<group>"; };
 		6DA1AAC02833FE5A00AC0ABF /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
-		6DA1AAC22833FE6A00AC0ABF /* GameClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClass.swift; sourceTree = "<group>"; };
 		6DA1AAC5283409B500AC0ABF /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
 		6DA1AAC6283409B500AC0ABF /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -162,7 +160,6 @@
 				6DA1AABA2833FDFA00AC0ABF /* PlayerClass.swift */,
 				6DA1AABE2833FE2F00AC0ABF /* FieldClass.swift */,
 				6DA1AABC2833FE1F00AC0ABF /* ShipClass.swift */,
-				6DA1AAC22833FE6A00AC0ABF /* GameClass.swift */,
 				6DA1AAC02833FE5A00AC0ABF /* Enums.swift */,
 			);
 			path = GameMechanics;
@@ -260,7 +257,6 @@
 				6D2485D3283EC7530021F141 /* HumanPlayerTurnViewController.swift in Sources */,
 				6DA1AAB92833FDE500AC0ABF /* CreateGameModel.swift in Sources */,
 				6D2485DE283F9DB20021F141 /* PlayerTurnCustomCollectionViewCell.swift in Sources */,
-				6DA1AAC32833FE6A00AC0ABF /* GameClass.swift in Sources */,
 				6D2485E8283FC4330021F141 /* ComputerPlayerTurnModel.swift in Sources */,
 				6D2485D9283EC7990021F141 /* HumanPlayerTurnModel.swift in Sources */,
 				6DA1AAB32833FC3F00AC0ABF /* CreateGameViewController.swift in Sources */,

@@ -228,9 +228,10 @@ protocol PlayerDelegate: AnyObject {
 
 extension Player: ShipDelegate {
     func sayIHaveBeenDestroyed(_ ship: Ship, owner: String, message: String) {
+        
+        print("W DELEGACIE \(owner), \(message)")
         playerDelegate?.sendMessage(self, owner: owner, message: message)
-        hitIndicator = false
-        firstHitIndicator = false
+        
         playerDelegate?.notifyChangesOfPlayer(self)
     }
     

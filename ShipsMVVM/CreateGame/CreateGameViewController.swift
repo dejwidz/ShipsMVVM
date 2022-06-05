@@ -130,8 +130,14 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
 extension CreateGameViewController: CreateGameViewModelDelegate {
     func sendMessage(_ createGameViewModel: CreateGameViewModelProtocol, owner: String, message: String) {
         
+        print(owner, message)
+        
         if owner == "computerPlayer" {
             vcHumanPlayerTurn.showAlert(message: message)
+        }
+        else if owner == "humanPlayer" {
+            print("WYSYŁAM DO PLAYERVC")
+            vcHumanPlayerTurn.sendInfoToComputerVCThatShipHasBeenDestroyed()
         }
         
     }

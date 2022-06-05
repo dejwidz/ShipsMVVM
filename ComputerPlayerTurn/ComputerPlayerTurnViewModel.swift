@@ -50,6 +50,7 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     }
     private var computerPlayerPossibleWest: [Int]
     private var computerPlayerPossibleEast: [Int]
+    private var humanPlayerShips: [Ship]
     
     
     private var model: ComputerPlayerTurnModelProtocol
@@ -61,6 +62,7 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
         computerPlayerPossibleSouth = []
         computerPlayerPossibleWest = []
         computerPlayerPossibleEast = []
+        humanPlayerShips = []
         model.computerPlayerTurnModelDelegate = self
 
     }
@@ -91,6 +93,10 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
 }
 
 extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
+    func sendHumanPlayerShips(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, ships: [Ship]) {
+        humanPlayerShips = ships
+    }
+    
     func sendComputerPlayerHitIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, hitIndicator: Bool) {
         computerPlayerHitIndicator = hitIndicator
     }
@@ -164,7 +170,7 @@ extension ComputerPlayerTurnViewModel {
         }
         let field = computerPlayerEnemySea![row][column]
         if field.getState() == .free {
-            let index = row ++ column
+            let index = column ++ row
             computerPlayerPossibleNorth.append(index)
             radarNorth(row: row - 1, column: column)
         }
@@ -180,7 +186,7 @@ extension ComputerPlayerTurnViewModel {
         }
         let field = computerPlayerEnemySea![row][column]
         if field.getState() == .free {
-            let index = row ++ column
+            let index = column ++ row
             computerPlayerPossibleSouth.append(index)
             radarSouth(row: row + 1, column: column)
         }
@@ -196,7 +202,7 @@ extension ComputerPlayerTurnViewModel {
         }
         let field = computerPlayerEnemySea![row][column]
         if field.getState() == .free {
-            let index = row ++ column
+            let index = column ++ row
             computerPlayerPossibleWest.append(index)
             radarWest(row: row, column: column - 1)
         }
@@ -212,7 +218,7 @@ extension ComputerPlayerTurnViewModel {
         }
         let field = computerPlayerEnemySea![row][column]
         if field.getState() == .free {
-            let index = row ++ column
+            let index = column ++ row
             computerPlayerPossibleEast.append(index)
             radarEast(row: row, column: column + 1)
         }
@@ -246,6 +252,8 @@ extension ComputerPlayerTurnViewModel {
             }
         } else if humanPlayerSea![row][column].getState() == .occupied {
             computerPlayerEnemySea![row][column].setState(newState: .hitOccupied)
+            humanPlayerSea![row][column].setState(newState: .hitOccupied)
+            model.setHumanPlayerSea(newSea: humanPlayerSea!)
             model.setComputerPlayerEnemySea(newComputerPlayerEnemySea: computerPlayerEnemySea!)
             turnIndicator = .computerPlayerTurn
             if !computerPlayerHitIndicator {
@@ -253,7 +261,8 @@ extension ComputerPlayerTurnViewModel {
                 radar(row: row, column: column)
                 
             }
-            model.checkHumanPlayerShips()
+//            model.checkHumanPlayerShips()
+            checkShips()
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [self] in
                 computerPlayerShot()
             }
@@ -287,11 +296,8 @@ extension ComputerPlayerTurnViewModel {
     
     func iHaveSomethingOnRadar() -> Int {
         var indexOfNextFieldToShot = 0
-        
-        print("INSIDE AFTER HIT")
-        
+                
         if !computerPlayerPossibleNorth.isEmpty {
-            print("INSIDE NORTH")
             indexOfNextFieldToShot = computerPlayerPossibleNorth[0]
             computerPlayerPossibleNorth.remove(at: 0)
             model.setComputerPlayerPossibleNorth(possibleNorth: computerPlayerPossibleNorth)
@@ -311,8 +317,6 @@ extension ComputerPlayerTurnViewModel {
             computerPlayerPossibleEast.remove(at: 0)
             model.setComputerPlayerPossibleEast(possibleEast: computerPlayerPossibleEast)
         }
-        
-        print("NEXT FIELD ",indexOfNextFieldToShot)
         return indexOfNextFieldToShot
     }
     
@@ -330,5 +334,10 @@ extension ComputerPlayerTurnViewModel {
             model.computerPlayerClearEast()
         }
     }
+    
+    func checkShips() {
+        humanPlayerShips.forEach {$0.checkIfTheShipisStillAlive()}
+    }
+    
     
 }

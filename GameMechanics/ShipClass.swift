@@ -19,6 +19,7 @@ final class Ship {
     private var isLive: Bool {
         willSet {
             guard newValue != isLive else {return}
+            print("jestem statkiem i nie zyje \(owner) \(size)")
             shipDelegate?.sayIHaveBeenDestroyed(self, owner: owner, message: "Ship of size \(size) has been destroyed")
         }
     }
@@ -32,13 +33,15 @@ final class Ship {
     }
     
     func checkIfTheShipisStillAlive() -> Bool {
+        print("i mnie tez \(owner)")
         var shipIsStillAlive = false
         for i in fields {
+            
+            print("\(isLive), \(size)")
             if i.getState() == .occupied {
                 shipIsStillAlive = true
                 break
             }
-            print(isLive, size )
         }
 
         self.isLive = shipIsStillAlive

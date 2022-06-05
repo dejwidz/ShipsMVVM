@@ -11,6 +11,7 @@ protocol ComputerPlayerTurnModelProtocol: AnyObject {
     var computerPlayerTurnModelDelegate: ComputerPlayerTurnModelDelegate? {get set}
     func setComputerPlayer(computerPlayer: Player)
     func setHumanPlayer(humanPlayer: Player)
+    func setHumanPlayerSea(newSea: [[Field]])
 //    func sendComputerPlayer()
     func setComputerPlayerEnemySea(newComputerPlayerEnemySea: [[Field]])
     func setComputerPlayerHitIndicatorTrue()
@@ -38,11 +39,13 @@ protocol ComputerPlayerTurnModelDelegate: AnyObject {
     func sendComputerPlayerPossibleSouth(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, possibleSouth: [Int])
     func sendComputerPlayerPossibleWest(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, possibleWest: [Int])
     func sendComputerPlayerPossibleEast(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, possibleEast: [Int])
+    func sendHumanPlayerShips(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, ships: [Ship])
    
 }
 
 
 final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
+    
    
     
     
@@ -69,6 +72,7 @@ final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
     func setHumanPlayer(humanPlayer: Player) {
         self.humanPlayer = humanPlayer
         computerPlayerTurnModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayer.getSea())
+        computerPlayerTurnModelDelegate?.sendHumanPlayerShips(self, ships: humanPlayer.getShips())
     }
     
     func setComputerPlayerHitIndicatorTrue() {
@@ -117,6 +121,7 @@ final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
        }
     
     func resetEverythingInComputerPlayerWhenShipOfHumanPlayerIsDestroyed() {
+        print("+++++++++++++++++++++++=========+++++====++++====+++++ ODEBROLCH")
         computerPlayer?.setHitIndicator(newValueOfHitIndicator: false)
         computerPlayerTurnModelDelegate?.sendComputerPlayerHitIndicator(self, hitIndicator: (computerPlayer?.getHitIndicator())!)
         computerPlayerClearNorth()
@@ -131,7 +136,13 @@ final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
     }
     
     func checkHumanPlayerShips() {
+        print("Wywolano mnie")
         humanPlayer?.getShips().forEach {$0.checkIfTheShipisStillAlive()}
+    }
+    
+    func setHumanPlayerSea(newSea: [[Field]]) {
+        humanPlayer?.setSea(newSea: newSea)
+        computerPlayerTurnModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: (humanPlayer?.getSea())!)
     }
     
 }

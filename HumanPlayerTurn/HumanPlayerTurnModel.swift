@@ -29,9 +29,6 @@ protocol HumanPlayerTurnModelDelegate: AnyObject {
 }
 
 final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
-    
-    
-    
     var humanPlayerTurnModelDelegate: HumanPlayerTurnModelDelegate?
     
     private var humanPlayer: Player?
@@ -54,6 +51,7 @@ final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
     
     func sendHumanPlayerProperties() {
         humanPlayerTurnModelDelegate?.sendHumanPlayerEnemySea(self, humanPlayerEnemySea: (humanPlayer?.getEnemySea())!)
+//        humanPlayerTurnModelDelegate?.sendComputerPlayerShips(self, computerPlayerShips: (computerPlayer?.getShips())!)
     }
     
     func updateHumanPlayerEnemySea(newEnemySea: [[Field]]) {

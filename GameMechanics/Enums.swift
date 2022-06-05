@@ -7,7 +7,6 @@
 
 import Foundation
 
-//var player1 = Player()
 
     
 enum fieldState {

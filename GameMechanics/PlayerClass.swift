@@ -26,12 +26,16 @@ final class Player {
     private var ship4: Ship
     private var ship5: Ship
     
-    private var firstHitIndicator = false
     private var hitIndicator = false
     private var possibleNorth: [Int] = []
     private var possibleSouth: [Int] = []
     private var possibleWest: [Int] = []
     private var possibleEast: [Int] = []
+    
+    private var northIndicator: Bool
+    private var southIndicator: Bool
+    private var westIndicator: Bool
+    private var eastIndicator: Bool
     
     
     init(name: String, sea: [[Field]], enemySea: [[Field]], ship2: Ship, ship3: Ship, ship32: Ship, ship4: Ship, ship5: Ship) {
@@ -44,13 +48,18 @@ final class Player {
         self.ship4 = ship4
         self.ship5 = ship5
         ships = []
-        addShips()
+
+        northIndicator = false
+        southIndicator = false
+        westIndicator = false
+        eastIndicator = false
 
         ship2.shipDelegate = self
         ship3.shipDelegate = self
         ship32.shipDelegate = self
         ship4.shipDelegate = self
         ship5.shipDelegate = self
+        addShips()
         }
     
     func addShips() {
@@ -79,6 +88,10 @@ final class Player {
         }
     }
     
+    func getShipAt(index: Int) -> Ship {
+        return ships[index]
+    }
+    
     func actualizeSeaBeforeGame() {
         for i in 0...9 {
             for j in 0...9 {
@@ -94,10 +107,6 @@ final class Player {
         return sea
     }
     
-    func getShipAt(index: Int) -> Ship {
-    return ships[index]
-}
-    
     func setSea(newSea: [[Field]]) {
         sea = newSea
     }
@@ -111,14 +120,6 @@ final class Player {
         for i in ships {
             i.clearFields()
         }
-    }
-    
-    func setFirstHitIndicator(newValueOfFirstHitIndicator: Bool){
-        firstHitIndicator = newValueOfFirstHitIndicator
-    }
-    
-    func getFirstHitIndicator() -> Bool {
-        return firstHitIndicator
     }
     
     func setHitIndicator(newValueOfHitIndicator: Bool) {
@@ -159,36 +160,15 @@ final class Player {
     
     func setPossibleSouth(possibleSouth: [Int]) {
         self.possibleSouth = possibleSouth
-        
     }
     
     func setPossibleWest(possibleWest: [Int]) {
         self.possibleWest = possibleWest
-        
     }
     
     func setPossibleEast(possibleEast: [Int]) {
         self.possibleEast = possibleEast
-        
     }
-    
-//    func removeLastFieldFromNorth() {
-//        possibleNorth.remove(at: 0)
-//    }
-//
-//    func removeLastFieldFromSouth() {
-//        possibleSouth.remove(at: 0)
-//    }
-//    
-//    func removeLastFieldFromWest() {
-//        possibleWest.remove(at: 0)
-//    }
-//
-//    func removeLastFieldFromEast() {
-//        possibleEast.remove(at: 0)
-//    }
-    
-    
     
     func clearNorth() {
         possibleNorth = []
@@ -218,6 +198,40 @@ final class Player {
     func getShips() -> [Ship] {
         return ships
     }
+    
+    func setNorthIndicator(newNorth: Bool) {
+        northIndicator = newNorth
+    }
+    
+    func setSouthIndicator(newSouth: Bool) {
+        southIndicator = newSouth
+    }
+    
+    func setWestIndicator(newWest: Bool) {
+        westIndicator = newWest
+    }
+    
+    func setEastIndicator(newEast: Bool) {
+        eastIndicator = newEast
+    }
+    
+    func getNorthIndicator() -> Bool {
+        return northIndicator
+    }
+    
+    func getSouthIndicator() -> Bool {
+        return southIndicator
+    }
+    
+    func getWestIndicator() -> Bool {
+        return westIndicator
+    }
+    
+    func getEastIndicator() -> Bool {
+        return eastIndicator
+    }
+    
+        
 
 }
 
@@ -229,7 +243,6 @@ protocol PlayerDelegate: AnyObject {
 extension Player: ShipDelegate {
     func sayIHaveBeenDestroyed(_ ship: Ship, owner: String, message: String) {
         
-        print("W DELEGACIE \(owner), \(message)")
         playerDelegate?.sendMessage(self, owner: owner, message: message)
         
         playerDelegate?.notifyChangesOfPlayer(self)

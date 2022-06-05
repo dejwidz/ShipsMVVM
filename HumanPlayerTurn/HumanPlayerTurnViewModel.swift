@@ -50,17 +50,12 @@ final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
     
     
     func updateHumanPlayerInModel(humanPlayer: Player) {
-//        self.humanPlayer = humanPlayer
         model.updateHumanPlayer(humanPlayer: humanPlayer)
     }
     
     func updateComputerPlayerInModel(computerPlayer: Player) {
-//        self.computerPlayer = computerPlayer
-        model.updateComputerPlayer(computerPlayer: computerPlayer)    }
-    
-//    func sendHumanPlayer() {
-//        humanPlayerTurnViewModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer!)
-//    }
+        model.updateComputerPlayer(computerPlayer: computerPlayer)
+    }
     
     func setAntiCunningProtector(newValueOfProtector: Bool) {
         antiCunningProtector = newValueOfProtector
@@ -88,7 +83,6 @@ extension HumanPlayerTurnViewModel: HumanPlayerTurnModelDelegate {
     }
     
     func sendHumanPlayer(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayer: Player) {
-//        self.humanPlayer = humanPlayer
         humanPlayerTurnViewModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer)
     }
     
@@ -142,12 +136,13 @@ extension HumanPlayerTurnViewModel {
             }
         }
         guard hitCounter! > 16 else {return}
-        humanPlayerTurnViewModelDelegate?.sendMessage(self, message: "You won, the game is Over")
+        humanPlayerTurnViewModelDelegate?.sendMessage(self, message: "You won, the game is over")
     }
     
     func checkComputerPlayerShips() {
         model.checkComputerPlayerShips()
     }
+    
     
     /* PYTANIE
      

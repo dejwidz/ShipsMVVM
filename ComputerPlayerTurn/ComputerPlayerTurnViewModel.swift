@@ -9,7 +9,6 @@ import Foundation
 
 protocol ComputerPlayerTurnViewModelProtocol: AnyObject {
     var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate? {get set}
-//    func updateComputerPlayerInModel(computerPlayer: Player)
     func setComputerPlayer(computerPlayer: Player)
     func setHumanPlayer(humanPlayer: Player)
     func computerPlayerShot()
@@ -32,25 +31,18 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
         }
     }
     private var hitCounter: Int?
-//    private var computerPlayer: Player?
-//    private var humanPlayer: Player?
     
     private var computerPlayerEnemySea: [[Field]]?
     private var humanPlayerSea: [[Field]]?
-    private var computerPlayerPossibleNorth: [Int] {
-        didSet {
-            print("NORTH  \(computerPlayerPossibleNorth)")
-        }
-    }
-    private var computerPlayerPossibleSouth: [Int] {
-        didSet {
-            print("SOUTH  \(computerPlayerPossibleSouth)")
-
-        }
-    }
+    private var computerPlayerPossibleNorth: [Int]
+    private var computerPlayerPossibleSouth: [Int]
     private var computerPlayerPossibleWest: [Int]
     private var computerPlayerPossibleEast: [Int]
     private var humanPlayerShips: [Ship]
+    private var computerPlayerNorthIndicator: Bool
+    private var computerPlayerSouthIndicator: Bool
+    private var computerPlayerWestIndicator: Bool
+    private var computerPlayerEastIndicator: Bool
     
     
     private var model: ComputerPlayerTurnModelProtocol
@@ -63,15 +55,13 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
         computerPlayerPossibleWest = []
         computerPlayerPossibleEast = []
         humanPlayerShips = []
+        computerPlayerNorthIndicator = false
+        computerPlayerSouthIndicator = false
+        computerPlayerWestIndicator = false
+        computerPlayerEastIndicator = false
         model.computerPlayerTurnModelDelegate = self
-
     }
-    
-    
-//    func updateComputerPlayerInModel(computerPlayer: Player) {
-////        self.computerPlayer = computerPlayer
-//        model.setComputerPlayer(computerPlayer: computerPlayer)
-//    }
+
     
     func setComputerPlayer(computerPlayer: Player) {
         model.setComputerPlayer(computerPlayer: computerPlayer)
@@ -93,6 +83,22 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
 }
 
 extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
+    func sendComputerPlayerNorthIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfNorthIndicator: Bool) {
+        computerPlayerNorthIndicator = currentValueOfNorthIndicator
+    }
+    
+    func sendComputerPlayerSouthIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfSouthIndicator: Bool) {
+        computerPlayerSouthIndicator = currentValueOfSouthIndicator
+    }
+    
+    func sendComputerPlayerWestIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfWestIndicator: Bool) {
+        computerPlayerWestIndicator = currentValueOfWestIndicator
+    }
+    
+    func sendComputerPlayerEastIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfEastIndicator: Bool) {
+        computerPlayerEastIndicator = currentValueOfEastIndicator
+    }
+    
     func sendHumanPlayerShips(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, ships: [Ship]) {
         humanPlayerShips = ships
     }
@@ -143,7 +149,7 @@ extension ComputerPlayerTurnViewModel {
     }
     
     func isShootingToThisFieldWise(row: Int, column: Int) -> Bool {
-        let okYouCanShoot = checkIfSurroundingFieldIsFree(row: row, column: column) &&
+        let okYouCanShoot = computerPlayerEnemySea![row][column].getState() == .free &&
         checkIfSurroundingFieldIsFree(row: row - 1, column: column - 1) &&
         checkIfSurroundingFieldIsFree(row: row - 1, column: column) &&
         checkIfSurroundingFieldIsFree(row: row - 1, column: column + 1) &&
@@ -259,17 +265,24 @@ extension ComputerPlayerTurnViewModel {
             if !computerPlayerHitIndicator {
                 model.setComputerPlayerHitIndicatorTrue()
                 radar(row: row, column: column)
-                
+                if !computerPlayerPossibleNorth.isEmpty {
+                    model.setComputerPlayerNorthIndicator(newNorthIndicator: true)
+                }
+                if !computerPlayerPossibleSouth.isEmpty {
+                    model.setComputerPlayerSouthIndicator(newSouthIndicator: true)
+                }
+                if !computerPlayerPossibleWest.isEmpty {
+                    model.setComputerPlayerWestIndicator(newWestIndicator: true)
+                }
+                if !computerPlayerPossibleEast.isEmpty {
+                    model.setComputerPlayerEastIndicator(newEastIndicator: true)
+                }
             }
-//            model.checkHumanPlayerShips()
             checkShips()
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [self] in
                 computerPlayerShot()
             }
         }
-        
-        
-        
     }
     
     func prepareToShot() -> Int {
@@ -321,17 +334,21 @@ extension ComputerPlayerTurnViewModel {
     }
     
     func validateLastShot() {
-        if !computerPlayerPossibleNorth.isEmpty {
+        if computerPlayerNorthIndicator {
             model.computerPlayerClearNorth()
+            model.setComputerPlayerNorthIndicator(newNorthIndicator: false)
         }
-        else if !computerPlayerPossibleSouth.isEmpty {
+        else if computerPlayerSouthIndicator{
             model.computerPlayerClearSouth()
+            model.setComputerPlayerSouthIndicator(newSouthIndicator: false)
         }
-        else if !computerPlayerPossibleWest.isEmpty {
+        else if computerPlayerWestIndicator {
             model.computerPlayerClearWest()
+            model.setComputerPlayerWestIndicator(newWestIndicator: false)
         }
-        else if !computerPlayerPossibleEast.isEmpty {
+        else if computerPlayerEastIndicator {
             model.computerPlayerClearEast()
+            model.setComputerPlayerEastIndicator(newEastIndicator: false)
         }
     }
     

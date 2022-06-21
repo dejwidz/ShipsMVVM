@@ -13,7 +13,7 @@ protocol HumanPlayerTurnViewModelProtocol: AnyObject {
     func updateComputerPlayerInModel(computerPlayer: Player)
     func humanPlayerShot(index: Int) -> Bool
     func setAntiCunningProtector(newValueOfProtector: Bool)
-    func computerPlayerHaveMissed()
+    func computerPlayerMissed()
 }
 
 protocol HumanPlayerTurnViewModelDelegate: AnyObject {
@@ -80,7 +80,7 @@ extension HumanPlayerTurnViewModel: HumanPlayerTurnModelDelegate {
         humanPlayerTurnViewModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer)
     }
     
-    func computerPlayerHaveMissed() {
+    func computerPlayerMissed() {
         antiCunningProtector = true
         turnIndicator = .humanPlayerTurn
     }

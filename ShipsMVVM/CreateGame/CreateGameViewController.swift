@@ -19,6 +19,7 @@ final class CreateGameViewController: UIViewController {
     private var projectSeaMatrix: [[Field]] = []
     private var humanPlayer: Player?
     private var computerPlayer: Player?
+    private var deployPossibility: deployPossibility = .unknown
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,7 @@ final class CreateGameViewController: UIViewController {
         viewModel.createGameViewModelDelegate = self
         viewModel.sendHumanSea()
         viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
+        
         
         projectSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "customCell")
         projectSea.delegate = self
@@ -116,10 +118,36 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.checkDeployingPossibility(index: indexPath.row, shipId: viewModel.nextShipId, shipSize: viewModel.nextShipSize, orientation: viewModel.nextShipOrientation)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        viewModel.checkDeployingPossibilityWithoutDeploying(fieldIndex: indexPath.row)
+        let cell = projectSea.cellForItem(at: indexPath)
+        if deployPossibility == .possible {
+            cell?.contentView.backgroundColor = UIColor.green
+        }
+        else {
+            cell?.contentView.backgroundColor = UIColor.orange
+        }
+    
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        let cell = projectSea.cellForItem(at: indexPath)
+        cell?.contentView.backgroundColor = .systemTeal
+    }
+    
 }
 
 
 extension CreateGameViewController: CreateGameViewModelDelegate {
+    func sendInfoAboutDeployingPossibility(_ createGameViewModel: CreateGameViewModelProtocol, info: deployPossibility) {
+        deployPossibility = info
+    }
+    
     func sendMessage(_ createGameViewModel: CreateGameViewModelProtocol, owner: String, message: String) {
         if owner == "computerPlayer" {
             vcHumanPlayerTurn.showAlert(message: message)

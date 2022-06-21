@@ -112,8 +112,8 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
 }
 
 extension HumanPlayerTurnViewController: ComputerTurnVCSendInfoBackDelegate {
-    func sayComputerPlayerHaveMissed(_ computerPlayerTurnViewController: ComputerPlayerTurnViewController) {
-        viewModel.computerPlayerHaveMissed()
+    func sayComputerPlayerMissed(_ computerPlayerTurnViewController: ComputerPlayerTurnViewController) {
+        viewModel.computerPlayerMissed()
     }
     
     

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ComputerTurnVCSendInfoBackDelegate: AnyObject {
-    func sayComputerPlayerHaveMissed(_ computerPlayerTurnViewController: ComputerPlayerTurnViewController)
+    func sayComputerPlayerMissed(_ computerPlayerTurnViewController: ComputerPlayerTurnViewController)
 }
 
 class ComputerPlayerTurnViewController: UIViewController {
@@ -74,7 +74,7 @@ extension ComputerPlayerTurnViewController: ComputerPlayerTurnViewModelDelegate 
     }
     
     func sayIHaveMissed(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol) {
-        computerVCDelegate?.sayComputerPlayerHaveMissed(self)
+        computerVCDelegate?.sayComputerPlayerMissed(self)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
             self.navigationController?.popViewController(animated: true)
         }
@@ -105,7 +105,7 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
 }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = view.frame.width * 0.08
+        let size = view.frame.size.width * 0.08
         return CGSize(width: size, height: size)
     }
 

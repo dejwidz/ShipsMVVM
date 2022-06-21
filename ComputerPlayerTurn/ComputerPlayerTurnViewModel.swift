@@ -135,7 +135,7 @@ extension ComputerPlayerTurnViewModel {
     }
     
     func isShootingToThisFieldWise(row: Int, column: Int) -> Bool {
-        let okYouCanShoot = computerPlayerEnemySea![row][column].getState() == .free &&
+        let okYouCanShot = computerPlayerEnemySea![row][column].getState() == .free &&
         checkIfSurroundingFieldIsFree(row: row - 1, column: column - 1) &&
         checkIfSurroundingFieldIsFree(row: row - 1, column: column) &&
         checkIfSurroundingFieldIsFree(row: row - 1, column: column + 1) &&
@@ -144,7 +144,7 @@ extension ComputerPlayerTurnViewModel {
         checkIfSurroundingFieldIsFree(row: row + 1, column: column - 1) &&
         checkIfSurroundingFieldIsFree(row: row + 1, column: column) &&
         checkIfSurroundingFieldIsFree(row: row + 1, column: column + 1)
-        return okYouCanShoot
+        return okYouCanShot
     }
     
     func checkIfSurroundingFieldIsFree(row: Int, column: Int) -> Bool {

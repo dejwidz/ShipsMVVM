@@ -34,6 +34,8 @@ class PlayerTurnCustomCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    
+    
 
 }
 

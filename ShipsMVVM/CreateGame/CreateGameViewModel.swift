@@ -13,12 +13,14 @@ protocol CreateGameViewModelDelegate: AnyObject {
     func sendHumanPlayerSea(_ createGameViewModel: CreateGameViewModelProtocol, humanPlayerSea: [[Field]], humanPlayer: Player)
     func sayNoYouCantDoingLikeThat(_ createGameViewModel: CreateGameViewModelProtocol, message: String)
     func sendMessage(_ createGameViewModel: CreateGameViewModelProtocol, owner: String, message: String)
+    func sendInfoAboutDeployingPossibility(_ createGameViewModel: CreateGameViewModelProtocol, info: deployPossibility)
 }
 
 protocol CreateGameViewModelProtocol: AnyObject {
     var createGameViewModelDelegate: CreateGameViewModelDelegate? {get set}
     func sendHumanSea()
     func validateStartGamePossibility() -> Bool
+    func checkDeployingPossibilityWithoutDeploying(fieldIndex: Int)
 }
 
 final class CreateGameViewModel: CreateGameViewModelProtocol {
@@ -267,5 +269,38 @@ extension CreateGameViewModel {
             isPossibleToReplaceShipOnThisField = tryReplaceShip(player: player, field: field, orientation: orientation, size: ship.getSize(), id: ship.getId())
         }
     }
+    
+    func checkDeployingPossibilityWithoutDeploying(fieldIndex: Int) {
+        let deployingPossibility = checkDeployingPossibilityButWithoutDeploying(fieldIndex: fieldIndex)
+        if deployingPossibility {
+            createGameViewModelDelegate?.sendInfoAboutDeployingPossibility(self, info: .possible)
+        }
+        else {
+            createGameViewModelDelegate?.sendInfoAboutDeployingPossibility(self, info: .impossible)
+        }
+    }
+    
+    func checkDeployingPossibilityButWithoutDeploying(fieldIndex: Int) -> Bool {
+        let row = getRow(enter: fieldIndex)
+        let column = getColumn(enter: fieldIndex)
+
+        if nextShipOrientation == .vertical {
+            guard checkVerticalReplacementPossibility(sea: (humanPlayer?.getSea())!, column: column, row: row, shipSize: nextShipSize) else {
+                return false
+            }
+        }
+        else {
+            guard checkHorizontalReplacementPossibility(sea: (humanPlayer?.getSea())!, column: column, row: row, shipSize: nextShipSize) else {
+                return false
+            }
+
+        }
+        return true
+        
+        
+        
+        
+    }
+    
     
 }

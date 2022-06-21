@@ -25,6 +25,12 @@ enum turn {
     case humanPlayerTurn
     case computerPlayerTurn
 }
+
+enum deployPossibility {
+    case possible
+    case impossible
+    case unknown
+}
     
 
 func getColumn(enter: Int) -> Int {

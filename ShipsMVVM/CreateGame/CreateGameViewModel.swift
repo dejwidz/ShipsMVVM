@@ -15,6 +15,7 @@ protocol CreateGameViewModelDelegate: AnyObject {
     func sendMessage(_ createGameViewModel: CreateGameViewModelProtocol, owner: String, message: String)
     func sendInfoAboutDeployingPossibility(_ createGameViewModel: CreateGameViewModelProtocol, info: deployPossibility)
     func sendInfoThatStartGameButtonCanAppear(_ createGameViewModel: CreateGameViewModelProtocol)
+    func sendInfoForAnimation(_ createGameViewModel: CreateGameViewModelProtocol, rowValueOfIndex: Int, size: Int, orientation: orientation, possibilityIndicator: Bool)
 }
 
 protocol CreateGameViewModelProtocol: AnyObject {
@@ -287,19 +288,25 @@ extension CreateGameViewModel {
     func checkDeployingPossibilityButWithoutDeploying(fieldIndex: Int) -> Bool {
         let row = getRow(forIndexPathRowValue: fieldIndex)
         let column = getColumn(forIndexPathRowValue: fieldIndex)
+        var deployingPossibility = true
 
         if nextShipOrientation == .vertical {
             guard checkVerticalReplacementPossibility(sea: (humanPlayer?.getSea())!, column: column, row: row, shipSize: nextShipSize) else {
-                return false
+                deployingPossibility = false
+                createGameViewModelDelegate?.sendInfoForAnimation(self, rowValueOfIndex: fieldIndex, size: nextShipSize, orientation: nextShipOrientation, possibilityIndicator: deployingPossibility)
+                return deployingPossibility
             }
         }
         else {
             guard checkHorizontalReplacementPossibility(sea: (humanPlayer?.getSea())!, column: column, row: row, shipSize: nextShipSize) else {
-                return false
+                deployingPossibility = false
+                createGameViewModelDelegate?.sendInfoForAnimation(self, rowValueOfIndex: fieldIndex, size: nextShipSize, orientation: nextShipOrientation, possibilityIndicator: deployingPossibility)
+                return deployingPossibility
             }
 
         }
-        return true
+        createGameViewModelDelegate?.sendInfoForAnimation(self, rowValueOfIndex: fieldIndex, size: nextShipSize, orientation: nextShipOrientation, possibilityIndicator: deployingPossibility)
+        return deployingPossibility
     }
     
     func checkStartGameButtonAppearanceCounter() {

@@ -50,7 +50,6 @@ final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
     
     func sendHumanPlayerProperties() {
         humanPlayerTurnModelDelegate?.sendHumanPlayerEnemySea(self, humanPlayerEnemySea: (humanPlayer?.getEnemySea())!)
-//        humanPlayerTurnModelDelegate?.sendComputerPlayerShips(self, computerPlayerShips: (computerPlayer?.getShips())!) ------ tu widziało nila, wymaga jeszcze poprawy
     }
     
     func updateHumanPlayerEnemySea(newEnemySea: [[Field]]) {

@@ -21,7 +21,7 @@ protocol HumanPlayerTurnViewModelDelegate: AnyObject {
     func sendMessage(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, message: String)
     func sendHumanPlayerEnemySea(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerEnemySea: [[Field]])
     func setTurnIndicatorInComputerPlayerVC(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, currentStateOfTurnIndicator: turn)
-    
+    func sendInfoAboutLastShotValidation(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerLastShot: fieldState)
 }
 
 final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
@@ -102,6 +102,7 @@ extension HumanPlayerTurnViewModel {
             model.updateHumanPlayerEnemySea(newEnemySea: humanPlayerEnemySea!)
             turnIndicator = .computerPlayerTurn
             humanPlayerTurnViewModelDelegate?.setTurnIndicatorInComputerPlayerVC(self, currentStateOfTurnIndicator: turnIndicator!)
+            humanPlayerTurnViewModelDelegate?.sendInfoAboutLastShotValidation(self, humanPlayerLastShot: .free)
             displayComputerViewController = true
         } else {
             computerPlayerSea![row][column].setState(newState: .hitOccupied)
@@ -113,6 +114,7 @@ extension HumanPlayerTurnViewModel {
             checkComputerPlayerShips()
             turnIndicator = .humanPlayerTurn
             humanPlayerTurnViewModelDelegate?.setTurnIndicatorInComputerPlayerVC(self, currentStateOfTurnIndicator: turnIndicator!)
+            humanPlayerTurnViewModelDelegate?.sendInfoAboutLastShotValidation(self, humanPlayerLastShot: .hitOccupied)
             antiCunningProtector = true
             displayComputerViewController = false
         }

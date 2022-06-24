@@ -22,6 +22,7 @@ final class CreateGameViewController: UIViewController {
     private var humanPlayer: Player?
     private var computerPlayer: Player?
     private var deployPossibility: deployPossibility = .unknown
+    private var isCellStillHighlighted = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,6 +103,44 @@ final class CreateGameViewController: UIViewController {
         }
     }
     
+    func animateDeployingPossibility(index: Int, size: Int, orientation: orientation, possibility: Bool) {
+        
+        guard isCellStillHighlighted else {return}
+        
+        let indexOfFieldToAnimate = NSIndexPath(row: index, section: 0)
+        let cell = projectSea.cellForItem(at: indexOfFieldToAnimate as IndexPath)
+        let toColor: UIColor
+        if possibility {
+            toColor = UIColor.green
+        }
+        else {
+            toColor = UIColor.orange
+        }
+   
+        let animation = CABasicAnimation(keyPath: "backgroundColor")
+        animation.isRemovedOnCompletion = false
+        animation.fillMode = .forwards
+        animation.fromValue = cell?.contentView.backgroundColor?.cgColor
+        animation.toValue = toColor.cgColor
+        animation.duration = 0.2
+        cell?.contentView.layer.add(animation, forKey: nil)
+        let indexOfNextFieldToAnimate: Int
+        if orientation == .horizontal {
+            indexOfNextFieldToAnimate = index + 10
+        }
+        else {
+            indexOfNextFieldToAnimate = index - 1
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            let sizeCounter = size - 1
+            if sizeCounter > 0 {
+                self.animateDeployingPossibility(index: indexOfNextFieldToAnimate, size: sizeCounter, orientation: orientation, possibility: possibility)
+                print(sizeCounter)
+            }
+        }
+        
+    }
+    
 }
 
 extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
@@ -136,6 +175,7 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
     }
     
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        isCellStillHighlighted = true
         viewModel.checkDeployingPossibilityWithoutDeploying(fieldIndex: indexPath.row)
         let cell = projectSea.cellForItem(at: indexPath)
         if deployPossibility == .possible {
@@ -147,6 +187,7 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
     }
     
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        isCellStillHighlighted = false
         let cell = projectSea.cellForItem(at: indexPath)
         cell?.contentView.backgroundColor = .systemTeal
         deployPossibility = .unknown
@@ -157,6 +198,11 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
 
 
 extension CreateGameViewController: CreateGameViewModelDelegate {
+    func sendInfoForAnimation(_ createGameViewModel: CreateGameViewModelProtocol, rowValueOfIndex: Int, size: Int, orientation: orientation, possibilityIndicator: Bool) {
+        animateDeployingPossibility(index: rowValueOfIndex, size: size, orientation: orientation, possibility: possibilityIndicator)
+        print("ONE")
+    }
+    
     func sendInfoThatStartGameButtonCanAppear(_ createGameViewModel: CreateGameViewModelProtocol) {
         AnimateStartButtonApperance()
     }

@@ -20,6 +20,7 @@ protocol ComputerPlayerTurnViewModelDelegate: AnyObject {
     func sendComputerPlayerEnemySea(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, computerPlayerEnemySea: [[Field]])
     func sayIHaveMissed(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol)
     func sayComputerPlayerWon(_ computerPlayerTurnModel: ComputerPlayerTurnViewModelProtocol, message: String)
+    func sendInfoForAnimation(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, indexOfNextFieldToShot: Int, stateOfNextFieldToShot: fieldState)
 }
 
 
@@ -40,6 +41,8 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     private var computerPlayerSouthIndicator: Bool
     private var computerPlayerWestIndicator: Bool
     private var computerPlayerEastIndicator: Bool
+    private var indexOfNextFieldToShot: Int
+
     
     private var model: ComputerPlayerTurnModelProtocol
     
@@ -55,6 +58,7 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
         computerPlayerWestIndicator = false
         computerPlayerEastIndicator = false
         gameOverIndicator = true
+        indexOfNextFieldToShot = 0
         model.computerPlayerTurnModelDelegate = self
     }
     
@@ -234,45 +238,51 @@ extension ComputerPlayerTurnViewModel {
         guard turnIndicator == .computerPlayerTurn && gameOverIndicator else {return}
         
         if humanPlayerSea![row][column].getState() == .free {
-            computerPlayerEnemySea![row][column].setState(newState: .hit)
-            model.setComputerPlayerEnemySea(newComputerPlayerEnemySea: computerPlayerEnemySea!)
-            computerPlayerTurnViewModelDelegate?.sayIHaveMissed(self)
-            turnIndicator = .humanPlayerTurn
-            if computerPlayerHitIndicator {
-                validateLastShot()
+            computerPlayerTurnViewModelDelegate?.sendInfoForAnimation(self, indexOfNextFieldToShot: indexOfNextFieldToShot, stateOfNextFieldToShot: .free)
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                self.computerPlayerEnemySea![row][column].setState(newState: .hit)
+                self.model.setComputerPlayerEnemySea(newComputerPlayerEnemySea: self.computerPlayerEnemySea!)
+                self.computerPlayerTurnViewModelDelegate?.sayIHaveMissed(self)
+                self.turnIndicator = .humanPlayerTurn
+                if self.computerPlayerHitIndicator {
+                    self.validateLastShot()
+            }
+            
             }
         } else if humanPlayerSea![row][column].getState() == .occupied {
-            computerPlayerEnemySea![row][column].setState(newState: .hitOccupied)
-            humanPlayerSea![row][column].setState(newState: .hitOccupied)
-            model.setHumanPlayerSea(newSea: humanPlayerSea!)
-            model.setComputerPlayerEnemySea(newComputerPlayerEnemySea: computerPlayerEnemySea!)
-            turnIndicator = .computerPlayerTurn
-            validateGameOverIndicator()
-            if !computerPlayerHitIndicator {
-                model.setComputerPlayerHitIndicatorTrue()
-                radar(row: row, column: column)
-                if !computerPlayerPossibleNorth.isEmpty {
-                    model.setComputerPlayerNorthIndicator(newNorthIndicator: true)
+            computerPlayerTurnViewModelDelegate?.sendInfoForAnimation(self, indexOfNextFieldToShot: indexOfNextFieldToShot, stateOfNextFieldToShot: .hitOccupied)
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                self.computerPlayerEnemySea![row][column].setState(newState: .hitOccupied)
+                self.humanPlayerSea![row][column].setState(newState: .hitOccupied)
+                self.model.setHumanPlayerSea(newSea: self.humanPlayerSea!)
+                self.model.setComputerPlayerEnemySea(newComputerPlayerEnemySea: self.computerPlayerEnemySea!)
+                self.turnIndicator = .computerPlayerTurn
+                self.validateGameOverIndicator()
+                if !self.computerPlayerHitIndicator {
+                    self.model.setComputerPlayerHitIndicatorTrue()
+                    self.radar(row: row, column: column)
+                    if !self.computerPlayerPossibleNorth.isEmpty {
+                        self.model.setComputerPlayerNorthIndicator(newNorthIndicator: true)
+                    }
+                    if !self.computerPlayerPossibleSouth.isEmpty {
+                        self.model.setComputerPlayerSouthIndicator(newSouthIndicator: true)
+                    }
+                    if !self.computerPlayerPossibleWest.isEmpty {
+                        self.model.setComputerPlayerWestIndicator(newWestIndicator: true)
+                    }
+                    if !self.computerPlayerPossibleEast.isEmpty {
+                        self.model.setComputerPlayerEastIndicator(newEastIndicator: true)
+                    }
                 }
-                if !computerPlayerPossibleSouth.isEmpty {
-                    model.setComputerPlayerSouthIndicator(newSouthIndicator: true)
+                self.checkShips()
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [self] in
+                    computerPlayerShot()
                 }
-                if !computerPlayerPossibleWest.isEmpty {
-                    model.setComputerPlayerWestIndicator(newWestIndicator: true)
-                }
-                if !computerPlayerPossibleEast.isEmpty {
-                    model.setComputerPlayerEastIndicator(newEastIndicator: true)
-                }
-            }
-            checkShips()
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [self] in
-                computerPlayerShot()
             }
         }
     }
     
     func prepareToShot() -> Int {
-           var indexOfNextFieldToShot = 0
            if !computerPlayerHitIndicator {
                indexOfNextFieldToShot = iVeGotNothingOnRadar()
            } else {
@@ -282,7 +292,6 @@ extension ComputerPlayerTurnViewModel {
        }
     
     func iVeGotNothingOnRadar() -> Int {
-        var indexOfNextFieldToShot: Int = 0
         var nextShotPossibility = false
         while nextShotPossibility == false {
             indexOfNextFieldToShot = Int.random(in: 0...99)
@@ -294,8 +303,6 @@ extension ComputerPlayerTurnViewModel {
     }
     
     func iHaveSomethingOnRadar() -> Int {
-        var indexOfNextFieldToShot = 0
-                
         if !computerPlayerPossibleNorth.isEmpty {
             indexOfNextFieldToShot = computerPlayerPossibleNorth[0]
             computerPlayerPossibleNorth.remove(at: 0)

@@ -69,6 +69,23 @@ class ComputerPlayerTurnViewController: UIViewController {
 }
 
 extension ComputerPlayerTurnViewController: ComputerPlayerTurnViewModelDelegate {
+    func sendInfoForAnimation(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, indexOfNextFieldToShot: Int, stateOfNextFieldToShot: fieldState) {
+        let index = NSIndexPath(row: indexOfNextFieldToShot, section: 0)
+        let cell = computerPlayerSeaCollectionView.cellForItem(at: index as IndexPath)
+        let animation = CABasicAnimation(keyPath: "backgroundColor")
+        animation.isRemovedOnCompletion = false
+        animation.fillMode = .forwards
+        animation.fromValue = cell?.contentView.backgroundColor?.cgColor
+        if stateOfNextFieldToShot == .free {
+            animation.toValue = UIColor.yellow.cgColor
+        }
+        else if stateOfNextFieldToShot == .hitOccupied {
+            animation.toValue = UIColor.red.cgColor
+        }
+        animation.duration = 1
+        cell?.contentView.layer.add(animation, forKey: nil)
+    }
+    
     func sayComputerPlayerWon(_ computerPlayerTurnModel: ComputerPlayerTurnViewModelProtocol, message: String) {
         showAlert(message: message)
     }

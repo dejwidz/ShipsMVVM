@@ -33,10 +33,7 @@ class PlayerTurnCustomCollectionViewCell: UICollectionViewCell {
                 contentView.backgroundColor = .red
         }
     }
-    
-    
-    
-
+ 
 }
 
 

@@ -13,7 +13,10 @@ class HumanPlayerTurnViewController: UIViewController {
     private var humanPlayerEnemySeaMatrix: [[Field]]?
     private var viewModel = HumanPlayerTurnViewModel(model: HumanPlayerTurnModel())
     @IBOutlet weak var humanPlayerSeaCollectionView: UICollectionView!
-    let vcComputerPlayerTurn = ComputerPlayerTurnViewController()    
+    let vcComputerPlayerTurn = ComputerPlayerTurnViewController()
+    private var lastShotValidation: fieldState = .free
+    private var indexOfLastShot: IndexPath?
+    private var antiCanningProtector = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +40,10 @@ class HumanPlayerTurnViewController: UIViewController {
         vcComputerPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
         vcComputerPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        antiCanningProtector = true
+    }
 
     func setHumanPlayer(humanPlayer: Player) {
         self.humanPlayer = humanPlayer
@@ -59,13 +66,20 @@ class HumanPlayerTurnViewController: UIViewController {
 }
 
 extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
+    func sendInfoAboutLastShotValidation(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerLastShot: fieldState) {
+        lastShotValidation = humanPlayerLastShot
+        humanPlayerEnemySeaMatrix![getRow(forIndexPathRowValue: indexOfLastShot!.row)][getColumn(forIndexPathRowValue: indexOfLastShot!.row)].setState(newState: humanPlayerLastShot)
+        if humanPlayerLastShot == .hitOccupied {
+            antiCanningProtector = true
+        }
+    }
+    
     func setTurnIndicatorInComputerPlayerVC(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, currentStateOfTurnIndicator: turn) {
         vcComputerPlayerTurn.setTurnIndicator(currentTurn: currentStateOfTurnIndicator)
     }
     
     func sendHumanPlayerEnemySea(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerEnemySea: [[Field]]) {
         humanPlayerEnemySeaMatrix = humanPlayerEnemySea
-        humanPlayerSeaCollectionView.reloadData()
     }
     
     func sendMessage(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, message: String) {
@@ -74,7 +88,6 @@ extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
     
     func sendHumanPlayer(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayer: Player) {
         self.humanPlayer = humanPlayer
-        
     }
     
 }
@@ -101,15 +114,30 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard antiCanningProtector else {return}
+        antiCanningProtector = false
+        indexOfLastShot = indexPath
         var nextScreenDisplayPossibility = viewModel.humanPlayerShot(index: indexPath.row)
-        
+        let cell = humanPlayerSeaCollectionView.cellForItem(at: indexPath)
+                let animation = CABasicAnimation(keyPath: "backgroundColor")
+                animation.isRemovedOnCompletion = false
+                animation.fillMode = .forwards
+                animation.fromValue = cell?.contentView.backgroundColor?.cgColor
+        if lastShotValidation == .free {
+            animation.toValue = UIColor.yellow.cgColor
+        }
+        else if lastShotValidation == .hitOccupied {
+            animation.toValue = UIColor.red.cgColor
+        }
+        animation.duration = 1
+                cell?.contentView.layer.add(animation, forKey: nil)
         guard nextScreenDisplayPossibility else {return}
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [self] in
             navigationController?.pushViewController(vcComputerPlayerTurn, animated: true)
         }
     }
-    
 }
+
 
 extension HumanPlayerTurnViewController: ComputerTurnVCSendInfoBackDelegate {
     func sayComputerPlayerMissed(_ computerPlayerTurnViewController: ComputerPlayerTurnViewController) {

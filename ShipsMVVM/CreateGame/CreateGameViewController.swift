@@ -14,6 +14,8 @@ final class CreateGameViewController: UIViewController {
     @IBOutlet private weak var chooseShipSegmentedControl: UISegmentedControl!
     @IBOutlet private weak var generateShipPositionsButton: UIButton!
     @IBOutlet private weak var startGameButton: UIButton!
+    @IBOutlet weak var StartGameBottomConstraint: NSLayoutConstraint!
+    
     let vcHumanPlayerTurn = HumanPlayerTurnViewController()
     private let viewModel = CreateGameViewModel(model: CreateGameModel())
     private var projectSeaMatrix: [[Field]] = []
@@ -27,7 +29,7 @@ final class CreateGameViewController: UIViewController {
         viewModel.createGameViewModelDelegate = self
         viewModel.sendHumanSea()
         viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
-        
+        StartGameBottomConstraint.constant = 1000
         
         projectSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "customCell")
         projectSea.delegate = self
@@ -37,7 +39,7 @@ final class CreateGameViewController: UIViewController {
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 4
         let width: CGFloat = view.frame.width
-        let frame = CGRect(x: 25, y: 70, width: width, height: width * 1)
+        let frame = CGRect(x: 20, y: 100, width: width, height: width )
         projectSea.frame = frame
         projectSea.collectionViewLayout = layout
     }
@@ -77,6 +79,7 @@ final class CreateGameViewController: UIViewController {
     
     @IBAction func generateShipSPositionsButtonTapped(_ sender: Any) {
         viewModel.replaceShipsAutomatically(player: viewModel.humanPlayer!)
+        viewModel.checkStartGameButtonAppearanceCounter()
     }
     
     @IBAction func startGameButtonTapped(_ sender: Any) {
@@ -91,6 +94,14 @@ final class CreateGameViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alert, animated: true)
     }
+    
+    func AnimateStartButtonApperance() {
+        UIView.animate(withDuration: 2) {
+            self.StartGameBottomConstraint.constant = 40
+            self.view.layoutIfNeeded()
+        }
+    }
+    
 }
 
 extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
@@ -111,12 +122,13 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = view.frame.width * 0.08
+        let size = view.frame.width * 0.085
         return CGSize(width: size, height: size)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.checkDeployingPossibility(index: indexPath.row, shipId: viewModel.nextShipId, shipSize: viewModel.nextShipSize, orientation: viewModel.nextShipOrientation)
+        viewModel.checkStartGameButtonAppearanceCounter()
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
@@ -145,6 +157,10 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
 
 
 extension CreateGameViewController: CreateGameViewModelDelegate {
+    func sendInfoThatStartGameButtonCanAppear(_ createGameViewModel: CreateGameViewModelProtocol) {
+        AnimateStartButtonApperance()
+    }
+    
     func sendInfoAboutDeployingPossibility(_ createGameViewModel: CreateGameViewModelProtocol, info: deployPossibility) {
         deployPossibility = info
     }

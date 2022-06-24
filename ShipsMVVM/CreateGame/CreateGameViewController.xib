@@ -10,7 +10,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateGameViewController" customModule="ShipsMVVM" customModuleProvider="target">
             <connections>
-                <outlet property="projectSea" destination="XoO-cF-y0q" id="co5-Kb-kRJ"/>
+                <outlet property="StartGameBottomConstraint" destination="5iS-Bz-wIw" id="xqZ-yU-UpU"/>
+                <outlet property="projectSea" destination="XoO-cF-y0q" id="h1c-eD-WSg"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -19,6 +20,22 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b96-9j-lsm">
+                    <rect key="frame" x="20" y="761" width="374" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="SYw-Qh-baU"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Generate ships positions">
+                        <backgroundConfiguration key="background" cornerRadius="50">
+                            <color key="backgroundColor" systemColor="systemTealColor"/>
+                        </backgroundConfiguration>
+                        <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </buttonConfiguration>
+                    <connections>
+                        <action selector="generateShipSPositionsButtonTapped:" destination="-1" eventType="touchUpInside" id="VWq-NK-vYt"/>
+                    </connections>
+                </button>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="XoO-cF-y0q">
                     <rect key="frame" x="0.0" y="65" width="414" height="386"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -30,45 +47,8 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="T7e-A6-qgg">
-                    <rect key="frame" x="20" y="732" width="374" height="110"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b96-9j-lsm">
-                            <rect key="frame" x="0.0" y="0.0" width="374" height="35"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="35" id="SYw-Qh-baU"/>
-                            </constraints>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" title="Generate ships positions">
-                                <backgroundConfiguration key="background" cornerRadius="50">
-                                    <color key="backgroundColor" systemColor="systemTealColor"/>
-                                </backgroundConfiguration>
-                                <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </buttonConfiguration>
-                            <connections>
-                                <action selector="generateShipSPositionsButtonTapped:" destination="-1" eventType="touchUpInside" id="VWq-NK-vYt"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="APn-sR-eXU">
-                            <rect key="frame" x="0.0" y="75" width="374" height="35"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="35" id="2Kv-Tk-WWd"/>
-                            </constraints>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" title="Start game">
-                                <backgroundConfiguration key="background" cornerRadius="50">
-                                    <color key="backgroundColor" systemColor="systemTealColor"/>
-                                </backgroundConfiguration>
-                                <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </buttonConfiguration>
-                            <connections>
-                                <action selector="startGameButtonTapped:" destination="-1" eventType="touchUpInside" id="xiE-Hc-fyK"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                </stackView>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="IIn-Z5-bm2">
-                    <rect key="frame" x="0.0" y="600" width="414" height="92"/>
+                    <rect key="frame" x="0.0" y="639" width="414" height="92"/>
                     <subviews>
                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xJT-Qg-gHV">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="32"/>
@@ -97,16 +77,35 @@
                         </segmentedControl>
                     </subviews>
                 </stackView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="APn-sR-eXU">
+                    <rect key="frame" x="20" y="821" width="374" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="2Kv-Tk-WWd"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Start game">
+                        <backgroundConfiguration key="background" cornerRadius="50">
+                            <color key="backgroundColor" systemColor="systemTealColor"/>
+                        </backgroundConfiguration>
+                        <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </buttonConfiguration>
+                    <connections>
+                        <action selector="startGameButtonTapped:" destination="-1" eventType="touchUpInside" id="xiE-Hc-fyK"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="T7e-A6-qgg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="7SW-zw-KUQ"/>
+                <constraint firstAttribute="bottom" secondItem="APn-sR-eXU" secondAttribute="bottom" constant="40" id="5iS-Bz-wIw"/>
                 <constraint firstItem="IIn-Z5-bm2" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="8E0-Qm-NO0"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="APn-sR-eXU" secondAttribute="trailing" constant="20" id="FPy-ay-qIH"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="IIn-Z5-bm2" secondAttribute="trailing" id="Glt-ru-EdM"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="T7e-A6-qgg" secondAttribute="bottom" constant="20" id="IlX-u8-4yC"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="T7e-A6-qgg" secondAttribute="trailing" constant="20" id="fKa-7f-3NX"/>
-                <constraint firstItem="T7e-A6-qgg" firstAttribute="top" secondItem="IIn-Z5-bm2" secondAttribute="bottom" constant="40" id="tgH-XP-fUQ"/>
+                <constraint firstItem="b96-9j-lsm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="H6g-WK-QP1"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="b96-9j-lsm" secondAttribute="trailing" constant="20" id="MfR-PQ-1e5"/>
+                <constraint firstItem="b96-9j-lsm" firstAttribute="top" secondItem="IIn-Z5-bm2" secondAttribute="bottom" constant="30" id="XMm-qG-jWC"/>
+                <constraint firstItem="APn-sR-eXU" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="sRC-IC-duo"/>
+                <constraint firstAttribute="bottom" secondItem="b96-9j-lsm" secondAttribute="bottom" constant="100" id="uLy-y6-kzh"/>
             </constraints>
             <point key="canvasLocation" x="131.8840579710145" y="113.83928571428571"/>
         </view>

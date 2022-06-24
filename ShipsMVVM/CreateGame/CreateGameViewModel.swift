@@ -14,6 +14,7 @@ protocol CreateGameViewModelDelegate: AnyObject {
     func sayNoYouCantDoingLikeThat(_ createGameViewModel: CreateGameViewModelProtocol, message: String)
     func sendMessage(_ createGameViewModel: CreateGameViewModelProtocol, owner: String, message: String)
     func sendInfoAboutDeployingPossibility(_ createGameViewModel: CreateGameViewModelProtocol, info: deployPossibility)
+    func sendInfoThatStartGameButtonCanAppear(_ createGameViewModel: CreateGameViewModelProtocol)
 }
 
 protocol CreateGameViewModelProtocol: AnyObject {
@@ -21,6 +22,7 @@ protocol CreateGameViewModelProtocol: AnyObject {
     func sendHumanSea()
     func validateStartGamePossibility() -> Bool
     func checkDeployingPossibilityWithoutDeploying(fieldIndex: Int)
+    func checkStartGameButtonAppearanceCounter()
 }
 
 final class CreateGameViewModel: CreateGameViewModelProtocol {
@@ -35,6 +37,7 @@ final class CreateGameViewModel: CreateGameViewModelProtocol {
     var humanPlayer: Player?
     var computerPlayer: Player?
     var counter: Int
+    var startGameAppearanceButtonCounter: Int
     
     init(model: CreateGameModelProtocol){
         self.model = model
@@ -45,6 +48,7 @@ final class CreateGameViewModel: CreateGameViewModelProtocol {
         column = 0
         sea = []
         counter = 0
+        startGameAppearanceButtonCounter = 0
         model.createGameModelDelegate = self
         model.sendHumanPlayer()
         model.sendComputerPlayer()
@@ -296,11 +300,20 @@ extension CreateGameViewModel {
 
         }
         return true
-        
-        
-        
-        
     }
     
+    func checkStartGameButtonAppearanceCounter() {
+        guard startGameAppearanceButtonCounter == 0 else {return}
+        for i in 0...9 {
+            for j in 0...9 {
+                if humanPlayer?.getSea()[i][j].getState() == .occupied {
+                    startGameAppearanceButtonCounter += 1
+                }
+            }
+        }
+        if startGameAppearanceButtonCounter >= 2 {
+            createGameViewModelDelegate?.sendInfoThatStartGameButtonCanAppear(self)
+        }
+    }
     
 }

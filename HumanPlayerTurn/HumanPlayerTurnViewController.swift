@@ -88,8 +88,8 @@ func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection s
 func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = humanPlayerSeaCollectionView.dequeueReusableCell(withReuseIdentifier: "PlayerTurnCustomCollectionViewCell",
                                               for: indexPath) as! CustomCollectionViewCell
-    let row = getRow(enter: indexPath.row)
-    let column = getColumn(enter: indexPath.row)
+    let row = getRow(forIndexPathRowValue: indexPath.row)
+    let column = getColumn(forIndexPathRowValue: indexPath.row)
     let temporaryState = (humanPlayerEnemySeaMatrix![row][column].getState())
     cell.actualizeState(newState: temporaryState)
     return cell

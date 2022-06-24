@@ -33,13 +33,13 @@ enum deployPossibility {
 }
     
 
-func getColumn(enter: Int) -> Int {
-    let numberOfTheRow = Int(enter/10)
+func getColumn(forIndexPathRowValue: Int) -> Int {
+    let numberOfTheRow = Int(forIndexPathRowValue/10)
     return numberOfTheRow
 }
 
-func getRow(enter: Int) -> Int {
-    let numberOfTheColumn: Int = enter % 10
+func getRow(forIndexPathRowValue: Int) -> Int {
+    let numberOfTheColumn: Int = forIndexPathRowValue % 10
     return numberOfTheColumn
 }
 

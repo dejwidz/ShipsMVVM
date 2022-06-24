@@ -92,8 +92,8 @@ extension HumanPlayerTurnViewModel {
         guard antiCunningProtector! && gameOverIndicator else {return false}
         
         antiCunningProtector = false
-        let row = getRow(enter: index)
-        let column = getColumn(enter: index)
+        let row = getRow(forIndexPathRowValue: index)
+        let column = getColumn(forIndexPathRowValue: index)
         var displayComputerViewController = true
         guard turnIndicator == .humanPlayerTurn else {return true}
         

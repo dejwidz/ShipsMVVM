@@ -103,8 +103,8 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = projectSea.dequeueReusableCell(withReuseIdentifier: "customCell",
                                                   for: indexPath) as! CustomCollectionViewCell
-        let row = getRow(enter: indexPath.row)
-        let column = getColumn(enter: indexPath.row)
+        let row = getRow(forIndexPathRowValue: indexPath.row)
+        let column = getColumn(forIndexPathRowValue: indexPath.row)
         let temporaryState = (humanPlayer?.getSea()[row][column].getState())!
         cell.actualizeState(newState: temporaryState)
         return cell
@@ -132,12 +132,13 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
         else {
             cell?.contentView.backgroundColor = UIColor.orange
         }
-    
     }
     
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
         let cell = projectSea.cellForItem(at: indexPath)
         cell?.contentView.backgroundColor = .systemTeal
+        deployPossibility = .unknown
+        projectSea.reloadData()
     }
     
 }

@@ -228,8 +228,8 @@ extension ComputerPlayerTurnViewModel {
     
     func computerPlayerShot() {
         let nextShotField = prepareToShot()
-        let row = getRow(enter: nextShotField)
-        let column = getColumn(enter: nextShotField)
+        let row = getRow(forIndexPathRowValue: nextShotField)
+        let column = getColumn(forIndexPathRowValue: nextShotField)
         
         guard turnIndicator == .computerPlayerTurn && gameOverIndicator else {return}
         
@@ -286,8 +286,8 @@ extension ComputerPlayerTurnViewModel {
         var nextShotPossibility = false
         while nextShotPossibility == false {
             indexOfNextFieldToShot = Int.random(in: 0...99)
-            let row = getRow(enter: indexOfNextFieldToShot)
-            let column = getColumn(enter: indexOfNextFieldToShot)
+            let row = getRow(forIndexPathRowValue: indexOfNextFieldToShot)
+            let column = getColumn(forIndexPathRowValue: indexOfNextFieldToShot)
             nextShotPossibility = isShootingToThisFieldWise(row: row, column: column)
         }
         return indexOfNextFieldToShot

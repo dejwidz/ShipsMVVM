@@ -224,8 +224,8 @@ extension CreateGameViewModel {
 
 
     func tryReplaceShip(player: Player, field: Int, orientation: orientation, size: Int, id: Int) -> Bool {
-        let row = getRow(enter: field)
-        let column = getColumn(enter: field)
+        let row = getRow(forIndexPathRowValue: field)
+        let column = getColumn(forIndexPathRowValue: field)
 
         if orientation == .vertical {
             guard checkVerticalReplacementPossibility(sea: player.getSea(), column: column, row: row, shipSize: size) else {
@@ -281,8 +281,8 @@ extension CreateGameViewModel {
     }
     
     func checkDeployingPossibilityButWithoutDeploying(fieldIndex: Int) -> Bool {
-        let row = getRow(enter: fieldIndex)
-        let column = getColumn(enter: fieldIndex)
+        let row = getRow(forIndexPathRowValue: fieldIndex)
+        let column = getColumn(forIndexPathRowValue: fieldIndex)
 
         if nextShipOrientation == .vertical {
             guard checkVerticalReplacementPossibility(sea: (humanPlayer?.getSea())!, column: column, row: row, shipSize: nextShipSize) else {

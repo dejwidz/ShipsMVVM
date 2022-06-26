@@ -82,7 +82,7 @@ extension ComputerPlayerTurnViewController: ComputerPlayerTurnViewModelDelegate 
         else if stateOfNextFieldToShot == .hitOccupied {
             animation.toValue = UIColor.red.cgColor
         }
-        animation.duration = 1
+        animation.duration = 0.8
         cell?.contentView.layer.add(animation, forKey: nil)
     }
     
@@ -92,7 +92,7 @@ extension ComputerPlayerTurnViewController: ComputerPlayerTurnViewModelDelegate 
     
     func sayIHaveMissed(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol) {
         computerVCDelegate?.sayComputerPlayerMissed(self)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.8) {
             self.navigationController?.popViewController(animated: true)
         }
         

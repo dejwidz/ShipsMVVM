@@ -129,10 +129,10 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
         else if lastShotValidation == .hitOccupied {
             animation.toValue = UIColor.red.cgColor
         }
-        animation.duration = 1
+        animation.duration = 0.8
                 cell?.contentView.layer.add(animation, forKey: nil)
         guard nextScreenDisplayPossibility else {return}
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) { [self] in
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.8) { [self] in
             navigationController?.pushViewController(vcComputerPlayerTurn, animated: true)
         }
     }

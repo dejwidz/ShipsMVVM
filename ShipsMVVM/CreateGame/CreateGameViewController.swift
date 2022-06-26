@@ -122,7 +122,7 @@ final class CreateGameViewController: UIViewController {
         animation.fillMode = .forwards
         animation.fromValue = cell?.contentView.backgroundColor?.cgColor
         animation.toValue = toColor.cgColor
-        animation.duration = 0.2
+        animation.duration = 0.15
         cell?.contentView.layer.add(animation, forKey: nil)
         let indexOfNextFieldToAnimate: Int
         if orientation == .horizontal {
@@ -133,7 +133,7 @@ final class CreateGameViewController: UIViewController {
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             let sizeCounter = size - 1
-            if sizeCounter > 0 {
+            if sizeCounter > 0 && getRow(forIndexPathRowValue: index) > 0 {
                 self.animateDeployingPossibility(index: indexOfNextFieldToAnimate, size: sizeCounter, orientation: orientation, possibility: possibility)
                 print(sizeCounter)
             }

@@ -84,7 +84,6 @@ final class CreateGameViewController: UIViewController {
     }
     
     @IBAction func startGameButtonTapped(_ sender: Any) {
-        
         guard viewModel.validateStartGamePossibility() else {return}
         vcHumanPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
         vcHumanPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
@@ -104,7 +103,6 @@ final class CreateGameViewController: UIViewController {
     }
     
     func animateDeployingPossibility(index: Int, size: Int, orientation: orientation, possibility: Bool) {
-        
         guard isCellStillHighlighted else {return}
         
         let indexOfFieldToAnimate = NSIndexPath(row: index, section: 0)
@@ -135,7 +133,6 @@ final class CreateGameViewController: UIViewController {
             let sizeCounter = size - 1
             if sizeCounter > 0 && getRow(forIndexPathRowValue: index) > 0 {
                 self.animateDeployingPossibility(index: indexOfNextFieldToAnimate, size: sizeCounter, orientation: orientation, possibility: possibility)
-                print(sizeCounter)
             }
         }
         
@@ -200,7 +197,6 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
 extension CreateGameViewController: CreateGameViewModelDelegate {
     func sendInfoForAnimation(_ createGameViewModel: CreateGameViewModelProtocol, rowValueOfIndex: Int, size: Int, orientation: orientation, possibilityIndicator: Bool) {
         animateDeployingPossibility(index: rowValueOfIndex, size: size, orientation: orientation, possibility: possibilityIndicator)
-        print("ONE")
     }
     
     func sendInfoThatStartGameButtonCanAppear(_ createGameViewModel: CreateGameViewModelProtocol) {

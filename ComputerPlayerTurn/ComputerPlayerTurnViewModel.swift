@@ -161,7 +161,7 @@ extension ComputerPlayerTurnViewModel {
     
     func radarNorth(row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleNorth(possibleNorth: computerPlayerPossibleNorth ?? [])
+            model.setComputerPlayerPossibleNorth(possibleNorth: computerPlayerPossibleNorth )
             return
         }
         let field = computerPlayerEnemySea![row][column]
@@ -171,13 +171,13 @@ extension ComputerPlayerTurnViewModel {
             radarNorth(row: row - 1, column: column)
         }
         else {
-            model.setComputerPlayerPossibleNorth(possibleNorth: computerPlayerPossibleNorth ?? [])
+            model.setComputerPlayerPossibleNorth(possibleNorth: computerPlayerPossibleNorth )
         }
     }
     
     func radarSouth(row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleSouth(possibleSouth: computerPlayerPossibleSouth ?? [])
+            model.setComputerPlayerPossibleSouth(possibleSouth: computerPlayerPossibleSouth )
             return
         }
         let field = computerPlayerEnemySea![row][column]
@@ -187,13 +187,13 @@ extension ComputerPlayerTurnViewModel {
             radarSouth(row: row + 1, column: column)
         }
         else {
-            model.setComputerPlayerPossibleSouth(possibleSouth: computerPlayerPossibleSouth ?? [])
+            model.setComputerPlayerPossibleSouth(possibleSouth: computerPlayerPossibleSouth )
         }
     }
     
     func radarWest(row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleWest(possibleWest: computerPlayerPossibleWest ?? [])
+            model.setComputerPlayerPossibleWest(possibleWest: computerPlayerPossibleWest )
             return
         }
         let field = computerPlayerEnemySea![row][column]
@@ -203,13 +203,13 @@ extension ComputerPlayerTurnViewModel {
             radarWest(row: row, column: column - 1)
         }
         else {
-            model.setComputerPlayerPossibleWest(possibleWest: computerPlayerPossibleWest ?? [])
+            model.setComputerPlayerPossibleWest(possibleWest: computerPlayerPossibleWest )
         }
     }
     
     func radarEast(row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleEast(possibleEast: computerPlayerPossibleEast ?? [])
+            model.setComputerPlayerPossibleEast(possibleEast: computerPlayerPossibleEast )
             return
         }
         let field = computerPlayerEnemySea![row][column]
@@ -219,7 +219,7 @@ extension ComputerPlayerTurnViewModel {
             radarEast(row: row, column: column + 1)
         }
         else {
-            model.setComputerPlayerPossibleEast(possibleEast: computerPlayerPossibleEast ?? [])
+            model.setComputerPlayerPossibleEast(possibleEast: computerPlayerPossibleEast )
         }
     }
     

@@ -125,15 +125,18 @@ final class CreateGameViewController: UIViewController {
         animation.duration = 0.15
         cell?.contentView.layer.add(animation, forKey: nil)
         let indexOfNextFieldToAnimate: Int
+        let conditionOfSaveAcces: Bool
         if orientation == .horizontal {
             indexOfNextFieldToAnimate = index + 10
+            conditionOfSaveAcces = true
         }
         else {
             indexOfNextFieldToAnimate = index - 1
+            conditionOfSaveAcces = getRow(forIndexPathRowValue: index) > 0
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             let sizeCounter = size - 1
-            if sizeCounter > 0 && getRow(forIndexPathRowValue: index) > 0 {
+            if sizeCounter > 0 && conditionOfSaveAcces {
                 self.animateDeployingPossibility(index: indexOfNextFieldToAnimate, size: sizeCounter, orientation: orientation, possibility: possibility)
             }
         }

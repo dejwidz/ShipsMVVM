@@ -129,7 +129,7 @@ extension CreateGameViewModel {
     }
 
     func checkIfSurroundingFieldsAreFree(sea: [[Field]], column: Int, row: Int) -> Bool {
-        var replacingPossibility = checkIfSurroudingFieldIsFree(sea: sea, column: column - 1, row: row - 1) &&
+        let replacingPossibility = checkIfSurroudingFieldIsFree(sea: sea, column: column - 1, row: row - 1) &&
         checkIfSurroudingFieldIsFree(sea: sea, column: column, row: row - 1) &&
         checkIfSurroudingFieldIsFree(sea: sea, column: column + 1, row: row - 1) &&
         checkIfSurroudingFieldIsFree(sea: sea, column: column - 1, row: row) &&
@@ -183,12 +183,10 @@ extension CreateGameViewModel {
 
     func placeShipVertically(sea: [[Field]], column: Int, row: Int, size: Int, id: Int, player: Player) {
         var temporaryFields: [Field] = []
-        var column = column
+        let column = column
         var row = row
-        var temporaryColumn = column
-        var temporaryRow = row
         for _ in 0...size - 1 {
-            var temporaryField = sea[row][column]
+            let temporaryField = sea[row][column]
             temporaryFields.append(temporaryField)
             row -= 1
         }
@@ -197,12 +195,11 @@ extension CreateGameViewModel {
 
     func placeShipHorizontally(sea: [[Field]], column: Int, row: Int, size: Int, id: Int, player: Player) {
         var temporaryFields: [Field] = []
-        var temporaryColumn = column
+        _ = column
         var column = column
-        var row = row
-        var temporaryRow = row
+        let row = row
         for _ in 0...size - 1 {
-            var temporaryField = sea[row][column]
+            let temporaryField = sea[row][column]
             temporaryFields.append(temporaryField)
             column += 1
         }

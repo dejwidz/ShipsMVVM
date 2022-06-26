@@ -89,11 +89,13 @@ final class CreateGameViewController: UIViewController {
         vcHumanPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
         navigationController?.pushViewController(vcHumanPlayerTurn, animated: true)
     }
+    
     func showMessage(message: String) {
         let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alert, animated: true)
     }
+    
     
     func AnimateStartButtonApperance() {
         UIView.animate(withDuration: 2) {

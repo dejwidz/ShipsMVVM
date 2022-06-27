@@ -116,7 +116,7 @@ final class CreateGameViewController: UIViewController {
         else {
             toColor = UIColor.orange
         }
-   
+        
         let animation = CABasicAnimation(keyPath: "backgroundColor")
         animation.isRemovedOnCompletion = false
         animation.fillMode = .forwards
@@ -140,14 +140,12 @@ final class CreateGameViewController: UIViewController {
                 self.animateDeployingPossibility(index: indexOfNextFieldToAnimate, size: sizeCounter, orientation: orientation, possibility: possibility)
             }
         }
-        
     }
-    
 }
 
 extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
-                                        UICollectionViewDelegate,
-                                        UICollectionViewDataSource {
+                                    UICollectionViewDelegate,
+                                    UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 100
     }
@@ -179,19 +177,10 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         isCellStillHighlighted = true
         viewModel.checkDeployingPossibilityWithoutDeploying(fieldIndex: indexPath.row)
-        let cell = projectSea.cellForItem(at: indexPath)
-        if deployPossibility == .possible {
-            cell?.contentView.backgroundColor = UIColor.green
-        }
-        else {
-            cell?.contentView.backgroundColor = UIColor.orange
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
         isCellStillHighlighted = false
-        let cell = projectSea.cellForItem(at: indexPath)
-        cell?.contentView.backgroundColor = .systemTeal
         deployPossibility = .unknown
         projectSea.reloadData()
     }

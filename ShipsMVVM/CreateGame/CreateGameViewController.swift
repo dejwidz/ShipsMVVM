@@ -36,11 +36,12 @@ final class CreateGameViewController: UIViewController {
         projectSea.delegate = self
         projectSea.dataSource = self
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 4
+        let width: CGFloat = UIScreen.main.bounds.width
+        layout.minimumLineSpacing = width * 0.00935
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 4
-        let width: CGFloat = view.frame.width
-        let frame = CGRect(x: 20, y: 100, width: width, height: width )
+        layout.minimumInteritemSpacing = width * 0.00935
+        let naviHeight = (navigationController?.navigationBar.bounds.height)! as CGFloat
+        let frame = CGRect(x: 0, y: naviHeight * 2, width: width, height: width )
         projectSea.frame = frame
         projectSea.collectionViewLayout = layout
     }
@@ -161,7 +162,7 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = view.frame.width * 0.085
+        let size = UIScreen.main.bounds.width * 0.091
         return CGSize(width: size, height: size)
     }
     
@@ -223,6 +224,4 @@ extension CreateGameViewController: CreateGameViewModelDelegate {
         projectSea.reloadData()
         self.humanPlayer = humanPlayer
     }
-    
-    
 }

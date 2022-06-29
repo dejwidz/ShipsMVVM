@@ -29,11 +29,11 @@ class ComputerPlayerTurnViewController: UIViewController {
         computerPlayerSeaCollectionView.delegate = self
         computerPlayerSeaCollectionView.dataSource = self
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 4
+        let width: CGFloat = UIScreen.main.bounds.width
+        layout.minimumLineSpacing = width * 0.00935
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 4
-        let width: CGFloat = view.frame.width
-        let frame = CGRect(x: 25, y: 70, width: width, height: width * 1)
+        layout.minimumInteritemSpacing = width * 0.00935
+        let frame = CGRect(x: 0, y: 100, width: width, height: width )
         computerPlayerSeaCollectionView.frame = frame
         computerPlayerSeaCollectionView.collectionViewLayout = layout
         }
@@ -122,7 +122,7 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
 }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = view.frame.size.width * 0.08
+        let size = UIScreen.main.bounds.width * 0.091
         return CGSize(width: size, height: size)
     }
 

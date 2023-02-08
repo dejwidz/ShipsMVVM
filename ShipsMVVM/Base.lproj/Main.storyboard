@@ -15,31 +15,8 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfV-Eo-Rtz">
-                                <rect key="frame" x="20" y="428" width="374" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="dhh-Aj-auK"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="New Game">
-                                    <backgroundConfiguration key="background" cornerRadius="20">
-                                        <color key="backgroundColor" systemColor="systemTealColor"/>
-                                    </backgroundConfiguration>
-                                    <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="newGameButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dyy-mG-Wm3"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xfV-Eo-Rtz" secondAttribute="trailing" constant="20" id="1WH-zI-sP4"/>
-                            <constraint firstItem="xfV-Eo-Rtz" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="8ve-Sb-mwZ"/>
-                            <constraint firstItem="xfV-Eo-Rtz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="xad-IA-x7a"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="PlN-lX-cLN"/>
                 </viewController>
@@ -69,9 +46,6 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemTealColor">
-            <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

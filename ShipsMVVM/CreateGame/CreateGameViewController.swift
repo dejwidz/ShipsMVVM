@@ -9,12 +9,37 @@ import UIKit
 
 final class CreateGameViewController: UIViewController {
     
-    @IBOutlet private weak var projectSea: UICollectionView!
-    @IBOutlet private weak var orientationSegmentedControl: UISegmentedControl!
-    @IBOutlet private weak var chooseShipSegmentedControl: UISegmentedControl!
-    @IBOutlet private weak var generateShipPositionsButton: UIButton!
-    @IBOutlet private weak var startGameButton: UIButton!
-    @IBOutlet weak var StartGameBottomConstraint: NSLayoutConstraint!
+//    @IBOutlet private weak var projectSea: UICollectionView!
+//    @IBOutlet private weak var orientationSegmentedControl: UISegmentedControl!
+//    @IBOutlet private weak var chooseShipSegmentedControl: UISegmentedControl!
+//    @IBOutlet private weak var generateShipPositionsButton: UIButton!
+//    @IBOutlet private weak var startGameButton: UIButton!
+//    @IBOutlet weak var StartGameBottomConstraint: NSLayoutConstraint!
+    
+    private var mainScrollView: UIScrollView {
+        let scroll = UIScrollView()
+        let w = UIScreen.main.bounds.width
+        let h = UIScreen.main.bounds.height
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.contentSize = CGSize(width: w, height: h)
+        scroll.contentInsetAdjustmentBehavior = .always
+        return scroll
+    }
+    
+    private var projectSea: UICollectionView {
+        let sea = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let w = UIScreen.main.bounds.width
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.itemSize = CGSize(width: w * 0.091, height: w * 0.093)
+        layout.minimumLineSpacing = w * 0.005
+        layout.minimumInteritemSpacing = w * 0.005
+        sea.collectionViewLayout = layout
+        sea.translatesAutoresizingMaskIntoConstraints = false
+        return sea
+    }
+    
+    private var StartGameBottomConstraint = NSLayoutConstraint()
     
     let vcHumanPlayerTurn = HumanPlayerTurnViewController()
     private let viewModel = CreateGameViewModel(model: CreateGameModel())
@@ -27,6 +52,8 @@ final class CreateGameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupInterface()
+        
         viewModel.createGameViewModelDelegate = self
         viewModel.sendHumanSea()
         viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
@@ -35,15 +62,35 @@ final class CreateGameViewController: UIViewController {
         projectSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "customCell")
         projectSea.delegate = self
         projectSea.dataSource = self
-        let layout = UICollectionViewFlowLayout()
-        let width: CGFloat = UIScreen.main.bounds.width
-        layout.minimumLineSpacing = width * 0.00935
-        layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = width * 0.00935
-        let naviHeight = (navigationController?.navigationBar.bounds.height)! as CGFloat
-        let frame = CGRect(x: 0, y: naviHeight * 2, width: width, height: width )
-        projectSea.frame = frame
-        projectSea.collectionViewLayout = layout
+//        let layout = UICollectionViewFlowLayout()
+//        let width: CGFloat = UIScreen.main.bounds.width
+//        layout.minimumLineSpacing = width * 0.00935
+//        layout.scrollDirection = .horizontal
+//        layout.minimumInteritemSpacing = width * 0.00935
+//        let naviHeight = (navigationController?.navigationBar.bounds.height)! as CGFloat
+//        let frame = CGRect(x: 0, y: naviHeight * 2, width: width, height: width )
+//        projectSea.frame = frame
+//        projectSea.collectionViewLayout = layout
+    }
+    
+    private func setupInterface() {
+        let w = UIScreen.main.bounds.width
+        
+        view.addSubview(mainScrollView)
+        mainScrollView.addSubview(projectSea)
+        
+        NSLayoutConstraint.activate([
+            mainScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            mainScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            mainScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            
+            projectSea.topAnchor.constraint(equalTo: mainScrollView.topAnchor),
+            projectSea.centerXAnchor.constraint(equalTo: mainScrollView.centerXAnchor),
+            projectSea.widthAnchor.constraint(equalToConstant: w),
+            projectSea.heightAnchor.constraint(equalToConstant: w),
+            
+        ])
     }
     
     @IBAction func orientationSegmentedControlValueChanged(_ sender: UISegmentedControl) {

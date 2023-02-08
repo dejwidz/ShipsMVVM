@@ -8,14 +8,14 @@
 import Foundation
 
 
-    
+
 enum fieldState {
     case free
     case occupied
     case hit
     case hitOccupied
-    }
-    
+}
+
 enum orientation {
     case vertical
     case horizontal
@@ -31,7 +31,6 @@ enum deployPossibility {
     case impossible
     case unknown
 }
-    
 
 func getColumn(forIndexPathRowValue: Int) -> Int {
     let numberOfTheRow = Int(forIndexPathRowValue/10)
@@ -52,3 +51,5 @@ func ++(firstValue: Int, secondValue: Int) -> Int {
     let combinedInteger = Int(combinedString)
     return combinedInteger!
 }
+
+

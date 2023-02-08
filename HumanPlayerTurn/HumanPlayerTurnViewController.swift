@@ -54,10 +54,10 @@ class HumanPlayerTurnViewController: UIViewController {
     }
     
     func showAlert(message:String) {
-            let alert = UIAlertController(title: "Nice", message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Nice", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            present(alert, animated: true)
-        }
+        present(alert, animated: true)
+    }
 
     func sendInfoToComputerVCThatShipHasBeenDestroyed() {
         vcComputerPlayerTurn.humanPlayerShipHasBeenDestroyed()

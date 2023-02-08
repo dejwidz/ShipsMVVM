@@ -30,7 +30,7 @@ final class CreateGameViewController: UIViewController {
         viewModel.createGameViewModelDelegate = self
         viewModel.sendHumanSea()
         viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
-        StartGameBottomConstraint.constant = 1000
+        StartGameBottomConstraint.constant = UIScreen.main.bounds.height * 1.2
         
         projectSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "customCell")
         projectSea.delegate = self

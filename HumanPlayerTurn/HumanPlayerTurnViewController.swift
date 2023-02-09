@@ -12,11 +12,14 @@ class HumanPlayerTurnViewController: UIViewController {
     private var computerPlayer: Player?
     private var humanPlayerEnemySeaMatrix: [[Field]]?
     private var viewModel = HumanPlayerTurnViewModel(model: HumanPlayerTurnModel())
-    @IBOutlet weak var humanPlayerSeaCollectionView: UICollectionView!
     let vcComputerPlayerTurn = ComputerPlayerTurnViewController()
     private var lastShotValidation: fieldState = .free
     private var indexOfLastShot: IndexPath?
     private var antiCanningProtector = true
+    
+    private var humanPlayerSeaCollectionView: UICollectionView!
+    private var mainScrollView: UIScrollView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,20 +28,52 @@ class HumanPlayerTurnViewController: UIViewController {
         viewModel.updateComputerPlayerInModel(computerPlayer: computerPlayer!)
         vcComputerPlayerTurn.computerVCDelegate = self
 
-        humanPlayerSeaCollectionView.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "PlayerTurnCustomCollectionViewCell")
+        setupInterface()
+        
         humanPlayerSeaCollectionView.delegate = self
         humanPlayerSeaCollectionView.dataSource = self
-        let layout = UICollectionViewFlowLayout()
-        let width: CGFloat = UIScreen.main.bounds.width
-        layout.minimumLineSpacing = width * 0.00935
-        layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = width * 0.00935
-        let frame = CGRect(x: 0, y: 100, width: width, height: width )
-        humanPlayerSeaCollectionView.frame = frame
-        humanPlayerSeaCollectionView.collectionViewLayout = layout
         
         vcComputerPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
         vcComputerPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
+    }
+    
+    private func setupInterface() {
+        let w = UIScreen.main.bounds.width
+        let h = UIScreen.main.bounds.height
+        view.backgroundColor = CustomColors.backColor
+        
+        mainScrollView = UIScrollView()
+        mainScrollView.translatesAutoresizingMaskIntoConstraints = false
+        mainScrollView.contentInsetAdjustmentBehavior = .always
+        mainScrollView.backgroundColor = CustomColors.backColor
+        mainScrollView.contentSize = CGSize(width: w, height: w)
+        mainScrollView.isDirectionalLockEnabled = true
+        
+        humanPlayerSeaCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        humanPlayerSeaCollectionView.register(PlayerTurnCustomCollectionViewCell.self, forCellWithReuseIdentifier: "PlayerTurnCustomCollectionViewCell")
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: w * 0.091, height: w * 0.093)
+        layout.minimumLineSpacing = w * 0.008
+        layout.minimumInteritemSpacing = w * 0.005
+        layout.scrollDirection = .horizontal
+        humanPlayerSeaCollectionView.collectionViewLayout = layout
+        humanPlayerSeaCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        humanPlayerSeaCollectionView.backgroundColor = CustomColors.backColor
+        
+        view.addSubview(mainScrollView)
+        mainScrollView.addSubview(humanPlayerSeaCollectionView)
+        
+        NSLayoutConstraint.activate([
+            mainScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mainScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            mainScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            mainScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            
+            humanPlayerSeaCollectionView.topAnchor.constraint(equalTo: mainScrollView.topAnchor),
+            humanPlayerSeaCollectionView.centerXAnchor.constraint(equalTo: mainScrollView.centerXAnchor),
+            humanPlayerSeaCollectionView.widthAnchor.constraint(equalToConstant: w),
+            humanPlayerSeaCollectionView.heightAnchor.constraint(equalToConstant: w),
+        ])
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,37 +135,32 @@ func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection s
 
 func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = humanPlayerSeaCollectionView.dequeueReusableCell(withReuseIdentifier: "PlayerTurnCustomCollectionViewCell",
-                                              for: indexPath) as! CustomCollectionViewCell
+                                              for: indexPath) as! PlayerTurnCustomCollectionViewCell
     let row = getRow(forIndexPathRowValue: indexPath.row)
     let column = getColumn(forIndexPathRowValue: indexPath.row)
     let temporaryState = (humanPlayerEnemySeaMatrix![row][column].getState())
     cell.actualizeState(newState: temporaryState)
     return cell
 }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = UIScreen.main.bounds.width * 0.091
-        return CGSize(width: size, height: size)
-    }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard antiCanningProtector else {return}
         antiCanningProtector = false
         indexOfLastShot = indexPath
         var nextScreenDisplayPossibility = viewModel.humanPlayerShot(index: indexPath.row)
-        let cell = humanPlayerSeaCollectionView.cellForItem(at: indexPath)
+        let cell = humanPlayerSeaCollectionView.cellForItem(at: indexPath) as! PlayerTurnCustomCollectionViewCell
                 let animation = CABasicAnimation(keyPath: "backgroundColor")
                 animation.isRemovedOnCompletion = false
                 animation.fillMode = .forwards
-                animation.fromValue = cell?.contentView.backgroundColor?.cgColor
+        animation.fromValue = cell.contentView.backgroundColor?.cgColor
         if lastShotValidation == .free {
-            animation.toValue = UIColor.yellow.cgColor
+            animation.toValue = CustomColors.hitColor?.cgColor
         }
         else if lastShotValidation == .hitOccupied {
-            animation.toValue = UIColor.red.cgColor
+            animation.toValue = CustomColors.hitOccupiedColor?.cgColor
         }
         animation.duration = 0.8
-                cell?.contentView.layer.add(animation, forKey: nil)
+        cell.contentView.layer.add(animation, forKey: nil)
         guard nextScreenDisplayPossibility else {return}
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.8) { [self] in
             navigationController?.pushViewController(vcComputerPlayerTurn, animated: true)

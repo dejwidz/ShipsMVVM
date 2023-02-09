@@ -24,13 +24,13 @@ class ComputerTurnCustomCollectionViewCell: UICollectionViewCell {
         state = newState
         switch state {
             case .free:
-                contentView.backgroundColor = .systemTeal
+            contentView.backgroundColor = CustomColors.tealAndGrayblue
             case .occupied:
-                contentView.backgroundColor = .systemGray
+            contentView.backgroundColor = CustomColors.occupiedColor
             case .hit:
-                contentView.backgroundColor = .yellow
+            contentView.backgroundColor = CustomColors.hitColor
             case .hitOccupied:
-                contentView.backgroundColor = .red
+            contentView.backgroundColor = CustomColors.hitOccupiedColor
         }
     }
     

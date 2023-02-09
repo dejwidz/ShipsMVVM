@@ -9,39 +9,16 @@ import UIKit
 
 final class CreateGameViewController: UIViewController {
     
-//    @IBOutlet private weak var projectSea: UICollectionView!
-//    @IBOutlet private weak var orientationSegmentedControl: UISegmentedControl!
-//    @IBOutlet private weak var chooseShipSegmentedControl: UISegmentedControl!
-//    @IBOutlet private weak var generateShipPositionsButton: UIButton!
-//    @IBOutlet private weak var startGameButton: UIButton!
-//    @IBOutlet weak var StartGameBottomConstraint: NSLayoutConstraint!
-    
-    private var mainScrollView: UIScrollView {
-        let scroll = UIScrollView()
-        let w = UIScreen.main.bounds.width
-        let h = UIScreen.main.bounds.height
-        scroll.translatesAutoresizingMaskIntoConstraints = false
-        scroll.contentSize = CGSize(width: w, height: h)
-        scroll.contentInsetAdjustmentBehavior = .always
-        return scroll
-    }
-    
-    private var projectSea: UICollectionView {
-        let sea = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        let w = UIScreen.main.bounds.width
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: w * 0.091, height: w * 0.093)
-        layout.minimumLineSpacing = w * 0.005
-        layout.minimumInteritemSpacing = w * 0.005
-        sea.collectionViewLayout = layout
-        sea.translatesAutoresizingMaskIntoConstraints = false
-        return sea
-    }
+    private var mainScrollView: UIScrollView!
+    private var projectSea: UICollectionView!
+    private var orientationSegmentedControl: UISegmentedControl!
+    private var chooseShipSegmentedControl: UISegmentedControl!
+    private var generateShipPositionsButton: UIButton!
+    private var startGameButton: UIButton!
     
     private var StartGameBottomConstraint = NSLayoutConstraint()
     
-    let vcHumanPlayerTurn = HumanPlayerTurnViewController()
+    private let vcHumanPlayerTurn = HumanPlayerTurnViewController()
     private let viewModel = CreateGameViewModel(model: CreateGameModel())
     private var projectSeaMatrix: [[Field]] = []
     private var humanPlayer: Player?
@@ -59,25 +36,77 @@ final class CreateGameViewController: UIViewController {
         viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
         StartGameBottomConstraint.constant = UIScreen.main.bounds.height * 1.2
         
-        projectSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "customCell")
         projectSea.delegate = self
         projectSea.dataSource = self
-//        let layout = UICollectionViewFlowLayout()
-//        let width: CGFloat = UIScreen.main.bounds.width
-//        layout.minimumLineSpacing = width * 0.00935
-//        layout.scrollDirection = .horizontal
-//        layout.minimumInteritemSpacing = width * 0.00935
-//        let naviHeight = (navigationController?.navigationBar.bounds.height)! as CGFloat
-//        let frame = CGRect(x: 0, y: naviHeight * 2, width: width, height: width )
-//        projectSea.frame = frame
-//        projectSea.collectionViewLayout = layout
     }
     
     private func setupInterface() {
         let w = UIScreen.main.bounds.width
+        let h = UIScreen.main.bounds.height
+        
+        view.backgroundColor = CustomColors.backColor
+        
+        mainScrollView = UIScrollView()
+        mainScrollView.translatesAutoresizingMaskIntoConstraints = false
+        mainScrollView.contentInsetAdjustmentBehavior = .always
+        mainScrollView.backgroundColor = CustomColors.backColor
+        mainScrollView.contentSize = CGSize(width: w, height: h)
+        mainScrollView.isDirectionalLockEnabled = true
+        
+        projectSea = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        projectSea.translatesAutoresizingMaskIntoConstraints = false
+        projectSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "customCell")
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.itemSize = CGSize(width: w * 0.091, height: w * 0.093)
+        layout.minimumLineSpacing = w * 0.005
+        layout.minimumInteritemSpacing = w * 0.005
+        layout.scrollDirection = .vertical
+        projectSea.collectionViewLayout = layout
+        projectSea.backgroundColor = CustomColors.backColor
+        
+        orientationSegmentedControl = UISegmentedControl(items: ["Horizontal", "Vertical"])
+        orientationSegmentedControl.selectedSegmentIndex = 0
+        orientationSegmentedControl.backgroundColor = CustomColors.tealAndGrayblue
+        orientationSegmentedControl.selectedSegmentTintColor = CustomColors.tealAndGrayblue
+        UISegmentedControl.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: CustomColors.fontColor], for: .normal)
+        UISegmentedControl.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: CustomColors.fontColor], for: .selected)
+        orientationSegmentedControl.addTarget(self, action: #selector(orientationSegmentedControlValueChanged(_:)), for: .valueChanged)
+        orientationSegmentedControl.layer.cornerRadius = h * 0.025
+        orientationSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        
+        chooseShipSegmentedControl = UISegmentedControl(items: ["Ship 2", "Ship3", "Ship3", "Ship4", "Ship5"])
+        chooseShipSegmentedControl.selectedSegmentIndex = 0
+        chooseShipSegmentedControl.backgroundColor = CustomColors.tealAndGrayblue
+        chooseShipSegmentedControl.selectedSegmentTintColor = CustomColors.tealAndGrayblue
+        UISegmentedControl.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: CustomColors.fontColor], for: .normal)
+        UISegmentedControl.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: CustomColors.fontColor], for: .selected)
+        chooseShipSegmentedControl.addTarget(self, action: #selector(chooseShipSegmentedControlValueChanged(_:)), for: .valueChanged)
+        chooseShipSegmentedControl.layer.cornerRadius = h * 0.025
+        chooseShipSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        
+        generateShipPositionsButton = UIButton()
+        generateShipPositionsButton.translatesAutoresizingMaskIntoConstraints = false
+        generateShipPositionsButton.setTitle("Generate Ship Positions", for: .normal)
+        generateShipPositionsButton.setTitleColor(CustomColors.fontColor, for: .normal)
+        generateShipPositionsButton.backgroundColor = CustomColors.tealAndGrayblue
+        generateShipPositionsButton.layer.cornerRadius = h * 0.025
+        generateShipPositionsButton.addTarget(self, action: #selector(generateShipSPositionsButtonTapped(_:)), for: .touchUpInside)
+        
+        startGameButton = UIButton()
+        startGameButton.translatesAutoresizingMaskIntoConstraints = false
+        startGameButton.setTitle("Start Game", for: .normal)
+        startGameButton.setTitleColor(CustomColors.fontColor, for: .normal)
+        startGameButton.backgroundColor = CustomColors.tealAndGrayblue
+        startGameButton.layer.cornerRadius = h * 0.025
+        startGameButton.addTarget(self, action: #selector(startGameButtonTapped(_:)), for: .touchUpInside)
         
         view.addSubview(mainScrollView)
         mainScrollView.addSubview(projectSea)
+        mainScrollView.addSubview(orientationSegmentedControl)
+        mainScrollView.addSubview(chooseShipSegmentedControl)
+        mainScrollView.addSubview(generateShipPositionsButton)
+        mainScrollView.addSubview(startGameButton)
         
         NSLayoutConstraint.activate([
             mainScrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -90,7 +119,28 @@ final class CreateGameViewController: UIViewController {
             projectSea.widthAnchor.constraint(equalToConstant: w),
             projectSea.heightAnchor.constraint(equalToConstant: w),
             
+            orientationSegmentedControl.topAnchor.constraint(equalTo: projectSea.bottomAnchor, constant: h * 0.05),
+            orientationSegmentedControl.centerXAnchor.constraint(equalTo: mainScrollView.centerXAnchor),
+            orientationSegmentedControl.widthAnchor.constraint(equalTo: projectSea.widthAnchor, multiplier: 0.9),
+            orientationSegmentedControl.heightAnchor.constraint(equalToConstant: h * 0.05),
+            
+            chooseShipSegmentedControl.topAnchor.constraint(equalTo: orientationSegmentedControl.bottomAnchor, constant: h * 0.05),
+            chooseShipSegmentedControl.centerXAnchor.constraint(equalTo: mainScrollView.centerXAnchor),
+            chooseShipSegmentedControl.widthAnchor.constraint(equalTo: orientationSegmentedControl.widthAnchor),
+            chooseShipSegmentedControl.heightAnchor.constraint(equalTo: orientationSegmentedControl.heightAnchor),
+            
+            generateShipPositionsButton.topAnchor.constraint(equalTo: chooseShipSegmentedControl.bottomAnchor, constant: h * 0.05),
+            generateShipPositionsButton.centerXAnchor.constraint(equalTo: mainScrollView.centerXAnchor),
+            generateShipPositionsButton.widthAnchor.constraint(equalTo: chooseShipSegmentedControl.widthAnchor),
+            generateShipPositionsButton.heightAnchor.constraint(equalTo: chooseShipSegmentedControl.heightAnchor),
+            
+            startGameButton.centerXAnchor.constraint(equalTo: mainScrollView.centerXAnchor),
+            startGameButton.widthAnchor.constraint(equalTo: generateShipPositionsButton.widthAnchor),
+            startGameButton.heightAnchor.constraint(equalTo: generateShipPositionsButton.heightAnchor)
         ])
+        
+        StartGameBottomConstraint = startGameButton.topAnchor.constraint(equalTo: generateShipPositionsButton.bottomAnchor, constant: -2000)
+        StartGameBottomConstraint.isActive = true
     }
     
     @IBAction func orientationSegmentedControlValueChanged(_ sender: UISegmentedControl) {
@@ -146,8 +196,12 @@ final class CreateGameViewController: UIViewController {
     
     
     func AnimateStartButtonApperance() {
+        let h = UIScreen.main.bounds.height
         UIView.animate(withDuration: 2) {
-            self.StartGameBottomConstraint.constant = 40
+            self.StartGameBottomConstraint.isActive = false
+            NSLayoutConstraint.activate([
+                self.startGameButton.topAnchor.constraint(equalTo: self.generateShipPositionsButton.bottomAnchor, constant: h * 0.05)
+            ])
             self.view.layoutIfNeeded()
         }
     }
@@ -159,10 +213,10 @@ final class CreateGameViewController: UIViewController {
         let cell = projectSea.cellForItem(at: indexOfFieldToAnimate as IndexPath)
         let toColor: UIColor
         if possibility {
-            toColor = UIColor.green
+            toColor = CustomColors.freeDeploymentColor ?? .green
         }
         else {
-            toColor = UIColor.orange
+            toColor = CustomColors.occupiedDeploymentColor ?? .orange
         }
         
         let animation = CABasicAnimation(keyPath: "backgroundColor")
@@ -208,10 +262,10 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = UIScreen.main.bounds.width * 0.091
-        return CGSize(width: size, height: size)
-    }
+    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    //        let size = UIScreen.main.bounds.width * 0.091
+    //        return CGSize(width: size, height: size)
+    //    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.checkDeployingPossibility(index: indexPath.row, shipId: viewModel.nextShipId, shipSize: viewModel.nextShipSize, orientation: viewModel.nextShipOrientation)

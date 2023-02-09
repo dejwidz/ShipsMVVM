@@ -10,10 +10,12 @@ import UIKit
 
 struct CustomColors {
     
-    static var backColor = UIColor(named: "backColor")
-    static var fontColor = UIColor(named: "fontColor")
-    static var freeColor = UIColor(named: "freeColor")
-    static var hitColor = UIColor(named: "hitColor")
-    static var hitOccupiedColor = UIColor(named: "hitoccupiedColor")
-    static var tealAndGrayblue = UIColor(named: "teal&grayblue")
+    static let backColor = UIColor(named: "backColor")
+    static let fontColor = UIColor(named: "fontColor")
+    static let freeDeploymentColor = UIColor(named: "freeDeploymentColor")
+    static let hitColor = UIColor(named: "hitColor")
+    static let hitOccupiedColor = UIColor(named: "hitoccupiedColor")
+    static let tealAndGrayblue = UIColor(named: "teal&grayblue")
+    static let occupiedColor = UIColor(named: "occupiedColor")
+    static let occupiedDeploymentColor = UIColor(named: "occupiedDeploymentColor")
 }

@@ -84,7 +84,6 @@ extension HumanPlayerTurnViewModel: HumanPlayerTurnModelDelegate {
         antiCunningProtector = true
         turnIndicator = .humanPlayerTurn
     }
-    
 }
 
 extension HumanPlayerTurnViewModel {

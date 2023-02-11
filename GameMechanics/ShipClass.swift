@@ -31,7 +31,7 @@ final class Ship {
         isLive = true
     }
     
-    func checkIfTheShipisStillAlive() -> Bool {
+  @discardableResult func checkIfTheShipisStillAlive() -> Bool {
         var shipIsStillAlive = false
         for i in fields {
             if i.getState() == .occupied {

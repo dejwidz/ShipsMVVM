@@ -50,7 +50,7 @@ final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
     
     var computerPlayerTurnModelDelegate: ComputerPlayerTurnModelDelegate?
     private var computerPlayer: Player?
-    private var humanPlayer: Player? 
+    private var humanPlayer: Player?
     
     init(){
         computerPlayer?.playerDelegate = self
@@ -76,42 +76,42 @@ final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
     func setComputerPlayerPossibleNorth(possibleNorth: [Int]) {
         computerPlayer?.setPossibleNorth(possibleNorth: possibleNorth)
         computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleNorth(self, possibleNorth: (computerPlayer?.getPossibleNorth())!)
-        }
-        
-        func setComputerPlayerPossibleSouth(possibleSouth: [Int]) {
-            computerPlayer?.setPossibleSouth(possibleSouth: possibleSouth)
-            computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleSouth(self, possibleSouth: (computerPlayer?.getPossibleSouth())!)
-        }
-        
-        func setComputerPlayerPossibleWest(possibleWest: [Int]) {
-            computerPlayer?.setPossibleWest(possibleWest: possibleWest)
-            computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleWest(self, possibleWest: (computerPlayer?.getPossibleWest())!)
-        }
-        
-        func setComputerPlayerPossibleEast(possibleEast: [Int]) {
-            computerPlayer?.setPossibleEast(possibleEast: possibleEast)
-            computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleEast(self, possibleEast: (computerPlayer?.getPossibleEast())!)
-        }
+    }
     
-       func computerPlayerClearNorth() {
-           computerPlayer?.clearNorth()
-           computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleNorth(self, possibleNorth: (computerPlayer?.getPossibleNorth())!)
-       }
-       
-       func computerPlayerClearSouth() {
-           computerPlayer?.clearSouth()
-           computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleSouth(self, possibleSouth: (computerPlayer?.getPossibleSouth())!)
-       }
-       
-       func computerPlayerClearWest() {
-           computerPlayer?.clearWest()
-           computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleWest(self, possibleWest: (computerPlayer?.getPossibleWest())!)
-       }
-       
-       func computerPlayerClearEast() {
-           computerPlayer?.clearEast()
-           computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleEast(self, possibleEast: (computerPlayer?.getPossibleEast())!)
-       }
+    func setComputerPlayerPossibleSouth(possibleSouth: [Int]) {
+        computerPlayer?.setPossibleSouth(possibleSouth: possibleSouth)
+        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleSouth(self, possibleSouth: (computerPlayer?.getPossibleSouth())!)
+    }
+    
+    func setComputerPlayerPossibleWest(possibleWest: [Int]) {
+        computerPlayer?.setPossibleWest(possibleWest: possibleWest)
+        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleWest(self, possibleWest: (computerPlayer?.getPossibleWest())!)
+    }
+    
+    func setComputerPlayerPossibleEast(possibleEast: [Int]) {
+        computerPlayer?.setPossibleEast(possibleEast: possibleEast)
+        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleEast(self, possibleEast: (computerPlayer?.getPossibleEast())!)
+    }
+    
+    func computerPlayerClearNorth() {
+        computerPlayer?.clearNorth()
+        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleNorth(self, possibleNorth: (computerPlayer?.getPossibleNorth())!)
+    }
+    
+    func computerPlayerClearSouth() {
+        computerPlayer?.clearSouth()
+        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleSouth(self, possibleSouth: (computerPlayer?.getPossibleSouth())!)
+    }
+    
+    func computerPlayerClearWest() {
+        computerPlayer?.clearWest()
+        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleWest(self, possibleWest: (computerPlayer?.getPossibleWest())!)
+    }
+    
+    func computerPlayerClearEast() {
+        computerPlayer?.clearEast()
+        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleEast(self, possibleEast: (computerPlayer?.getPossibleEast())!)
+    }
     
     func resetEverythingInComputerPlayerWhenShipOfHumanPlayerIsDestroyed() {
         computerPlayer?.setHitIndicator(newValueOfHitIndicator: false)
@@ -121,7 +121,7 @@ final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
         computerPlayerClearWest()
         computerPlayerClearEast()
     }
-
+    
     func setComputerPlayerEnemySea(newComputerPlayerEnemySea: [[Field]]) {
         computerPlayer?.setEnemySea(newEnemySea: newComputerPlayerEnemySea)
         computerPlayerTurnModelDelegate?.sendComputerPlayerEnemySea(self, computerPlayerEnemySea: (computerPlayer?.getEnemySea())!)
@@ -138,22 +138,22 @@ final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
     func setComputerPlayerNorthIndicator(newNorthIndicator: Bool) {
         computerPlayer?.setNorthIndicator(newNorth: newNorthIndicator)
         computerPlayerTurnModelDelegate?.sendComputerPlayerNorthIndicator(self, currentValueOfNorthIndicator: (computerPlayer?.getNorthIndicator())!)
-       }
-       
-       func setComputerPlayerSouthIndicator(newSouthIndicator: Bool) {
-           computerPlayer?.setSouthIndicator(newSouth: newSouthIndicator)
-           computerPlayerTurnModelDelegate?.sendComputerPlayerSouthIndicator(self, currentValueOfSouthIndicator: (computerPlayer?.getSouthIndicator())!)
-       }
-       
-       func setComputerPlayerWestIndicator(newWestIndicator: Bool) {
-           computerPlayer?.setWestIndicator(newWest: newWestIndicator)
-           computerPlayerTurnModelDelegate?.sendComputerPlayerWestIndicator(self, currentValueOfWestIndicator: (computerPlayer?.getWestIndicator())!)
-       }
-       
-       func setComputerPlayerEastIndicator(newEastIndicator: Bool) {
-           computerPlayer?.setEastIndicator(newEast: newEastIndicator)
-           computerPlayerTurnModelDelegate?.sendComputerPlayerEastIndicator(self, currentValueOfEastIndicator: (computerPlayer?.getEastIndicator())!)
-       }
+    }
+    
+    func setComputerPlayerSouthIndicator(newSouthIndicator: Bool) {
+        computerPlayer?.setSouthIndicator(newSouth: newSouthIndicator)
+        computerPlayerTurnModelDelegate?.sendComputerPlayerSouthIndicator(self, currentValueOfSouthIndicator: (computerPlayer?.getSouthIndicator())!)
+    }
+    
+    func setComputerPlayerWestIndicator(newWestIndicator: Bool) {
+        computerPlayer?.setWestIndicator(newWest: newWestIndicator)
+        computerPlayerTurnModelDelegate?.sendComputerPlayerWestIndicator(self, currentValueOfWestIndicator: (computerPlayer?.getWestIndicator())!)
+    }
+    
+    func setComputerPlayerEastIndicator(newEastIndicator: Bool) {
+        computerPlayer?.setEastIndicator(newEast: newEastIndicator)
+        computerPlayerTurnModelDelegate?.sendComputerPlayerEastIndicator(self, currentValueOfEastIndicator: (computerPlayer?.getEastIndicator())!)
+    }
 }
 
 

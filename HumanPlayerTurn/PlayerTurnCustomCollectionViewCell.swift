@@ -1,14 +1,15 @@
 //
-//  CustomCollectionViewCell.swift
+//  PlayerTurnCustomCollectionViewCell.swift
 //  ShipsMVVM
 //
-//  Created by Dawid Zimoch on 17/05/2022.
+//  Created by Dawid Zimoch on 26/05/2022.
 //
 
 import UIKit
 
-class CustomCollectionViewCell: UICollectionViewCell {
-    let identifier = "customCell"
+class PlayerTurnCustomCollectionViewCell: UICollectionViewCell {
+
+    let identifier = "PlayerTurnCustomCollectionViewCell"
     var state: fieldState = .free
     
     override init(frame: CGRect) {
@@ -26,11 +27,14 @@ class CustomCollectionViewCell: UICollectionViewCell {
                 contentView.backgroundColor = .systemTeal
             case .occupied:
                 contentView.backgroundColor = .systemGray
-            case .hit:
+              case .hit:
                 contentView.backgroundColor = .yellow
             case .hitOccupied:
                 contentView.backgroundColor = .red
         }
     }
-    
+ 
 }
+
+
+

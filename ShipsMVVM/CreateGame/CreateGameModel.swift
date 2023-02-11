@@ -7,100 +7,105 @@
 
 import Foundation
 
-protocol CreateGameModelProtocol {
-    func actualizePlayerSea(player: Player, sea: [[Field]])
-    func sendFirstHumanPlayerSea()
-    func getHumanPlayer() -> Player
-    func getComputerPlayer() -> Player
+protocol CreateGameModelProtocol: AnyObject {
+    var createGameModelDelegate: CreateGameModelDelegate? {get set}
+    func sendHumanPlayerSea()
+    func sendHumanPlayer()
+    func sendComputerPlayer()
+    func actualizePlayer(player: Player)
 }
 
 protocol CreateGameModelDelegate: AnyObject {
-    func humanPlayerSeaHasBeenActualized(_ createGameModel: CreateGameModel, sea: [[Field]])
-    func sendSeaBeforeGame(_ createGameModel: CreateGameModel, sea: [[Field]])
+    func sendHumanPlayerSea(_ createGameModel: CreateGameModelProtocol, humanPlayerSea: [[Field]])
+    func sendHumanPlayer(_ createGameModel: CreateGameModelProtocol, humanPlayer: Player)
+    func sendComputerPlayer(_ createGameModel: CreateGameModelProtocol, computerPlayer: Player)
+    func sendMessage(_ createGameModel: CreateGameModelProtocol, owner: String, message: String)
 }
 
-final class CreateGameModel {
+final class CreateGameModel: CreateGameModelProtocol {
     
     private var humanPlayer: Player
     private var computerPlayer: Player
-    weak var delegate: CreateGameModelDelegate?
     private var humanPlayerSea: [[Field]]
     private var computerPlayerSea: [[Field]]
-
+    weak var createGameModelDelegate: CreateGameModelDelegate?
+    
     init() {
-        
         humanPlayerSea = []
-        for i in 0...9 {
-        var tempArray: [Field] = []
-        for i in 0...9 {
-            var x = Field()
-            tempArray.append(x)
-        }
+        for _ in 0...9 {
+            var tempArray: [Field] = []
+            for _ in 0...9 {
+                let x = Field()
+                tempArray.append(x)
+            }
             humanPlayerSea.append(tempArray)
         }
         
         computerPlayerSea = []
-        for i in 0...9 {
-        var tempArray: [Field] = []
-        for i in 0...9 {
-            var x = Field()
-            tempArray.append(x)
-        }
+        for _ in 0...9 {
+            var tempArray: [Field] = []
+            for _ in 0...9 {
+                let x = Field()
+                tempArray.append(x)
+            }
             computerPlayerSea.append(tempArray)
         }
         
-        var humanPlayerShip2 = Ship(id: 2, size: 2, fields: [])
-        var humanPlayerShip3 = Ship(id: 3, size: 3, fields: [])
-        var humanPlayerShip32 = Ship(id: 32, size: 3, fields: [])
-        var humanPlayerShip4 = Ship(id: 4, size: 4, fields: [])
-        var humanPlayerShip5 = Ship(id: 5, size: 5, fields: [])
-        humanPlayer = Player(sea: humanPlayerSea, ship2: humanPlayerShip2, ship3: humanPlayerShip3, ship32: humanPlayerShip32, ship4: humanPlayerShip4, ship5: humanPlayerShip5)
+        var  humanPlayerEnemySea:[[Field]] = []
+        for _ in 0...9 {
+            var tempArray: [Field] = []
+            for _ in 0...9 {
+                let x = Field()
+                tempArray.append(x)
+            }
+            humanPlayerEnemySea.append(tempArray)
+        }
         
-        var computerPlayerShip2 = Ship(id: 2, size: 2, fields: [])
-        var computerPlayerShip3 = Ship(id: 3, size: 3, fields: [])
-        var computerPlayerShip32 = Ship(id: 32, size: 3, fields: [])
-        var computerPlayerShip4 = Ship(id: 4, size: 4, fields: [])
-        var computerPlayerShip5 = Ship(id: 5, size: 5, fields: [])
-        computerPlayer = Player(sea: computerPlayerSea, ship2: computerPlayerShip2, ship3: computerPlayerShip3, ship32: computerPlayerShip32, ship4: computerPlayerShip4, ship5: computerPlayerShip5)
-        delegate?.sendSeaBeforeGame(self, sea: humanPlayerSea)
+        var  computerPlayerEnemySea:[[Field]] = []
+        for _ in 0...9 {
+            var tempArray: [Field] = []
+            for _ in 0...9 {
+                let x = Field()
+                tempArray.append(x)
+            }
+            computerPlayerEnemySea.append(tempArray)
+        }
+        
+         humanPlayer = Player(name: "humanPlayer", sea: humanPlayerSea, enemySea: humanPlayerEnemySea, ship2: Ship(owner: "humanPlayer", id: 2, size: 2, fields: []), ship3: Ship(owner: "humanPlayer", id: 3, size: 3, fields: []), ship32: Ship(owner: "humanPlayer", id: 32, size: 3, fields: []), ship4: Ship(owner: "humanPlayer", id: 4, size: 4, fields: []), ship5: Ship(owner: "humanPlayer", id: 5, size: 5, fields: []))
+        
+         computerPlayer = Player(name: "computerPlayer", sea: computerPlayerSea, enemySea: computerPlayerEnemySea, ship2: Ship(owner: "computerPlayer", id: 2, size: 2, fields: []), ship3: Ship(owner: "computerPlayer", id: 3, size: 3, fields: []), ship32: Ship(owner: "computerPlayer", id: 32, size: 3, fields: []), ship4: Ship(owner: "computerPlayer", id: 4, size: 4, fields: []), ship5: Ship(owner: "computerPlayer", id: 5, size: 5, fields: []))
+       
+        humanPlayer.playerDelegate = self
+        computerPlayer.playerDelegate = self
     }
     
+    func sendHumanPlayerSea() {
+        createGameModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayerSea)
+    }
+    
+    func sendHumanPlayer() {
+        createGameModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer)
+    }
+    
+    func sendComputerPlayer() {
+        createGameModelDelegate?.sendComputerPlayer(self, computerPlayer: computerPlayer)
+    }
+    
+    func actualizePlayer(player: Player) {
+        player.actualizeSeaBeforeGame()
+    }
     
 }
 
-extension CreateGameModel: CreateGameModelProtocol {
-    func sendFirstHumanPlayerSea() {
-        delegate?.sendSeaBeforeGame(self, sea: humanPlayerSea)
+extension CreateGameModel: PlayerDelegate {
+    func sendMessage(_ player: Player, owner: String, message: String) {
+        createGameModelDelegate?.sendMessage(self, owner: owner, message: message)
     }
     
-    
-    func actualizePlayerSea(player: Player, sea: [[Field]]) {
-        player.setSea(newSea: sea)
-        delegate?.humanPlayerSeaHasBeenActualized(self, sea: humanPlayer.getSea())
+    func notifyChangesOfPlayer(_ player: Player) {
+        createGameModelDelegate?.sendComputerPlayer(self, computerPlayer: computerPlayer)
+        createGameModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer)
+        createGameModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayerSea)
     }
-    
-    
-    func getHumanPlayer() -> Player {
-        return humanPlayer
-    }
-    
-    func getComputerPlayer() -> Player {
-        return computerPlayer
-    }
-    
-    func getHumanPlayerSea() -> [[Field]] {
-        return computerPlayer.getSea()
-    }
-    
-    
-    func getComputerPlayerSea() -> [[Field]] {
-        return computerPlayer.getSea()
-    }
-    
-    
     
 }
-
-    
-    
-

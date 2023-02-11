@@ -10,12 +10,21 @@ import Foundation
 
 final class Ship {
     
+    weak var shipDelegate: ShipDelegate?
+    
+    private let owner: String
     private let id: Int
     private let size: Int
     private var fields: [Field]
-    private var isLive: Bool
+    private var isLive: Bool {
+        willSet {
+            guard newValue != isLive else {return}
+            shipDelegate?.sayIHaveBeenDestroyed(self, owner: owner, message: "Ship of size \(size) has been destroyed")
+        }
+    }
     
-    init(id: Int, size: Int, fields: [Field]) {
+    init(owner: String,id: Int, size: Int, fields: [Field]) {
+        self.owner = owner
         self.id = id
         self.size = size
         self.fields = fields
@@ -30,13 +39,14 @@ final class Ship {
                 break
             }
         }
+        isLive = shipIsStillAlive
         return shipIsStillAlive
     }
     
     func setFields(fields: [Field]) {
         self.fields = fields
-        print("setFields", fields[0].getState())
-
+        actualizeFields()
+        shipDelegate?.notifyShipChanges(self)
     }
     
     func getFields() -> [Field] {
@@ -46,10 +56,7 @@ final class Ship {
     func actualizeFields() {
         for i in fields {
             i.setState(newState: .occupied)
-            print("aktulizacja pol w statku", i.getState())
         }
-//        print(fields[0].getState())
-        
     }
     
     func getId() -> Int {
@@ -59,11 +66,18 @@ final class Ship {
     func getSize() -> Int {
         return size
     }
+    
+    func clearFields() {
+        fields = []
+    }
         
     
 
 }
 
 
-    
+protocol ShipDelegate: AnyObject {
+    func notifyShipChanges(_ ship: Ship)
+    func sayIHaveBeenDestroyed(_ ship: Ship, owner: String, message: String)
+}
 

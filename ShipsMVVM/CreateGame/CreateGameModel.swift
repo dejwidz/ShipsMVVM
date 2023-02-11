@@ -16,10 +16,10 @@ protocol CreateGameModelProtocol: AnyObject {
 }
 
 protocol CreateGameModelDelegate: AnyObject {
-    func sendHumanPlayerSea(_ createGameModel: CreateGameModelProtocol, humanPlayerSea: [[Field]])
-    func sendHumanPlayer(_ createGameModel: CreateGameModelProtocol, humanPlayer: Player)
-    func sendComputerPlayer(_ createGameModel: CreateGameModelProtocol, computerPlayer: Player)
-    func sendMessage(_ createGameModel: CreateGameModelProtocol, owner: String, message: String)
+    func humanPlayerSea(_ createGameModel: CreateGameModelProtocol, humanPlayerSea: [[Field]])
+    func humanPlayer(_ createGameModel: CreateGameModelProtocol, humanPlayer: Player)
+    func computerPlayer(_ createGameModel: CreateGameModelProtocol, computerPlayer: Player)
+    func message(_ createGameModel: CreateGameModelProtocol, owner: String, message: String)
 }
 
 final class CreateGameModel: CreateGameModelProtocol {
@@ -71,24 +71,24 @@ final class CreateGameModel: CreateGameModelProtocol {
             computerPlayerEnemySea.append(tempArray)
         }
         
-         humanPlayer = Player(name: "humanPlayer", sea: humanPlayerSea, enemySea: humanPlayerEnemySea, ship2: Ship(owner: "humanPlayer", id: 2, size: 2, fields: []), ship3: Ship(owner: "humanPlayer", id: 3, size: 3, fields: []), ship32: Ship(owner: "humanPlayer", id: 32, size: 3, fields: []), ship4: Ship(owner: "humanPlayer", id: 4, size: 4, fields: []), ship5: Ship(owner: "humanPlayer", id: 5, size: 5, fields: []))
+        humanPlayer = Player(name: "humanPlayer", sea: humanPlayerSea, enemySea: humanPlayerEnemySea, ship2: Ship(owner: "humanPlayer", id: 2, size: 2, fields: []), ship3: Ship(owner: "humanPlayer", id: 3, size: 3, fields: []), ship32: Ship(owner: "humanPlayer", id: 32, size: 3, fields: []), ship4: Ship(owner: "humanPlayer", id: 4, size: 4, fields: []), ship5: Ship(owner: "humanPlayer", id: 5, size: 5, fields: []))
         
-         computerPlayer = Player(name: "computerPlayer", sea: computerPlayerSea, enemySea: computerPlayerEnemySea, ship2: Ship(owner: "computerPlayer", id: 2, size: 2, fields: []), ship3: Ship(owner: "computerPlayer", id: 3, size: 3, fields: []), ship32: Ship(owner: "computerPlayer", id: 32, size: 3, fields: []), ship4: Ship(owner: "computerPlayer", id: 4, size: 4, fields: []), ship5: Ship(owner: "computerPlayer", id: 5, size: 5, fields: []))
-       
+        computerPlayer = Player(name: "computerPlayer", sea: computerPlayerSea, enemySea: computerPlayerEnemySea, ship2: Ship(owner: "computerPlayer", id: 2, size: 2, fields: []), ship3: Ship(owner: "computerPlayer", id: 3, size: 3, fields: []), ship32: Ship(owner: "computerPlayer", id: 32, size: 3, fields: []), ship4: Ship(owner: "computerPlayer", id: 4, size: 4, fields: []), ship5: Ship(owner: "computerPlayer", id: 5, size: 5, fields: []))
+        
         humanPlayer.playerDelegate = self
         computerPlayer.playerDelegate = self
     }
     
     func sendHumanPlayerSea() {
-        createGameModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayerSea)
+        createGameModelDelegate?.humanPlayerSea(self, humanPlayerSea: humanPlayerSea)
     }
     
     func sendHumanPlayer() {
-        createGameModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer)
+        createGameModelDelegate?.humanPlayer(self, humanPlayer: humanPlayer)
     }
     
     func sendComputerPlayer() {
-        createGameModelDelegate?.sendComputerPlayer(self, computerPlayer: computerPlayer)
+        createGameModelDelegate?.computerPlayer(self, computerPlayer: computerPlayer)
     }
     
     func actualizePlayer(player: Player) {
@@ -99,13 +99,12 @@ final class CreateGameModel: CreateGameModelProtocol {
 
 extension CreateGameModel: PlayerDelegate {
     func sendMessage(_ player: Player, owner: String, message: String) {
-        createGameModelDelegate?.sendMessage(self, owner: owner, message: message)
+        createGameModelDelegate?.message(self, owner: owner, message: message)
     }
     
     func notifyChangesOfPlayer(_ player: Player) {
-        createGameModelDelegate?.sendComputerPlayer(self, computerPlayer: computerPlayer)
-        createGameModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer)
-        createGameModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayerSea)
+        createGameModelDelegate?.computerPlayer(self, computerPlayer: computerPlayer)
+        createGameModelDelegate?.humanPlayer(self, humanPlayer: humanPlayer)
+        createGameModelDelegate?.humanPlayerSea(self, humanPlayerSea: humanPlayerSea)
     }
-    
 }

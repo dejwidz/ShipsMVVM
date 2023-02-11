@@ -19,7 +19,7 @@ class HumanPlayerTurnViewController: UIViewController {
     
     private var humanPlayerSeaCollectionView: UICollectionView!
     private var mainScrollView: UIScrollView!
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +27,7 @@ class HumanPlayerTurnViewController: UIViewController {
         viewModel.updateHumanPlayerInModel(humanPlayer: humanPlayer!)
         viewModel.updateComputerPlayerInModel(computerPlayer: computerPlayer!)
         vcComputerPlayerTurn.computerVCDelegate = self
-
+        
         setupInterface()
         
         humanPlayerSeaCollectionView.delegate = self
@@ -77,9 +77,10 @@ class HumanPlayerTurnViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super .viewWillAppear(true)
         antiCanningProtector = true
     }
-
+    
     func setHumanPlayer(humanPlayer: Player) {
         self.humanPlayer = humanPlayer
     }
@@ -93,15 +94,14 @@ class HumanPlayerTurnViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alert, animated: true)
     }
-
+    
     func sendInfoToComputerVCThatShipHasBeenDestroyed() {
         vcComputerPlayerTurn.humanPlayerShipHasBeenDestroyed()
     }
-
 }
 
 extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
-    func sendInfoAboutLastShotValidation(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerLastShot: fieldState) {
+    func infoAboutLastShotValidation(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerLastShot: fieldState) {
         lastShotValidation = humanPlayerLastShot
         humanPlayerEnemySeaMatrix![getRow(forIndexPathRowValue: indexOfLastShot!.row)][getColumn(forIndexPathRowValue: indexOfLastShot!.row)].setState(newState: humanPlayerLastShot)
         if humanPlayerLastShot == .hitOccupied {
@@ -109,49 +109,49 @@ extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
         }
     }
     
-    func setTurnIndicatorInComputerPlayerVC(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, currentStateOfTurnIndicator: turn) {
+    func turnIndicatorInComputerPlayerVC(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, currentStateOfTurnIndicator: turn) {
         vcComputerPlayerTurn.setTurnIndicator(currentTurn: currentStateOfTurnIndicator)
     }
     
-    func sendHumanPlayerEnemySea(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerEnemySea: [[Field]]) {
+    func humanPlayerEnemySea(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerEnemySea: [[Field]]) {
         humanPlayerEnemySeaMatrix = humanPlayerEnemySea
     }
     
-    func sendMessage(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, message: String) {
+    func message(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, message: String) {
         showAlert(message: message)
     }
     
-    func sendHumanPlayer(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayer: Player) {
+    func humanPlayer(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayer: Player) {
         self.humanPlayer = humanPlayer
     }
     
 }
 
 extension HumanPlayerTurnViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
-func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 100
-}
-
-func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = humanPlayerSeaCollectionView.dequeueReusableCell(withReuseIdentifier: "PlayerTurnCustomCollectionViewCell",
-                                              for: indexPath) as! PlayerTurnCustomCollectionViewCell
-    let row = getRow(forIndexPathRowValue: indexPath.row)
-    let column = getColumn(forIndexPathRowValue: indexPath.row)
-    let temporaryState = (humanPlayerEnemySeaMatrix![row][column].getState())
-    cell.actualizeState(newState: temporaryState)
-    return cell
-}
-
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 100
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = humanPlayerSeaCollectionView.dequeueReusableCell(withReuseIdentifier: "PlayerTurnCustomCollectionViewCell",
+                                                                    for: indexPath) as! PlayerTurnCustomCollectionViewCell
+        let row = getRow(forIndexPathRowValue: indexPath.row)
+        let column = getColumn(forIndexPathRowValue: indexPath.row)
+        let temporaryState = (humanPlayerEnemySeaMatrix![row][column].getState())
+        cell.actualizeState(newState: temporaryState)
+        return cell
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard antiCanningProtector else {return}
         antiCanningProtector = false
         indexOfLastShot = indexPath
         var nextScreenDisplayPossibility = viewModel.humanPlayerShot(index: indexPath.row)
         let cell = humanPlayerSeaCollectionView.cellForItem(at: indexPath) as! PlayerTurnCustomCollectionViewCell
-                let animation = CABasicAnimation(keyPath: "backgroundColor")
-                animation.isRemovedOnCompletion = false
-                animation.fillMode = .forwards
+        let animation = CABasicAnimation(keyPath: "backgroundColor")
+        animation.isRemovedOnCompletion = false
+        animation.fillMode = .forwards
         animation.fromValue = cell.contentView.backgroundColor?.cgColor
         if lastShotValidation == .free {
             animation.toValue = CustomColors.hitColor?.cgColor
@@ -172,7 +172,5 @@ func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath:
 extension HumanPlayerTurnViewController: ComputerTurnVCSendInfoBackDelegate {
     func sayComputerPlayerMissed(_ computerPlayerTurnViewController: ComputerPlayerTurnViewController) {
         viewModel.computerPlayerMissed()
-    }
-    
-    
+    }  
 }

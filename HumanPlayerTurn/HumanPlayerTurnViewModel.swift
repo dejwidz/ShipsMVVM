@@ -17,15 +17,15 @@ protocol HumanPlayerTurnViewModelProtocol: AnyObject {
 }
 
 protocol HumanPlayerTurnViewModelDelegate: AnyObject {
-    func sendHumanPlayer(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayer: Player)
-    func sendMessage(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, message: String)
-    func sendHumanPlayerEnemySea(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerEnemySea: [[Field]])
-    func setTurnIndicatorInComputerPlayerVC(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, currentStateOfTurnIndicator: turn)
-    func sendInfoAboutLastShotValidation(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerLastShot: fieldState)
+    func humanPlayer(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayer: Player)
+    func message(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, message: String)
+    func humanPlayerEnemySea(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerEnemySea: [[Field]])
+    func turnIndicatorInComputerPlayerVC(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, currentStateOfTurnIndicator: turn)
+    func infoAboutLastShotValidation(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerLastShot: fieldState)
 }
 
 final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
-   
+    
     weak var humanPlayerTurnViewModelDelegate: HumanPlayerTurnViewModelDelegate?
     private var model: HumanPlayerTurnModelProtocol
     private var humanPlayerEnemySea: [[Field]]?
@@ -55,29 +55,28 @@ final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
     func setAntiCunningProtector(newValueOfProtector: Bool) {
         antiCunningProtector = newValueOfProtector
     }
-    
 }
 
 extension HumanPlayerTurnViewModel: HumanPlayerTurnModelDelegate {
-    func sendComputerPlayerShips(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, computerPlayerShips: [Ship]) {
+    func computerPlayerShips(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, computerPlayerShips: [Ship]) {
         self.computerPlayerShips = computerPlayerShips
     }
     
-    func sendComputerPlayerSea(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, computerPlayerSea: [[Field]]) {
+    func computerPlayerSea(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, computerPlayerSea: [[Field]]) {
         self.computerPlayerSea = computerPlayerSea
     }
     
-    func sendHumanPlayerEnemySea(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayerEnemySea: [[Field]]) {
+    func humanPlayerEnemySea(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayerEnemySea: [[Field]]) {
         self.humanPlayerEnemySea = humanPlayerEnemySea
-        humanPlayerTurnViewModelDelegate?.sendHumanPlayerEnemySea(self, humanPlayerEnemySea: humanPlayerEnemySea)
+        humanPlayerTurnViewModelDelegate?.humanPlayerEnemySea(self, humanPlayerEnemySea: humanPlayerEnemySea)
     }
     
-    func sendMessage(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, message: String) {
-        humanPlayerTurnViewModelDelegate?.sendMessage(self, message: message)
+    func message(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, message: String) {
+        humanPlayerTurnViewModelDelegate?.message(self, message: message)
     }
     
-    func sendHumanPlayer(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayer: Player) {
-        humanPlayerTurnViewModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer)
+    func humanPlayer(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayer: Player) {
+        humanPlayerTurnViewModelDelegate?.humanPlayer(self, humanPlayer: humanPlayer)
     }
     
     func computerPlayerMissed() {
@@ -100,20 +99,20 @@ extension HumanPlayerTurnViewModel {
             humanPlayerEnemySea![row][column].setState(newState: .hit)
             model.updateHumanPlayerEnemySea(newEnemySea: humanPlayerEnemySea!)
             turnIndicator = .computerPlayerTurn
-            humanPlayerTurnViewModelDelegate?.setTurnIndicatorInComputerPlayerVC(self, currentStateOfTurnIndicator: turnIndicator!)
-            humanPlayerTurnViewModelDelegate?.sendInfoAboutLastShotValidation(self, humanPlayerLastShot: .free)
+            humanPlayerTurnViewModelDelegate?.turnIndicatorInComputerPlayerVC(self, currentStateOfTurnIndicator: turnIndicator!)
+            humanPlayerTurnViewModelDelegate?.infoAboutLastShotValidation(self, humanPlayerLastShot: .free)
             displayComputerViewController = true
         } else {
             computerPlayerSea![row][column].setState(newState: .hitOccupied)
             humanPlayerEnemySea![row][column].setState(newState: .hitOccupied)
-            humanPlayerTurnViewModelDelegate?.sendHumanPlayerEnemySea(self, humanPlayerEnemySea: humanPlayerEnemySea!)
+            humanPlayerTurnViewModelDelegate?.humanPlayerEnemySea(self, humanPlayerEnemySea: humanPlayerEnemySea!)
             model.updateHumanPlayerEnemySea(newEnemySea: humanPlayerEnemySea!)
             model.updateComputerPlayerSea(newComputerPlayerSea: computerPlayerSea!)
             validateHitCounter()
             checkComputerPlayerShips()
             turnIndicator = .humanPlayerTurn
-            humanPlayerTurnViewModelDelegate?.setTurnIndicatorInComputerPlayerVC(self, currentStateOfTurnIndicator: turnIndicator!)
-            humanPlayerTurnViewModelDelegate?.sendInfoAboutLastShotValidation(self, humanPlayerLastShot: .hitOccupied)
+            humanPlayerTurnViewModelDelegate?.turnIndicatorInComputerPlayerVC(self, currentStateOfTurnIndicator: turnIndicator!)
+            humanPlayerTurnViewModelDelegate?.infoAboutLastShotValidation(self, humanPlayerLastShot: .hitOccupied)
             antiCunningProtector = true
             displayComputerViewController = false
         }
@@ -131,7 +130,7 @@ extension HumanPlayerTurnViewModel {
         }
         guard hitCounter! > 16 else {return}
         gameOverIndicator = false
-        humanPlayerTurnViewModelDelegate?.sendMessage(self, message: "You won, the game is over")
+        humanPlayerTurnViewModelDelegate?.message(self, message: "You won, the game is over")
     }
     
     func checkComputerPlayerShips() {
@@ -149,7 +148,7 @@ extension HumanPlayerTurnViewModel {
      
      wtedy w ogóle nie widzi w statkach wywołania tej funkcji (sprawdzane printem), choć properka
      computerPlayerShips poprawnie aktualizuje się delegatem z modelu (sprawdzane printem)
-  
+     
      Wydaje mi się, że wywalenie tego do modelu jest błędne i niezgodne z koncepcją MVVM, ale tam juz działa
      
      */

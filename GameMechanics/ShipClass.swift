@@ -31,7 +31,7 @@ final class Ship {
         isLive = true
     }
     
-  @discardableResult func checkIfTheShipisStillAlive() -> Bool {
+    @discardableResult func checkIfTheShipisStillAlive() -> Bool {
         var shipIsStillAlive = false
         for i in fields {
             if i.getState() == .occupied {
@@ -70,11 +70,7 @@ final class Ship {
     func clearFields() {
         fields = []
     }
-        
-    
-
 }
-
 
 protocol ShipDelegate: AnyObject {
     func notifyShipChanges(_ ship: Ship)

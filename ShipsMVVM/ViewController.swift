@@ -35,7 +35,6 @@ final class ViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = CustomColors.backColor

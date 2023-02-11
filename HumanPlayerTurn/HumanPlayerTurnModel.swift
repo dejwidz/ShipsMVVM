@@ -21,11 +21,11 @@ protocol HumanPlayerTurnModelProtocol: AnyObject {
 }
 
 protocol HumanPlayerTurnModelDelegate: AnyObject {
-    func sendHumanPlayer(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayer: Player)
-    func sendMessage(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, message: String)
-    func sendHumanPlayerEnemySea(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayerEnemySea: [[Field]])
-    func sendComputerPlayerSea(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, computerPlayerSea: [[Field]])
-    func sendComputerPlayerShips(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, computerPlayerShips: [Ship])
+    func humanPlayer(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayer: Player)
+    func message(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, message: String)
+    func humanPlayerEnemySea(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, humanPlayerEnemySea: [[Field]])
+    func computerPlayerSea(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, computerPlayerSea: [[Field]])
+    func computerPlayerShips(_ humanPlayerTurnModel: HumanPlayerTurnModelProtocol, computerPlayerShips: [Ship])
 }
 
 final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
@@ -45,16 +45,16 @@ final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
     }
     
     func sendHumanPlayer() {
-        humanPlayerTurnModelDelegate?.sendHumanPlayer(self, humanPlayer: humanPlayer!)
+        humanPlayerTurnModelDelegate?.humanPlayer(self, humanPlayer: humanPlayer!)
     }
     
     func sendHumanPlayerProperties() {
-        humanPlayerTurnModelDelegate?.sendHumanPlayerEnemySea(self, humanPlayerEnemySea: (humanPlayer?.getEnemySea())!)
+        humanPlayerTurnModelDelegate?.humanPlayerEnemySea(self, humanPlayerEnemySea: (humanPlayer?.getEnemySea())!)
     }
     
     func updateHumanPlayerEnemySea(newEnemySea: [[Field]]) {
         humanPlayer?.setEnemySea(newEnemySea: newEnemySea)
-        humanPlayerTurnModelDelegate?.sendHumanPlayerEnemySea(self, humanPlayerEnemySea: (humanPlayer?.getEnemySea())!)
+        humanPlayerTurnModelDelegate?.humanPlayerEnemySea(self, humanPlayerEnemySea: (humanPlayer?.getEnemySea())!)
     }
     
     func updateComputerPlayer(computerPlayer: Player) {
@@ -63,37 +63,33 @@ final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
     }
     
     func sendComputerPlayerSea() {
-        humanPlayerTurnModelDelegate?.sendComputerPlayerSea(self, computerPlayerSea: (computerPlayer?.getSea())!)
+        humanPlayerTurnModelDelegate?.computerPlayerSea(self, computerPlayerSea: (computerPlayer?.getSea())!)
     }
     
     func updateComputerPlayerSea(newComputerPlayerSea: [[Field]]) {
         computerPlayer?.setSea(newSea: newComputerPlayerSea)
-        humanPlayerTurnModelDelegate?.sendComputerPlayerSea(self, computerPlayerSea: (computerPlayer?.getSea())!)
+        humanPlayerTurnModelDelegate?.computerPlayerSea(self, computerPlayerSea: (computerPlayer?.getSea())!)
     }
     
     func updateComputerPlayerShips(newShips: [Ship]) {
         computerPlayer?.setShips(newShips: newShips)
-        humanPlayerTurnModelDelegate?.sendComputerPlayerShips(self, computerPlayerShips: (computerPlayer?.getShips())!)
+        humanPlayerTurnModelDelegate?.computerPlayerShips(self, computerPlayerShips: (computerPlayer?.getShips())!)
     }
     
     func checkComputerPlayerShips() {
         computerPlayer?.getShips().forEach {$0.checkIfTheShipisStillAlive()}
     }
-    
-    
 }
 
 extension HumanPlayerTurnModel: PlayerDelegate {
     func sendMessage(_ player: Player, owner: String, message: String) {
         print(owner, message)
         guard owner == "computerPlayer" else {return}
-            humanPlayerTurnModelDelegate?.sendMessage(self, message: message)
+        humanPlayerTurnModelDelegate?.message(self, message: message)
     }
     
     func notifyChangesOfPlayer(_ player: Player) {
         self.humanPlayer = player
-        humanPlayerTurnModelDelegate?.sendHumanPlayer(self, humanPlayer: player)
+        humanPlayerTurnModelDelegate?.humanPlayer(self, humanPlayer: player)
     }
-    
-    
 }

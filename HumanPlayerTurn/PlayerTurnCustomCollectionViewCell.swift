@@ -8,7 +8,7 @@
 import UIKit
 
 class PlayerTurnCustomCollectionViewCell: UICollectionViewCell {
-
+    
     let identifier = "PlayerTurnCustomCollectionViewCell"
     var state: fieldState = .free
     
@@ -23,17 +23,16 @@ class PlayerTurnCustomCollectionViewCell: UICollectionViewCell {
     func actualizeState(newState: fieldState) {
         state = newState
         switch state {
-            case .free:
+        case .free:
             contentView.backgroundColor = CustomColors.tealAndGrayblue
-            case .occupied:
+        case .occupied:
             contentView.backgroundColor = CustomColors.occupiedColor
-              case .hit:
+        case .hit:
             contentView.backgroundColor = CustomColors.hitColor
-            case .hitOccupied:
+        case .hitOccupied:
             contentView.backgroundColor = CustomColors.hitOccupiedColor
         }
     }
- 
 }
 
 

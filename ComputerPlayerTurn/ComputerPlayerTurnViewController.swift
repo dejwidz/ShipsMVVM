@@ -96,11 +96,10 @@ class ComputerPlayerTurnViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alert, animated: true)
     }
-    
 }
 
 extension ComputerPlayerTurnViewController: ComputerPlayerTurnViewModelDelegate {
-    func sendInfoForAnimation(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, indexOfNextFieldToShot: Int, stateOfNextFieldToShot: fieldState) {
+    func dataForAnimation(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, indexOfNextFieldToShot: Int, stateOfNextFieldToShot: fieldState) {
         let index = NSIndexPath(row: indexOfNextFieldToShot, section: 0)
         let cell = computerPlayerSeaCollectionView.cellForItem(at: index as IndexPath) as! ComputerTurnCustomCollectionViewCell
         let animation = CABasicAnimation(keyPath: "backgroundColor")
@@ -117,23 +116,20 @@ extension ComputerPlayerTurnViewController: ComputerPlayerTurnViewModelDelegate 
         cell.contentView.layer.add(animation, forKey: nil)
     }
     
-    func sayComputerPlayerWon(_ computerPlayerTurnModel: ComputerPlayerTurnViewModelProtocol, message: String) {
+    func computerPlayerWon(_ computerPlayerTurnModel: ComputerPlayerTurnViewModelProtocol, message: String) {
         showAlert(message: message)
     }
     
-    func sayIHaveMissed(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol) {
+    func lastShotWasMissedMissed(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol) {
         computerVCDelegate?.sayComputerPlayerMissed(self)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.8) {
             self.navigationController?.popViewController(animated: true)
         }
-        
     }
     
-    func sendComputerPlayerEnemySea(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, computerPlayerEnemySea: [[Field]]) {
+    func computerPlayerEnemySea(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, computerPlayerEnemySea: [[Field]]) {
         computerPlayerEnemySeaMatrix = computerPlayerEnemySea
-        
         guard let computerPlayerSeaCollectionView = computerPlayerSeaCollectionView else {return}
-        
         computerPlayerSeaCollectionView.reloadData()
     }
 }

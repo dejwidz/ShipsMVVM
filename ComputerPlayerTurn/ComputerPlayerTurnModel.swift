@@ -14,37 +14,21 @@ protocol ComputerPlayerTurnModelProtocol: AnyObject {
     func setHumanPlayerSea(newSea: [[Field]])
     func setComputerPlayerEnemySea(newComputerPlayerEnemySea: [[Field]])
     func setComputerPlayerHitIndicatorTrue()
-    func setComputerPlayerPossibleNorth(possibleNorth: [Int])
-    func setComputerPlayerPossibleSouth(possibleSouth: [Int])
-    func setComputerPlayerPossibleWest(possibleWest: [Int])
-    func setComputerPlayerPossibleEast(possibleEast: [Int])
-    func computerPlayerClearNorth()
-    func computerPlayerClearSouth()
-    func computerPlayerClearWest()
-    func computerPlayerClearEast()
+    func setComputerPlayerPossibleDirection(newPossibleFields: [Int], forDirection direction: direction)
+    func computerPlayerClearDirection(direction: direction)
     func resetEverythingInComputerPlayerWhenShipOfHumanPlayerIsDestroyed()
     func checkHumanPlayerShips()
-    func setComputerPlayerNorthIndicator(newNorthIndicator: Bool)
-    func setComputerPlayerSouthIndicator(newSouthIndicator: Bool)
-    func setComputerPlayerWestIndicator(newWestIndicator: Bool)
-    func setComputerPlayerEastIndicator(newEastIndicator: Bool)
+    func setComputerPlayerIndicatorForDirection(newIndicatorValue: Bool, forDirection direction: direction)
 }
 
 protocol ComputerPlayerTurnModelDelegate: AnyObject {
-    func sendComputerPlayerEnemySea(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, computerPlayerEnemySea: [[Field]])
-    func sendHumanPlayerSea(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, humanPlayerSea: [[Field]])
-    func sendComputerPlayerHitIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, hitIndicator: Bool)
-    func sendComputerPlayerPossibleNorth(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, possibleNorth: [Int])
-    func sendComputerPlayerPossibleSouth(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, possibleSouth: [Int])
-    func sendComputerPlayerPossibleWest(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, possibleWest: [Int])
-    func sendComputerPlayerPossibleEast(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, possibleEast: [Int])
-    func sendHumanPlayerShips(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, ships: [Ship])
-    func sendComputerPlayerNorthIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfNorthIndicator: Bool)
-    func sendComputerPlayerSouthIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfSouthIndicator: Bool)
-    func sendComputerPlayerWestIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfWestIndicator: Bool)
-    func sendComputerPlayerEastIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfEastIndicator: Bool)
+    func computerPlayerEnemySea(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, computerPlayerEnemySea: [[Field]])
+    func humanPlayerSea(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, humanPlayerSea: [[Field]])
+    func computerPlayerHitIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, hitIndicator: Bool)
+    func computerPlayerPossibleFieldsForDirection(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, newFields: [Int], forDirection direction: direction)
+    func humanPlayerShips(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, ships: [Ship])
+    func computerPlayerIndicatorForDirection(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, newIndicatorValue: Bool, forDirection direction: direction)
 }
-
 
 final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
     
@@ -52,79 +36,42 @@ final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
     private var computerPlayer: Player?
     private var humanPlayer: Player?
     
-    init(){
-        computerPlayer?.playerDelegate = self
-        humanPlayer?.playerDelegate = self
-    }
-    
     func setComputerPlayer(computerPlayer: Player) {
         self.computerPlayer = computerPlayer
-        computerPlayerTurnModelDelegate?.sendComputerPlayerEnemySea(self, computerPlayerEnemySea: computerPlayer.getEnemySea())    }
-    
+        computerPlayerTurnModelDelegate?.computerPlayerEnemySea(self, computerPlayerEnemySea: computerPlayer.getEnemySea())
+    }
     
     func setHumanPlayer(humanPlayer: Player) {
         self.humanPlayer = humanPlayer
-        computerPlayerTurnModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: humanPlayer.getSea())
-        computerPlayerTurnModelDelegate?.sendHumanPlayerShips(self, ships: humanPlayer.getShips())
+        computerPlayerTurnModelDelegate?.humanPlayerSea(self, humanPlayerSea: humanPlayer.getSea())
+        computerPlayerTurnModelDelegate?.humanPlayerShips(self, ships: humanPlayer.getShips())
     }
     
     func setComputerPlayerHitIndicatorTrue() {
         computerPlayer?.setHitIndicator(newValueOfHitIndicator: true)
-        computerPlayerTurnModelDelegate?.sendComputerPlayerHitIndicator(self, hitIndicator: (computerPlayer?.getHitIndicator())!)
+        computerPlayerTurnModelDelegate?.computerPlayerHitIndicator(self, hitIndicator: (computerPlayer?.getHitIndicator())!)
     }
     
-    func setComputerPlayerPossibleNorth(possibleNorth: [Int]) {
-        computerPlayer?.setPossibleNorth(possibleNorth: possibleNorth)
-        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleNorth(self, possibleNorth: (computerPlayer?.getPossibleNorth())!)
+    func setComputerPlayerPossibleDirection(newPossibleFields: [Int], forDirection direction: direction) {
+        computerPlayer?.setPossibleDirection(direction: direction, possibleFields: newPossibleFields)
+        computerPlayerTurnModelDelegate?.computerPlayerPossibleFieldsForDirection(self, newFields: (computerPlayer?.getPossibleDirection(direction: direction))!, forDirection: direction)
     }
     
-    func setComputerPlayerPossibleSouth(possibleSouth: [Int]) {
-        computerPlayer?.setPossibleSouth(possibleSouth: possibleSouth)
-        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleSouth(self, possibleSouth: (computerPlayer?.getPossibleSouth())!)
-    }
     
-    func setComputerPlayerPossibleWest(possibleWest: [Int]) {
-        computerPlayer?.setPossibleWest(possibleWest: possibleWest)
-        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleWest(self, possibleWest: (computerPlayer?.getPossibleWest())!)
-    }
-    
-    func setComputerPlayerPossibleEast(possibleEast: [Int]) {
-        computerPlayer?.setPossibleEast(possibleEast: possibleEast)
-        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleEast(self, possibleEast: (computerPlayer?.getPossibleEast())!)
-    }
-    
-    func computerPlayerClearNorth() {
-        computerPlayer?.clearNorth()
-        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleNorth(self, possibleNorth: (computerPlayer?.getPossibleNorth())!)
-    }
-    
-    func computerPlayerClearSouth() {
-        computerPlayer?.clearSouth()
-        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleSouth(self, possibleSouth: (computerPlayer?.getPossibleSouth())!)
-    }
-    
-    func computerPlayerClearWest() {
-        computerPlayer?.clearWest()
-        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleWest(self, possibleWest: (computerPlayer?.getPossibleWest())!)
-    }
-    
-    func computerPlayerClearEast() {
-        computerPlayer?.clearEast()
-        computerPlayerTurnModelDelegate?.sendComputerPlayerPossibleEast(self, possibleEast: (computerPlayer?.getPossibleEast())!)
+    func computerPlayerClearDirection(direction: direction) {
+        computerPlayer?.clearDirection(direction: direction)
+        computerPlayerTurnModelDelegate?.computerPlayerPossibleFieldsForDirection(self, newFields: (computerPlayer?.getPossibleDirection(direction: direction))!, forDirection: direction)
     }
     
     func resetEverythingInComputerPlayerWhenShipOfHumanPlayerIsDestroyed() {
         computerPlayer?.setHitIndicator(newValueOfHitIndicator: false)
-        computerPlayerTurnModelDelegate?.sendComputerPlayerHitIndicator(self, hitIndicator: (computerPlayer?.getHitIndicator())!)
-        computerPlayerClearNorth()
-        computerPlayerClearSouth()
-        computerPlayerClearWest()
-        computerPlayerClearEast()
+        computerPlayerTurnModelDelegate?.computerPlayerHitIndicator(self, hitIndicator: (computerPlayer?.getHitIndicator())!)
+        computerPlayerClearDirection(direction: .allDirections)
     }
     
     func setComputerPlayerEnemySea(newComputerPlayerEnemySea: [[Field]]) {
         computerPlayer?.setEnemySea(newEnemySea: newComputerPlayerEnemySea)
-        computerPlayerTurnModelDelegate?.sendComputerPlayerEnemySea(self, computerPlayerEnemySea: (computerPlayer?.getEnemySea())!)
+        computerPlayerTurnModelDelegate?.computerPlayerEnemySea(self, computerPlayerEnemySea: (computerPlayer?.getEnemySea())!)
     }
     
     func checkHumanPlayerShips() {
@@ -133,50 +80,11 @@ final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
     
     func setHumanPlayerSea(newSea: [[Field]]) {
         humanPlayer?.setSea(newSea: newSea)
-        computerPlayerTurnModelDelegate?.sendHumanPlayerSea(self, humanPlayerSea: (humanPlayer?.getSea())!)
-    }
-    func setComputerPlayerNorthIndicator(newNorthIndicator: Bool) {
-        computerPlayer?.setNorthIndicator(newNorth: newNorthIndicator)
-        computerPlayerTurnModelDelegate?.sendComputerPlayerNorthIndicator(self, currentValueOfNorthIndicator: (computerPlayer?.getNorthIndicator())!)
+        computerPlayerTurnModelDelegate?.humanPlayerSea(self, humanPlayerSea: (humanPlayer?.getSea())!)
     }
     
-    func setComputerPlayerSouthIndicator(newSouthIndicator: Bool) {
-        computerPlayer?.setSouthIndicator(newSouth: newSouthIndicator)
-        computerPlayerTurnModelDelegate?.sendComputerPlayerSouthIndicator(self, currentValueOfSouthIndicator: (computerPlayer?.getSouthIndicator())!)
+    func setComputerPlayerIndicatorForDirection(newIndicatorValue: Bool, forDirection direction: direction) {
+        computerPlayer?.setIndicator(direction: direction, newIndicatorValue: newIndicatorValue)
+        computerPlayerTurnModelDelegate?.computerPlayerIndicatorForDirection(self, newIndicatorValue: ((computerPlayer?.getIndicator(direction: direction))!), forDirection: direction)
     }
-    
-    func setComputerPlayerWestIndicator(newWestIndicator: Bool) {
-        computerPlayer?.setWestIndicator(newWest: newWestIndicator)
-        computerPlayerTurnModelDelegate?.sendComputerPlayerWestIndicator(self, currentValueOfWestIndicator: (computerPlayer?.getWestIndicator())!)
-    }
-    
-    func setComputerPlayerEastIndicator(newEastIndicator: Bool) {
-        computerPlayer?.setEastIndicator(newEast: newEastIndicator)
-        computerPlayerTurnModelDelegate?.sendComputerPlayerEastIndicator(self, currentValueOfEastIndicator: (computerPlayer?.getEastIndicator())!)
-    }
-}
-
-
-/*
- PYTANIE
- dlaczego delegata z playera widzi tylko w miejscu gdzie został player zadeklarowany, czyli w modelu creategame, poniższy kod nie działa
- */
-
-
-
-extension ComputerPlayerTurnModel: PlayerDelegate {
-    func sendMessage(_ player: Player, owner: String, message: String) {
-        guard owner == "humanPlayer" else {return}
-        computerPlayer?.setHitIndicator(newValueOfHitIndicator: false)
-        computerPlayer?.clearNorth()
-        computerPlayer?.clearSouth()
-        computerPlayer?.clearWest()
-        computerPlayer?.clearEast()
-    }
-    
-    func notifyChangesOfPlayer(_ player: Player) {
-        self.computerPlayer = player
-    }
-    
-    
 }

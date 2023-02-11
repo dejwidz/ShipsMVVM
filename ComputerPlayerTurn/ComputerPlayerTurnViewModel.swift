@@ -17,12 +17,11 @@ protocol ComputerPlayerTurnViewModelProtocol: AnyObject {
 }
 
 protocol ComputerPlayerTurnViewModelDelegate: AnyObject {
-    func sendComputerPlayerEnemySea(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, computerPlayerEnemySea: [[Field]])
-    func sayIHaveMissed(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol)
-    func sayComputerPlayerWon(_ computerPlayerTurnModel: ComputerPlayerTurnViewModelProtocol, message: String)
-    func sendInfoForAnimation(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, indexOfNextFieldToShot: Int, stateOfNextFieldToShot: fieldState)
+    func computerPlayerEnemySea(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, computerPlayerEnemySea: [[Field]])
+    func lastShotWasMissedMissed(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol)
+    func computerPlayerWon(_ computerPlayerTurnModel: ComputerPlayerTurnViewModelProtocol, message: String)
+    func dataForAnimation(_ computerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol, indexOfNextFieldToShot: Int, stateOfNextFieldToShot: fieldState)
 }
-
 
 final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     weak var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate?
@@ -42,7 +41,6 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     private var computerPlayerWestIndicator: Bool
     private var computerPlayerEastIndicator: Bool
     private var indexOfNextFieldToShot: Int
-
     
     private var model: ComputerPlayerTurnModelProtocol
     
@@ -77,57 +75,57 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     func resetEverythingWhenHumanPlayerShipHaveBeenDestroyed() {
         model.resetEverythingInComputerPlayerWhenShipOfHumanPlayerIsDestroyed()
     }
-    
 }
 
 extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
-    func sendComputerPlayerNorthIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfNorthIndicator: Bool) {
-        computerPlayerNorthIndicator = currentValueOfNorthIndicator
-    }
-    
-    func sendComputerPlayerSouthIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfSouthIndicator: Bool) {
-        computerPlayerSouthIndicator = currentValueOfSouthIndicator
-    }
-    
-    func sendComputerPlayerWestIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfWestIndicator: Bool) {
-        computerPlayerWestIndicator = currentValueOfWestIndicator
-    }
-    
-    func sendComputerPlayerEastIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, currentValueOfEastIndicator: Bool) {
-        computerPlayerEastIndicator = currentValueOfEastIndicator
-    }
-    
-    func sendHumanPlayerShips(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, ships: [Ship]) {
+    func humanPlayerShips(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, ships: [Ship]) {
         humanPlayerShips = ships
     }
     
-    func sendComputerPlayerHitIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, hitIndicator: Bool) {
+    func computerPlayerHitIndicator(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, hitIndicator: Bool) {
         computerPlayerHitIndicator = hitIndicator
     }
     
-    func sendComputerPlayerPossibleNorth(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, possibleNorth: [Int]) {
-        computerPlayerPossibleNorth = possibleNorth
+    func computerPlayerPossibleFieldsForDirection(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, newFields: [Int], forDirection direction: direction) {
+        switch direction {
+        case .north:
+            computerPlayerPossibleNorth = newFields
+        case .south:
+            computerPlayerPossibleSouth = newFields
+        case .west:
+            computerPlayerPossibleWest = newFields
+        case .east:
+            computerPlayerPossibleEast = newFields
+        case .allDirections:
+            computerPlayerPossibleNorth = newFields
+            computerPlayerPossibleSouth = newFields
+            computerPlayerPossibleWest = newFields
+            computerPlayerPossibleEast = newFields
+        }
     }
     
-    func sendComputerPlayerPossibleSouth(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, possibleSouth: [Int]) {
-        computerPlayerPossibleSouth = possibleSouth
-    }
-    
-    func sendComputerPlayerPossibleWest(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, possibleWest: [Int]) {
-        computerPlayerPossibleWest = possibleWest
-    }
-    
-    func sendComputerPlayerPossibleEast(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, possibleEast: [Int]) {
-        computerPlayerPossibleEast = possibleEast
-    }
-    
-    func sendComputerPlayerEnemySea(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, computerPlayerEnemySea: [[Field]]) {
+    func computerPlayerEnemySea(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, computerPlayerEnemySea: [[Field]]) {
         self.computerPlayerEnemySea = computerPlayerEnemySea
-        computerPlayerTurnViewModelDelegate?.sendComputerPlayerEnemySea(self, computerPlayerEnemySea: computerPlayerEnemySea)
+        computerPlayerTurnViewModelDelegate?.computerPlayerEnemySea(self, computerPlayerEnemySea: computerPlayerEnemySea)
     }
     
-    func sendHumanPlayerSea(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, humanPlayerSea: [[Field]]) {
+    func humanPlayerSea(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, humanPlayerSea: [[Field]]) {
         self.humanPlayerSea = humanPlayerSea
+    }
+    
+    func computerPlayerIndicatorForDirection(_ computerPlayerTurnModel: ComputerPlayerTurnModelProtocol, newIndicatorValue: Bool, forDirection direction: direction) {
+        switch direction {
+        case .north:
+            computerPlayerNorthIndicator = newIndicatorValue
+        case .south:
+            computerPlayerSouthIndicator = newIndicatorValue
+        case .west:
+            computerPlayerWestIndicator = newIndicatorValue
+        case .east:
+            computerPlayerEastIndicator = newIndicatorValue
+        case .allDirections:
+            print("nothing")
+        }
     }
 }
 
@@ -161,7 +159,7 @@ extension ComputerPlayerTurnViewModel {
     
     func radarNorth(row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleNorth(possibleNorth: computerPlayerPossibleNorth )
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleNorth, forDirection: .north)
             return
         }
         let field = computerPlayerEnemySea![row][column]
@@ -171,13 +169,13 @@ extension ComputerPlayerTurnViewModel {
             radarNorth(row: row - 1, column: column)
         }
         else {
-            model.setComputerPlayerPossibleNorth(possibleNorth: computerPlayerPossibleNorth )
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleNorth, forDirection: .north)
         }
     }
     
     func radarSouth(row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleSouth(possibleSouth: computerPlayerPossibleSouth )
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleSouth, forDirection: .south)
             return
         }
         let field = computerPlayerEnemySea![row][column]
@@ -187,13 +185,13 @@ extension ComputerPlayerTurnViewModel {
             radarSouth(row: row + 1, column: column)
         }
         else {
-            model.setComputerPlayerPossibleSouth(possibleSouth: computerPlayerPossibleSouth )
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleSouth, forDirection: .south)
         }
     }
     
     func radarWest(row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleWest(possibleWest: computerPlayerPossibleWest )
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleWest, forDirection: .west)
             return
         }
         let field = computerPlayerEnemySea![row][column]
@@ -203,13 +201,13 @@ extension ComputerPlayerTurnViewModel {
             radarWest(row: row, column: column - 1)
         }
         else {
-            model.setComputerPlayerPossibleWest(possibleWest: computerPlayerPossibleWest )
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleWest, forDirection: .west)
         }
     }
     
     func radarEast(row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleEast(possibleEast: computerPlayerPossibleEast )
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleEast, forDirection: .east)
             return
         }
         let field = computerPlayerEnemySea![row][column]
@@ -219,7 +217,7 @@ extension ComputerPlayerTurnViewModel {
             radarEast(row: row, column: column + 1)
         }
         else {
-            model.setComputerPlayerPossibleEast(possibleEast: computerPlayerPossibleEast )
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleEast, forDirection: .east)
         }
     }
     
@@ -238,19 +236,18 @@ extension ComputerPlayerTurnViewModel {
         guard turnIndicator == .computerPlayerTurn && gameOverIndicator else {return}
         
         if humanPlayerSea![row][column].getState() == .free {
-            computerPlayerTurnViewModelDelegate?.sendInfoForAnimation(self, indexOfNextFieldToShot: indexOfNextFieldToShot, stateOfNextFieldToShot: .free)
+            computerPlayerTurnViewModelDelegate?.dataForAnimation(self, indexOfNextFieldToShot: indexOfNextFieldToShot, stateOfNextFieldToShot: .free)
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                 self.computerPlayerEnemySea![row][column].setState(newState: .hit)
                 self.model.setComputerPlayerEnemySea(newComputerPlayerEnemySea: self.computerPlayerEnemySea!)
-                self.computerPlayerTurnViewModelDelegate?.sayIHaveMissed(self)
+                self.computerPlayerTurnViewModelDelegate?.lastShotWasMissedMissed(self)
                 self.turnIndicator = .humanPlayerTurn
                 if self.computerPlayerHitIndicator {
                     self.validateLastShot()
-            }
-            
+                }
             }
         } else if humanPlayerSea![row][column].getState() == .occupied {
-            computerPlayerTurnViewModelDelegate?.sendInfoForAnimation(self, indexOfNextFieldToShot: indexOfNextFieldToShot, stateOfNextFieldToShot: .hitOccupied)
+            computerPlayerTurnViewModelDelegate?.dataForAnimation(self, indexOfNextFieldToShot: indexOfNextFieldToShot, stateOfNextFieldToShot: .hitOccupied)
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                 self.computerPlayerEnemySea![row][column].setState(newState: .hitOccupied)
                 self.humanPlayerSea![row][column].setState(newState: .hitOccupied)
@@ -262,16 +259,16 @@ extension ComputerPlayerTurnViewModel {
                     self.model.setComputerPlayerHitIndicatorTrue()
                     self.radar(row: row, column: column)
                     if !self.computerPlayerPossibleNorth.isEmpty {
-                        self.model.setComputerPlayerNorthIndicator(newNorthIndicator: true)
+                        self.model.setComputerPlayerIndicatorForDirection(newIndicatorValue: true, forDirection: .north)
                     }
                     if !self.computerPlayerPossibleSouth.isEmpty {
-                        self.model.setComputerPlayerSouthIndicator(newSouthIndicator: true)
+                        self.model.setComputerPlayerIndicatorForDirection(newIndicatorValue: true, forDirection: .south)
                     }
                     if !self.computerPlayerPossibleWest.isEmpty {
-                        self.model.setComputerPlayerWestIndicator(newWestIndicator: true)
+                        self.model.setComputerPlayerIndicatorForDirection(newIndicatorValue: true, forDirection: .west)
                     }
                     if !self.computerPlayerPossibleEast.isEmpty {
-                        self.model.setComputerPlayerEastIndicator(newEastIndicator: true)
+                        self.model.setComputerPlayerIndicatorForDirection(newIndicatorValue: true, forDirection: .east)
                     }
                 }
                 self.checkShips()
@@ -283,13 +280,13 @@ extension ComputerPlayerTurnViewModel {
     }
     
     func prepareToShot() -> Int {
-           if !computerPlayerHitIndicator {
-               indexOfNextFieldToShot = iVeGotNothingOnRadar()
-           } else {
-               indexOfNextFieldToShot = iHaveSomethingOnRadar()
-           }
-           return indexOfNextFieldToShot
-       }
+        if !computerPlayerHitIndicator {
+            indexOfNextFieldToShot = iVeGotNothingOnRadar()
+        } else {
+            indexOfNextFieldToShot = iHaveSomethingOnRadar()
+        }
+        return indexOfNextFieldToShot
+    }
     
     func iVeGotNothingOnRadar() -> Int {
         var nextShotPossibility = false
@@ -306,42 +303,42 @@ extension ComputerPlayerTurnViewModel {
         if !computerPlayerPossibleNorth.isEmpty {
             indexOfNextFieldToShot = computerPlayerPossibleNorth[0]
             computerPlayerPossibleNorth.remove(at: 0)
-            model.setComputerPlayerPossibleNorth(possibleNorth: computerPlayerPossibleNorth)
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleNorth, forDirection: .north)
         }
         else if !computerPlayerPossibleSouth.isEmpty {
             indexOfNextFieldToShot = computerPlayerPossibleSouth[0]
             computerPlayerPossibleSouth.remove(at: 0)
-            model.setComputerPlayerPossibleSouth(possibleSouth: computerPlayerPossibleSouth)
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleSouth, forDirection: .south)
         }
         else if !computerPlayerPossibleWest.isEmpty {
             indexOfNextFieldToShot = computerPlayerPossibleWest[0]
             computerPlayerPossibleWest.remove(at: 0)
-            model.setComputerPlayerPossibleWest(possibleWest: computerPlayerPossibleWest)
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleWest, forDirection: .west)
         }
         else if !computerPlayerPossibleEast.isEmpty {
             indexOfNextFieldToShot = computerPlayerPossibleEast[0]
             computerPlayerPossibleEast.remove(at: 0)
-            model.setComputerPlayerPossibleEast(possibleEast: computerPlayerPossibleEast)
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleEast, forDirection: .east)
         }
         return indexOfNextFieldToShot
     }
     
     func validateLastShot() {
         if computerPlayerNorthIndicator {
-            model.computerPlayerClearNorth()
-            model.setComputerPlayerNorthIndicator(newNorthIndicator: false)
+            model.computerPlayerClearDirection(direction: .north)
+            model.setComputerPlayerIndicatorForDirection(newIndicatorValue: false, forDirection: .north)
         }
         else if computerPlayerSouthIndicator {
-            model.computerPlayerClearSouth()
-            model.setComputerPlayerSouthIndicator(newSouthIndicator: false)
+            model.computerPlayerClearDirection(direction: .south)
+            model.setComputerPlayerIndicatorForDirection(newIndicatorValue: false, forDirection: .south)
         }
         else if computerPlayerWestIndicator {
-            model.computerPlayerClearWest()
-            model.setComputerPlayerWestIndicator(newWestIndicator: false)
+            model.computerPlayerClearDirection(direction: .west)
+            model.setComputerPlayerIndicatorForDirection(newIndicatorValue: false, forDirection: .west)
         }
         else if computerPlayerEastIndicator {
-            model.computerPlayerClearEast()
-            model.setComputerPlayerEastIndicator(newEastIndicator: false)
+            model.computerPlayerClearDirection(direction: .east)
+            model.setComputerPlayerIndicatorForDirection(newIndicatorValue: false, forDirection: .east)
         }
     }
     
@@ -360,8 +357,7 @@ extension ComputerPlayerTurnViewModel {
         }
         if hitCounter! > 16 {
             gameOverIndicator = false
-            computerPlayerTurnViewModelDelegate?.sayComputerPlayerWon(self, message: "You loose")
+            computerPlayerTurnViewModelDelegate?.computerPlayerWon(self, message: "You loose")
         }
     }
-    
 }

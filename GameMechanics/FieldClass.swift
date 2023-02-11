@@ -21,5 +21,4 @@ final class Field {
     func setState(newState: fieldState) {
         state = newState
     }
-    
 }

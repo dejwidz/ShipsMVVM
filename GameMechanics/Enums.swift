@@ -7,7 +7,13 @@
 
 import Foundation
 
-
+enum direction {
+    case north
+    case south
+    case west
+    case east
+    case allDirections
+}
 
 enum fieldState {
     case free

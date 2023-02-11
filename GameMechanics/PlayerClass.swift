@@ -48,19 +48,19 @@ final class Player {
         self.ship4 = ship4
         self.ship5 = ship5
         ships = []
-
+        
         northIndicator = false
         southIndicator = false
         westIndicator = false
         eastIndicator = false
-
+        
         ship2.shipDelegate = self
         ship3.shipDelegate = self
         ship32.shipDelegate = self
         ship4.shipDelegate = self
         ship5.shipDelegate = self
         addShips()
-        }
+    }
     
     func addShips() {
         ships.append(ship2)
@@ -130,20 +130,19 @@ final class Player {
         return hitIndicator
     }
     
-    func getPossibleNorth() -> [Int] {
-        return possibleNorth
-    }
-    
-    func getPossibleSouth() -> [Int] {
-        return possibleSouth
-    }
-    
-    func getPossibleWest() -> [Int] {
-        return possibleWest
-    }
-    
-    func getPossibleEast() -> [Int] {
-        return possibleEast
+    func getPossibleDirection(direction: direction) -> [Int] {
+        switch direction {
+        case .north:
+            return possibleNorth
+        case .south:
+            return possibleSouth
+        case .west:
+            return possibleWest
+        case .east:
+            return possibleEast
+        case .allDirections:
+            return []
+        }
     }
     
     func getEnemySea() -> [[Field]] {
@@ -154,41 +153,37 @@ final class Player {
         enemySea = newEnemySea
     }
     
-    func setPossibleNorth(possibleNorth: [Int]) {
-        self.possibleNorth = possibleNorth
+    func setPossibleDirection(direction: direction, possibleFields: [Int]) {
+        switch direction {
+        case .north:
+            possibleNorth = possibleFields
+        case .south:
+            possibleSouth = possibleFields
+        case .west:
+            possibleWest = possibleFields
+        case .east:
+            possibleEast = possibleFields
+        case .allDirections:
+            print("nothing")
+        }
     }
     
-    func setPossibleSouth(possibleSouth: [Int]) {
-        self.possibleSouth = possibleSouth
-    }
-    
-    func setPossibleWest(possibleWest: [Int]) {
-        self.possibleWest = possibleWest
-    }
-    
-    func setPossibleEast(possibleEast: [Int]) {
-        self.possibleEast = possibleEast
-    }
-    
-    func clearNorth() {
-        possibleNorth = []
-    }
-    
-    func clearSouth() {
-        possibleSouth = []
-    }
-    
-    func clearWest() {
-        possibleWest = []
-    }
-    
-    func clearEast() {
-        possibleEast = []
-    }
-    
-    
-    func checkShips() {
-        ships.forEach {$0.checkIfTheShipisStillAlive()}
+    func clearDirection(direction: direction) {
+        switch direction {
+        case .north:
+            possibleNorth = []
+        case .south:
+            possibleSouth = []
+        case .west:
+            possibleWest = []
+        case .east:
+            possibleEast = []
+        case .allDirections:
+            possibleNorth = []
+            possibleSouth = []
+            possibleWest = []
+            possibleEast = []
+        }
     }
     
     func setShips(newShips: [Ship]) {
@@ -199,36 +194,34 @@ final class Player {
         return ships
     }
     
-    func setNorthIndicator(newNorth: Bool) {
-        northIndicator = newNorth
+    func setIndicator(direction: direction, newIndicatorValue: Bool) {
+        switch direction {
+        case .north:
+            northIndicator = newIndicatorValue
+        case .south:
+            southIndicator = newIndicatorValue
+        case .west:
+            westIndicator = newIndicatorValue
+        case .east:
+            eastIndicator = newIndicatorValue
+        case .allDirections:
+            print("nothing")
+        }
     }
     
-    func setSouthIndicator(newSouth: Bool) {
-        southIndicator = newSouth
-    }
-    
-    func setWestIndicator(newWest: Bool) {
-        westIndicator = newWest
-    }
-    
-    func setEastIndicator(newEast: Bool) {
-        eastIndicator = newEast
-    }
-    
-    func getNorthIndicator() -> Bool {
-        return northIndicator
-    }
-    
-    func getSouthIndicator() -> Bool {
-        return southIndicator
-    }
-    
-    func getWestIndicator() -> Bool {
-        return westIndicator
-    }
-    
-    func getEastIndicator() -> Bool {
-        return eastIndicator
+    func getIndicator(direction: direction) -> Bool {
+        switch direction {
+        case .north:
+            return northIndicator
+        case .south:
+            return southIndicator
+        case .west:
+            return westIndicator
+        case .east:
+            return eastIndicator
+        case .allDirections:
+            return false
+        }
     }
 }
 
@@ -246,6 +239,4 @@ extension Player: ShipDelegate {
     func notifyShipChanges(_ ship: Ship) {
         playerDelegate?.notifyChangesOfPlayer(self)
     }
-    
-    
 }

@@ -32,7 +32,7 @@ final class CreateGameViewController: UIViewController {
         setupInterface()
         
         viewModel.createGameViewModelDelegate = self
-        viewModel.sendHumanSea()
+        viewModel.humanSea()
         viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
         StartGameBottomConstraint.constant = UIScreen.main.bounds.height * 1.2
         
@@ -178,11 +178,11 @@ final class CreateGameViewController: UIViewController {
     
     @IBAction func generateShipSPositionsButtonTapped(_ sender: Any) {
         viewModel.replaceShipsAutomatically(player: viewModel.humanPlayer!)
-        viewModel.checkStartGameButtonAppearanceCounter()
+        viewModel.startGameButtonAppearanceCounter()
     }
     
     @IBAction func startGameButtonTapped(_ sender: Any) {
-        guard viewModel.validateStartGamePossibility() else {return}
+        guard viewModel.startGamePossibility() else {return}
         vcHumanPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
         vcHumanPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
         navigationController?.pushViewController(vcHumanPlayerTurn, animated: true)
@@ -262,14 +262,9 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
         return cell
     }
     
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    //        let size = UIScreen.main.bounds.width * 0.091
-    //        return CGSize(width: size, height: size)
-    //    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.checkDeployingPossibility(index: indexPath.row, shipId: viewModel.nextShipId, shipSize: viewModel.nextShipSize, orientation: viewModel.nextShipOrientation)
-        viewModel.checkStartGameButtonAppearanceCounter()
+        viewModel.startGameButtonAppearanceCounter()
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
@@ -286,7 +281,6 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
         deployPossibility = .unknown
         projectSea.reloadData()
     }
-    
 }
 
 

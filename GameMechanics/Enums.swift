@@ -13,6 +13,24 @@ enum direction {
     case west
     case east
     case allDirections
+    
+    func nextFieldIndex(row: Int, column: Int) -> (row: Int, column: Int) {
+        var row = row
+        var column = column
+        switch self {
+        case .north:
+            row -= 1
+        case .south:
+            row += 1
+        case .west:
+            column -= 1
+        case .east:
+            column += 1
+        case .allDirections:
+            print("nothing")
+        }
+        return (row: row, column: column)
+    }
 }
 
 enum fieldState {

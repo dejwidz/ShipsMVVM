@@ -132,7 +132,7 @@ extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
 extension ComputerPlayerTurnViewModel {
     
     func saveAccess(row: Int, column: Int) -> Bool {
-        let isAccesToThisIndexSave = column >= 0 && column <= 9 && row >= 0 && row <= 9 ? true : false
+        let isAccesToThisIndexSave = column >= 0 && column <= 9 && row >= 0 && row <= 9
         return isAccesToThisIndexSave
     }
     
@@ -156,76 +156,54 @@ extension ComputerPlayerTurnViewModel {
         computerPlayerEnemySea![row][column].getState() == .hit
         return okYouCanShot
     }
-    
-    func radarNorth(row: Int, column: Int) {
+
+    func activateRadarForDirection(forDirection direction: direction, row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleNorth, forDirection: .north)
+            setComputerPlayerPossibleFieldsForDirection(forDirection: direction)
             return
         }
         let field = computerPlayerEnemySea![row][column]
         if field.getState() == .free {
             let index = column ++ row
-            computerPlayerPossibleNorth.append(index)
-            radarNorth(row: row - 1, column: column)
+            switch direction {
+            case .north:
+                computerPlayerPossibleNorth.append(index)
+            case .south:
+                computerPlayerPossibleSouth.append(index)
+            case .west:
+                computerPlayerPossibleWest.append(index)
+            case .east:
+                computerPlayerPossibleEast.append(index)
+            case .allDirections:
+                print("nothing")
+            }
+            activateRadarForDirection(forDirection: direction, row: direction.nextFieldIndex(row: row, column: column).row, column: direction.nextFieldIndex(row: row, column: column).column)
         }
         else {
-            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleNorth, forDirection: .north)
+            setComputerPlayerPossibleFieldsForDirection(forDirection: direction)
         }
     }
     
-    func radarSouth(row: Int, column: Int) {
-        guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleSouth, forDirection: .south)
-            return
-        }
-        let field = computerPlayerEnemySea![row][column]
-        if field.getState() == .free {
-            let index = column ++ row
-            computerPlayerPossibleSouth.append(index)
-            radarSouth(row: row + 1, column: column)
-        }
-        else {
-            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleSouth, forDirection: .south)
-        }
-    }
-    
-    func radarWest(row: Int, column: Int) {
-        guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleWest, forDirection: .west)
-            return
-        }
-        let field = computerPlayerEnemySea![row][column]
-        if field.getState() == .free {
-            let index = column ++ row
-            computerPlayerPossibleWest.append(index)
-            radarWest(row: row, column: column - 1)
-        }
-        else {
-            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleWest, forDirection: .west)
+    func setComputerPlayerPossibleFieldsForDirection(forDirection direction: direction) {
+        switch direction {
+        case .north:
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleNorth, forDirection: direction)
+        case .south:
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleSouth, forDirection: direction)
+        case .west:
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleWest, forDirection: direction)
+        case .east:
+            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleEast, forDirection: direction)
+        case .allDirections:
+            print("nothing")
         }
     }
     
-    func radarEast(row: Int, column: Int) {
-        guard saveAccess(row: row, column: column) else {
-            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleEast, forDirection: .east)
-            return
-        }
-        let field = computerPlayerEnemySea![row][column]
-        if field.getState() == .free {
-            let index = column ++ row
-            computerPlayerPossibleEast.append(index)
-            radarEast(row: row, column: column + 1)
-        }
-        else {
-            model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleEast, forDirection: .east)
-        }
-    }
-    
-    func radar(row: Int, column: Int) {
-        radarNorth(row: row - 1, column: column)
-        radarSouth(row: row + 1, column: column)
-        radarWest(row: row, column: column - 1)
-        radarEast(row: row, column: column + 1)
+    func activateRadar(row: Int, column: Int) {
+        activateRadarForDirection(forDirection: .north, row: row - 1, column: column)
+        activateRadarForDirection(forDirection: .south, row: row + 1, column: column)
+        activateRadarForDirection(forDirection: .west, row: row, column: column - 1)
+        activateRadarForDirection(forDirection: .east, row: row, column: column + 1)
     }
     
     func computerPlayerShot() {
@@ -257,7 +235,7 @@ extension ComputerPlayerTurnViewModel {
                 self.validateGameOverIndicator()
                 if !self.computerPlayerHitIndicator {
                     self.model.setComputerPlayerHitIndicatorTrue()
-                    self.radar(row: row, column: column)
+                    self.activateRadar(row: row, column: column)
                     if !self.computerPlayerPossibleNorth.isEmpty {
                         self.model.setComputerPlayerIndicatorForDirection(newIndicatorValue: true, forDirection: .north)
                     }

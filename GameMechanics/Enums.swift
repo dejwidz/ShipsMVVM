@@ -57,7 +57,7 @@ enum deployPossibility {
 }
 
 func getColumn(forIndexPathRowValue: Int) -> Int {
-    let numberOfTheRow = Int(forIndexPathRowValue/10)
+    let numberOfTheRow = Int(forIndexPathRowValue / 10)
     return numberOfTheRow
 }
 

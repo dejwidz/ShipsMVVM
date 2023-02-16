@@ -94,7 +94,6 @@ final class CreateGameModel: CreateGameModelProtocol {
     func actualizePlayer(player: Player) {
         player.actualizeSeaBeforeGame()
     }
-    
 }
 
 extension CreateGameModel: PlayerDelegate {

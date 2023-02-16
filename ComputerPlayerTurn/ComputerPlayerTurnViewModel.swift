@@ -156,7 +156,7 @@ extension ComputerPlayerTurnViewModel {
         computerPlayerEnemySea![row][column].getState() == .hit
         return okYouCanShot
     }
-
+    
     func activateRadarForDirection(forDirection direction: direction, row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {
             setComputerPlayerPossibleFieldsForDirection(forDirection: direction)

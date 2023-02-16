@@ -17,7 +17,7 @@ final class ViewController: UIViewController {
     private let w = UIScreen.main.bounds.width
     private let h = UIScreen.main.bounds.height
     
-    let newGameButton: UIButton = {
+    private let newGameButton: UIButton = {
         let button = UIButton()
         let w = UIScreen.main.bounds.width
         let h = UIScreen.main.bounds.height
@@ -41,7 +41,7 @@ final class ViewController: UIViewController {
         setupInterface()
     }
     
-    func setupInterface() {
+    private func setupInterface() {
         view.addSubview(newGameButton)
         NSLayoutConstraint.activate([
             newGameButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),

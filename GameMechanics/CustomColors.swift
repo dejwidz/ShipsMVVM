@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 struct CustomColors {
-    
     static let backColor = UIColor(named: "backColor")
     static let fontColor = UIColor(named: "fontColor")
     static let freeDeploymentColor = UIColor(named: "freeDeploymentColor")

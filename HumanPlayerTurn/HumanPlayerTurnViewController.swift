@@ -53,7 +53,7 @@ class HumanPlayerTurnViewController: UIViewController {
         humanPlayerSeaCollectionView.register(PlayerTurnCustomCollectionViewCell.self, forCellWithReuseIdentifier: "PlayerTurnCustomCollectionViewCell")
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: w * 0.091, height: w * 0.093)
-        layout.minimumLineSpacing = w * 0.008
+        layout.minimumLineSpacing = w * 0.009
         layout.minimumInteritemSpacing = w * 0.005
         layout.scrollDirection = .horizontal
         humanPlayerSeaCollectionView.collectionViewLayout = layout
@@ -124,7 +124,6 @@ extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
     func humanPlayer(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayer: Player) {
         self.humanPlayer = humanPlayer
     }
-    
 }
 
 extension HumanPlayerTurnViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

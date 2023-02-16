@@ -57,15 +57,14 @@ final class CreateGameViewController: UIViewController {
         projectSea.translatesAutoresizingMaskIntoConstraints = false
         projectSea.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: "customCell")
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: w * 0.091, height: w * 0.093)
-        layout.minimumLineSpacing = w * 0.005
+        layout.minimumLineSpacing = w * 0.009
         layout.minimumInteritemSpacing = w * 0.005
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
         projectSea.collectionViewLayout = layout
         projectSea.backgroundColor = CustomColors.backColor
         
-        orientationSegmentedControl = UISegmentedControl(items: ["Horizontal", "Vertical"])
+        orientationSegmentedControl = UISegmentedControl(items: ["Vertical", "Horizontal"])
         orientationSegmentedControl.selectedSegmentIndex = 0
         orientationSegmentedControl.backgroundColor = CustomColors.tealAndGrayblue
         orientationSegmentedControl.selectedSegmentTintColor = CustomColors.tealAndGrayblue
@@ -143,7 +142,7 @@ final class CreateGameViewController: UIViewController {
         StartGameBottomConstraint.isActive = true
     }
     
-    @IBAction func orientationSegmentedControlValueChanged(_ sender: UISegmentedControl) {
+    @objc func orientationSegmentedControlValueChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
             viewModel.nextShipOrientation = .vertical
@@ -154,7 +153,7 @@ final class CreateGameViewController: UIViewController {
         }
     }
     
-    @IBAction func chooseShipSegmentedControlValueChanged(_ sender: UISegmentedControl) {
+    @objc func chooseShipSegmentedControlValueChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
             viewModel.nextShipId = 2
@@ -176,26 +175,26 @@ final class CreateGameViewController: UIViewController {
         }
     }
     
-    @IBAction func generateShipSPositionsButtonTapped(_ sender: Any) {
+    @objc func generateShipSPositionsButtonTapped(_ sender: Any) {
         viewModel.replaceShipsAutomatically(player: viewModel.humanPlayer!)
         viewModel.startGameButtonAppearanceCounter()
     }
     
-    @IBAction func startGameButtonTapped(_ sender: Any) {
+    @objc func startGameButtonTapped(_ sender: Any) {
         guard viewModel.startGamePossibility() else {return}
         vcHumanPlayerTurn.setComputerPlayer(computerPlayer: computerPlayer!)
         vcHumanPlayerTurn.setHumanPlayer(humanPlayer: humanPlayer!)
         navigationController?.pushViewController(vcHumanPlayerTurn, animated: true)
     }
     
-    func showMessage(message: String) {
+    private func showMessage(message: String) {
         let alert = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alert, animated: true)
     }
     
     
-    func AnimateStartButtonApperance() {
+   private  func AnimateStartButtonApperance() {
         let h = UIScreen.main.bounds.height
         UIView.animate(withDuration: 2) {
             self.StartGameBottomConstraint.isActive = false
@@ -206,7 +205,7 @@ final class CreateGameViewController: UIViewController {
         }
     }
     
-    func animateDeployingPossibility(index: Int, size: Int, orientation: orientation, possibility: Bool) {
+    private func animateDeployingPossibility(index: Int, size: Int, orientation: orientation, possibility: Bool) {
         guard isCellStillHighlighted else {return}
         
         let indexOfFieldToAnimate = NSIndexPath(row: index, section: 0)

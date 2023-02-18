@@ -19,7 +19,7 @@ final class Ship {
     private var isLive: Bool {
         willSet {
             guard newValue != isLive else {return}
-            shipDelegate?.sayIHaveBeenDestroyed(self, owner: owner, message: "Ship of size \(size) has been destroyed")
+            shipDelegate?.shipHasBennDestroyed(self, owner: owner, message: "Ship of size \(size) has been destroyed")
         }
     }
     
@@ -49,10 +49,6 @@ final class Ship {
         shipDelegate?.notifyShipChanges(self)
     }
     
-    func getFields() -> [Field] {
-        return fields
-    }
-    
     func actualizeFields() {
         for i in fields {
             i.setState(newState: .occupied)
@@ -74,6 +70,6 @@ final class Ship {
 
 protocol ShipDelegate: AnyObject {
     func notifyShipChanges(_ ship: Ship)
-    func sayIHaveBeenDestroyed(_ ship: Ship, owner: String, message: String)
+    func shipHasBennDestroyed(_ ship: Ship, owner: String, message: String)
 }
 

@@ -8,7 +8,7 @@
 import UIKit
 
 class HumanPlayerTurnViewController: UIViewController {
-    private var humanPlayer: Player? 
+    private var humanPlayer: Player?
     private var computerPlayer: Player?
     private var humanPlayerEnemySeaMatrix: [[Field]]?
     private var viewModel = HumanPlayerTurnViewModel(model: HumanPlayerTurnModel())
@@ -39,7 +39,6 @@ class HumanPlayerTurnViewController: UIViewController {
     
     private func setupInterface() {
         let w = UIScreen.main.bounds.width
-        let h = UIScreen.main.bounds.height
         view.backgroundColor = CustomColors.backColor
         
         mainScrollView = UIScrollView()
@@ -146,7 +145,7 @@ extension HumanPlayerTurnViewController: UICollectionViewDelegate, UICollectionV
         guard antiCanningProtector else {return}
         antiCanningProtector = false
         indexOfLastShot = indexPath
-        var nextScreenDisplayPossibility = viewModel.humanPlayerShot(index: indexPath.row)
+        let nextScreenDisplayPossibility = viewModel.humanPlayerShot(index: indexPath.row)
         let cell = humanPlayerSeaCollectionView.cellForItem(at: indexPath) as! PlayerTurnCustomCollectionViewCell
         let animation = CABasicAnimation(keyPath: "backgroundColor")
         animation.isRemovedOnCompletion = false
@@ -167,9 +166,8 @@ extension HumanPlayerTurnViewController: UICollectionViewDelegate, UICollectionV
     }
 }
 
-
 extension HumanPlayerTurnViewController: ComputerTurnVCSendInfoBackDelegate {
     func sayComputerPlayerMissed(_ computerPlayerTurnViewController: ComputerPlayerTurnViewController) {
         viewModel.computerPlayerMissed()
-    }  
+    }
 }

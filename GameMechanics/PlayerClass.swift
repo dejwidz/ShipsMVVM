@@ -62,7 +62,7 @@ final class Player {
         addShips()
     }
     
-    func addShips() {
+    private func addShips() {
         ships.append(ship2)
         ships.append(ship3)
         ships.append(ship32)
@@ -231,7 +231,7 @@ protocol PlayerDelegate: AnyObject {
 }
 
 extension Player: ShipDelegate {
-    func sayIHaveBeenDestroyed(_ ship: Ship, owner: String, message: String) {
+    func shipHasBennDestroyed(_ ship: Ship, owner: String, message: String) {
         playerDelegate?.sendMessage(self, owner: owner, message: message)
         playerDelegate?.notifyChangesOfPlayer(self)
     }

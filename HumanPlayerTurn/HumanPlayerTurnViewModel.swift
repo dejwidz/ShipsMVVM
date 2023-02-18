@@ -119,7 +119,7 @@ extension HumanPlayerTurnViewModel {
         return displayComputerViewController
     }
     
-    func validateHitCounter() {
+    private func validateHitCounter() {
         hitCounter = 0
         for i in 0...9 {
             for j in 0...9 {
@@ -133,7 +133,7 @@ extension HumanPlayerTurnViewModel {
         humanPlayerTurnViewModelDelegate?.message(self, message: "You won, the game is over")
     }
     
-    func checkComputerPlayerShips() {
+    private func checkComputerPlayerShips() {
         model.checkComputerPlayerShips()
     }
     

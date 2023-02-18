@@ -32,7 +32,6 @@ class ComputerPlayerTurnViewController: UIViewController {
     
     private func setupInterface() {
         let w = UIScreen.main.bounds.width
-        let h = UIScreen.main.bounds.height
         view.backgroundColor = CustomColors.backColor
         
         mainScrollView = UIScrollView()
@@ -91,7 +90,7 @@ class ComputerPlayerTurnViewController: UIViewController {
         viewModel.resetEverythingWhenHumanPlayerShipHaveBeenDestroyed()
     }
     
-    func showAlert(message:String) {
+    private func showAlert(message:String) {
         let alert = UIAlertController(title: "Try again", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alert, animated: true)

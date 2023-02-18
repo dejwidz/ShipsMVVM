@@ -131,12 +131,12 @@ extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
 
 extension ComputerPlayerTurnViewModel {
     
-    func saveAccess(row: Int, column: Int) -> Bool {
+    private func saveAccess(row: Int, column: Int) -> Bool {
         let isAccesToThisIndexSave = column >= 0 && column <= 9 && row >= 0 && row <= 9
         return isAccesToThisIndexSave
     }
     
-    func isShootingToThisFieldWise(row: Int, column: Int) -> Bool {
+    private func isShootingToThisFieldWise(row: Int, column: Int) -> Bool {
         let okYouCanShot = computerPlayerEnemySea![row][column].getState() == .free &&
         checkIfSurroundingFieldIsFree(row: row - 1, column: column - 1) &&
         checkIfSurroundingFieldIsFree(row: row - 1, column: column) &&
@@ -149,7 +149,7 @@ extension ComputerPlayerTurnViewModel {
         return okYouCanShot
     }
     
-    func checkIfSurroundingFieldIsFree(row: Int, column: Int) -> Bool {
+    private func checkIfSurroundingFieldIsFree(row: Int, column: Int) -> Bool {
         var okYouCanShot = true
         guard saveAccess(row: row, column: column) else {return okYouCanShot}
         okYouCanShot = computerPlayerEnemySea![row][column].getState() == .free ||
@@ -157,7 +157,7 @@ extension ComputerPlayerTurnViewModel {
         return okYouCanShot
     }
     
-    func activateRadarForDirection(forDirection direction: direction, row: Int, column: Int) {
+    private func activateRadarForDirection(forDirection direction: direction, row: Int, column: Int) {
         guard saveAccess(row: row, column: column) else {
             setComputerPlayerPossibleFieldsForDirection(forDirection: direction)
             return
@@ -184,7 +184,7 @@ extension ComputerPlayerTurnViewModel {
         }
     }
     
-    func setComputerPlayerPossibleFieldsForDirection(forDirection direction: direction) {
+    private func setComputerPlayerPossibleFieldsForDirection(forDirection direction: direction) {
         switch direction {
         case .north:
             model.setComputerPlayerPossibleDirection(newPossibleFields: computerPlayerPossibleNorth, forDirection: direction)
@@ -199,7 +199,7 @@ extension ComputerPlayerTurnViewModel {
         }
     }
     
-    func activateRadar(row: Int, column: Int) {
+    private func activateRadar(row: Int, column: Int) {
         activateRadarForDirection(forDirection: .north, row: row - 1, column: column)
         activateRadarForDirection(forDirection: .south, row: row + 1, column: column)
         activateRadarForDirection(forDirection: .west, row: row, column: column - 1)
@@ -257,7 +257,7 @@ extension ComputerPlayerTurnViewModel {
         }
     }
     
-    func prepareToShot() -> Int {
+    private func prepareToShot() -> Int {
         if !computerPlayerHitIndicator {
             indexOfNextFieldToShot = iVeGotNothingOnRadar()
         } else {
@@ -266,7 +266,7 @@ extension ComputerPlayerTurnViewModel {
         return indexOfNextFieldToShot
     }
     
-    func iVeGotNothingOnRadar() -> Int {
+    private func iVeGotNothingOnRadar() -> Int {
         var nextShotPossibility = false
         while nextShotPossibility == false {
             indexOfNextFieldToShot = Int.random(in: 0...99)
@@ -277,7 +277,7 @@ extension ComputerPlayerTurnViewModel {
         return indexOfNextFieldToShot
     }
     
-    func iHaveSomethingOnRadar() -> Int {
+    private func iHaveSomethingOnRadar() -> Int {
         if !computerPlayerPossibleNorth.isEmpty {
             indexOfNextFieldToShot = computerPlayerPossibleNorth[0]
             computerPlayerPossibleNorth.remove(at: 0)
@@ -301,7 +301,7 @@ extension ComputerPlayerTurnViewModel {
         return indexOfNextFieldToShot
     }
     
-    func validateLastShot() {
+    private func validateLastShot() {
         if computerPlayerNorthIndicator {
             model.computerPlayerClearDirection(direction: .north)
             model.setComputerPlayerIndicatorForDirection(newIndicatorValue: false, forDirection: .north)
@@ -320,11 +320,11 @@ extension ComputerPlayerTurnViewModel {
         }
     }
     
-    func checkShips() {
+    private func checkShips() {
         humanPlayerShips.forEach {$0.checkIfTheShipisStillAlive()}
     }
     
-    func validateGameOverIndicator() {
+    private func validateGameOverIndicator() {
         hitCounter = 0
         for i in 0...9 {
             for j in 0...9 {

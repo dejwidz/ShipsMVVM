@@ -57,7 +57,6 @@ final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
         computerPlayerTurnModelDelegate?.computerPlayerPossibleFieldsForDirection(self, newFields: (computerPlayer?.getPossibleDirection(direction: direction))!, forDirection: direction)
     }
     
-    
     func computerPlayerClearDirection(direction: direction) {
         computerPlayer?.clearDirection(direction: direction)
         computerPlayerTurnModelDelegate?.computerPlayerPossibleFieldsForDirection(self, newFields: (computerPlayer?.getPossibleDirection(direction: direction))!, forDirection: direction)

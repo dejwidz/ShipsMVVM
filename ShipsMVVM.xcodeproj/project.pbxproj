@@ -8,25 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		6D2485D3283EC7530021F141 /* HumanPlayerTurnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2485D1283EC7530021F141 /* HumanPlayerTurnViewController.swift */; };
-		6D2485D4283EC7530021F141 /* HumanPlayerTurnViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D2485D2283EC7530021F141 /* HumanPlayerTurnViewController.xib */; };
 		6D2485D7283EC7890021F141 /* HumanPlayerTurnViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2485D6283EC7890021F141 /* HumanPlayerTurnViewModel.swift */; };
 		6D2485D9283EC7990021F141 /* HumanPlayerTurnModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2485D8283EC7990021F141 /* HumanPlayerTurnModel.swift */; };
 		6D2485DE283F9DB20021F141 /* PlayerTurnCustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2485DC283F9DB20021F141 /* PlayerTurnCustomCollectionViewCell.swift */; };
-		6D2485DF283F9DB20021F141 /* PlayerTurnCustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D2485DD283F9DB20021F141 /* PlayerTurnCustomCollectionViewCell.xib */; };
 		6D2485E2283FB8270021F141 /* ComputerPlayerTurnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2485E0283FB8270021F141 /* ComputerPlayerTurnViewController.swift */; };
-		6D2485E3283FB8270021F141 /* ComputerPlayerTurnViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D2485E1283FB8270021F141 /* ComputerPlayerTurnViewController.xib */; };
 		6D2485E6283FC4240021F141 /* ComputerPlayerTurnViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2485E5283FC4240021F141 /* ComputerPlayerTurnViewModel.swift */; };
 		6D2485E8283FC4330021F141 /* ComputerPlayerTurnModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2485E7283FC4330021F141 /* ComputerPlayerTurnModel.swift */; };
 		6D2485EB283FCC830021F141 /* ComputerTurnCustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2485E9283FCC830021F141 /* ComputerTurnCustomCollectionViewCell.swift */; };
-		6D2485EC283FCC830021F141 /* ComputerTurnCustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D2485EA283FCC830021F141 /* ComputerTurnCustomCollectionViewCell.xib */; };
 		6DA1AA9E2833EFF900AC0ABF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AA9D2833EFF900AC0ABF /* AppDelegate.swift */; };
 		6DA1AAA02833EFF900AC0ABF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AA9F2833EFF900AC0ABF /* SceneDelegate.swift */; };
 		6DA1AAA22833EFF900AC0ABF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAA12833EFF900AC0ABF /* ViewController.swift */; };
-		6DA1AAA52833EFF900AC0ABF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1AAA32833EFF900AC0ABF /* Main.storyboard */; };
 		6DA1AAA72833EFFB00AC0ABF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1AAA62833EFFB00AC0ABF /* Assets.xcassets */; };
-		6DA1AAAA2833EFFB00AC0ABF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1AAA82833EFFB00AC0ABF /* LaunchScreen.storyboard */; };
 		6DA1AAB32833FC3F00AC0ABF /* CreateGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAB12833FC3E00AC0ABF /* CreateGameViewController.swift */; };
-		6DA1AAB42833FC3F00AC0ABF /* CreateGameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1AAB22833FC3E00AC0ABF /* CreateGameViewController.xib */; };
 		6DA1AAB72833FDC300AC0ABF /* CreateGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAB62833FDC300AC0ABF /* CreateGameViewModel.swift */; };
 		6DA1AAB92833FDE500AC0ABF /* CreateGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAB82833FDE500AC0ABF /* CreateGameModel.swift */; };
 		6DA1AABB2833FDFA00AC0ABF /* PlayerClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AABA2833FDFA00AC0ABF /* PlayerClass.swift */; };
@@ -34,33 +27,25 @@
 		6DA1AABF2833FE2F00AC0ABF /* FieldClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AABE2833FE2F00AC0ABF /* FieldClass.swift */; };
 		6DA1AAC12833FE5A00AC0ABF /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAC02833FE5A00AC0ABF /* Enums.swift */; };
 		6DA1AAC7283409B500AC0ABF /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA1AAC5283409B500AC0ABF /* CustomCollectionViewCell.swift */; };
-		6DA1AAC8283409B500AC0ABF /* CustomCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6DA1AAC6283409B500AC0ABF /* CustomCollectionViewCell.xib */; };
 		6DE26C0D29940366008E555E /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE26C0C29940366008E555E /* CustomColors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6D2485D1283EC7530021F141 /* HumanPlayerTurnViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanPlayerTurnViewController.swift; sourceTree = "<group>"; };
-		6D2485D2283EC7530021F141 /* HumanPlayerTurnViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HumanPlayerTurnViewController.xib; sourceTree = "<group>"; };
 		6D2485D6283EC7890021F141 /* HumanPlayerTurnViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanPlayerTurnViewModel.swift; sourceTree = "<group>"; };
 		6D2485D8283EC7990021F141 /* HumanPlayerTurnModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumanPlayerTurnModel.swift; sourceTree = "<group>"; };
 		6D2485DC283F9DB20021F141 /* PlayerTurnCustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTurnCustomCollectionViewCell.swift; sourceTree = "<group>"; };
-		6D2485DD283F9DB20021F141 /* PlayerTurnCustomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerTurnCustomCollectionViewCell.xib; sourceTree = "<group>"; };
 		6D2485E0283FB8270021F141 /* ComputerPlayerTurnViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerPlayerTurnViewController.swift; sourceTree = "<group>"; };
-		6D2485E1283FB8270021F141 /* ComputerPlayerTurnViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComputerPlayerTurnViewController.xib; sourceTree = "<group>"; };
 		6D2485E5283FC4240021F141 /* ComputerPlayerTurnViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerPlayerTurnViewModel.swift; sourceTree = "<group>"; };
 		6D2485E7283FC4330021F141 /* ComputerPlayerTurnModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerPlayerTurnModel.swift; sourceTree = "<group>"; };
 		6D2485E9283FCC830021F141 /* ComputerTurnCustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerTurnCustomCollectionViewCell.swift; sourceTree = "<group>"; };
-		6D2485EA283FCC830021F141 /* ComputerTurnCustomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComputerTurnCustomCollectionViewCell.xib; sourceTree = "<group>"; };
 		6DA1AA9A2833EFF900AC0ABF /* ShipsMVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShipsMVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DA1AA9D2833EFF900AC0ABF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6DA1AA9F2833EFF900AC0ABF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6DA1AAA12833EFF900AC0ABF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		6DA1AAA42833EFF900AC0ABF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6DA1AAA62833EFFB00AC0ABF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		6DA1AAA92833EFFB00AC0ABF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6DA1AAAB2833EFFB00AC0ABF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6DA1AAB12833FC3E00AC0ABF /* CreateGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameViewController.swift; sourceTree = "<group>"; };
-		6DA1AAB22833FC3E00AC0ABF /* CreateGameViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateGameViewController.xib; sourceTree = "<group>"; };
 		6DA1AAB62833FDC300AC0ABF /* CreateGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameViewModel.swift; sourceTree = "<group>"; };
 		6DA1AAB82833FDE500AC0ABF /* CreateGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameModel.swift; sourceTree = "<group>"; };
 		6DA1AABA2833FDFA00AC0ABF /* PlayerClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerClass.swift; sourceTree = "<group>"; };
@@ -68,7 +53,6 @@
 		6DA1AABE2833FE2F00AC0ABF /* FieldClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldClass.swift; sourceTree = "<group>"; };
 		6DA1AAC02833FE5A00AC0ABF /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		6DA1AAC5283409B500AC0ABF /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
-		6DA1AAC6283409B500AC0ABF /* CustomCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCollectionViewCell.xib; sourceTree = "<group>"; };
 		6DE26C0C29940366008E555E /* CustomColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -86,10 +70,8 @@
 		6D2485D5283EC7680021F141 /* HumanPlayerTurn */ = {
 			isa = PBXGroup;
 			children = (
-				6D2485D2283EC7530021F141 /* HumanPlayerTurnViewController.xib */,
 				6D2485D1283EC7530021F141 /* HumanPlayerTurnViewController.swift */,
 				6D2485DC283F9DB20021F141 /* PlayerTurnCustomCollectionViewCell.swift */,
-				6D2485DD283F9DB20021F141 /* PlayerTurnCustomCollectionViewCell.xib */,
 				6D2485D6283EC7890021F141 /* HumanPlayerTurnViewModel.swift */,
 				6D2485D8283EC7990021F141 /* HumanPlayerTurnModel.swift */,
 			);
@@ -101,8 +83,6 @@
 			children = (
 				6D2485E0283FB8270021F141 /* ComputerPlayerTurnViewController.swift */,
 				6D2485E9283FCC830021F141 /* ComputerTurnCustomCollectionViewCell.swift */,
-				6D2485EA283FCC830021F141 /* ComputerTurnCustomCollectionViewCell.xib */,
-				6D2485E1283FB8270021F141 /* ComputerPlayerTurnViewController.xib */,
 				6D2485E5283FC4240021F141 /* ComputerPlayerTurnViewModel.swift */,
 				6D2485E7283FC4330021F141 /* ComputerPlayerTurnModel.swift */,
 			);
@@ -133,8 +113,6 @@
 			isa = PBXGroup;
 			children = (
 				6DA1AAAB2833EFFB00AC0ABF /* Info.plist */,
-				6DA1AAA82833EFFB00AC0ABF /* LaunchScreen.storyboard */,
-				6DA1AAA32833EFF900AC0ABF /* Main.storyboard */,
 				6DA1AA9D2833EFF900AC0ABF /* AppDelegate.swift */,
 				6DA1AA9F2833EFF900AC0ABF /* SceneDelegate.swift */,
 				6DA1AAA12833EFF900AC0ABF /* ViewController.swift */,
@@ -147,9 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				6DA1AAB12833FC3E00AC0ABF /* CreateGameViewController.swift */,
-				6DA1AAB22833FC3E00AC0ABF /* CreateGameViewController.xib */,
 				6DA1AAC5283409B500AC0ABF /* CustomCollectionViewCell.swift */,
-				6DA1AAC6283409B500AC0ABF /* CustomCollectionViewCell.xib */,
 				6DA1AAB62833FDC300AC0ABF /* CreateGameViewModel.swift */,
 				6DA1AAB82833FDE500AC0ABF /* CreateGameModel.swift */,
 			);
@@ -226,15 +202,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DA1AAAA2833EFFB00AC0ABF /* LaunchScreen.storyboard in Resources */,
-				6D2485E3283FB8270021F141 /* ComputerPlayerTurnViewController.xib in Resources */,
 				6DA1AAA72833EFFB00AC0ABF /* Assets.xcassets in Resources */,
-				6D2485EC283FCC830021F141 /* ComputerTurnCustomCollectionViewCell.xib in Resources */,
-				6D2485DF283F9DB20021F141 /* PlayerTurnCustomCollectionViewCell.xib in Resources */,
-				6D2485D4283EC7530021F141 /* HumanPlayerTurnViewController.xib in Resources */,
-				6DA1AAB42833FC3F00AC0ABF /* CreateGameViewController.xib in Resources */,
-				6DA1AAC8283409B500AC0ABF /* CustomCollectionViewCell.xib in Resources */,
-				6DA1AAA52833EFF900AC0ABF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,25 +237,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		6DA1AAA32833EFF900AC0ABF /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6DA1AAA42833EFF900AC0ABF /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		6DA1AAA82833EFFB00AC0ABF /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6DA1AAA92833EFFB00AC0ABF /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		6DA1AAAC2833EFFB00AC0ABF /* Debug */ = {
@@ -418,7 +367,7 @@
 				INFOPLIST_FILE = ShipsMVVM/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -446,7 +395,7 @@
 				INFOPLIST_FILE = ShipsMVVM/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

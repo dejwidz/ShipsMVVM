@@ -7,6 +7,11 @@
 
 import Foundation
 
+protocol PlayerDelegate: AnyObject {
+    func notifyChangesOfPlayer(_ player: Player)
+    func sendMessage(_ player: Player, owner: String, message: String)
+}
+
 final class Player {
     
     weak var playerDelegate: PlayerDelegate?
@@ -36,7 +41,6 @@ final class Player {
     private var southIndicator: Bool
     private var westIndicator: Bool
     private var eastIndicator: Bool
-    
     
     init(name: String, sea: [[Field]], enemySea: [[Field]], ship2: Ship, ship3: Ship, ship32: Ship, ship4: Ship, ship5: Ship) {
         self.name = name
@@ -70,7 +74,6 @@ final class Player {
         ships.append(ship5)
     }
     
-    
     func setShipFields(id: Int, fields: [Field]) {
         switch id {
         case 2:
@@ -93,13 +96,13 @@ final class Player {
     }
     
     func actualizeSeaBeforeGame() {
-        for i in 0...9 {
-            for j in 0...9 {
-                sea[i][j].setState(newState: .free)
+        for row in 0...9 {
+            for column in 0...9 {
+                sea[row][column].setState(newState: .free)
             }
         }
-        for i in ships {
-            i.actualizeFields()
+        for ship in ships {
+            ship.actualizeFields()
         }
     }
     
@@ -112,13 +115,13 @@ final class Player {
     }
     
     func clearSea() {
-        for i in 0...9 {
-            for j in 0...9 {
-                self.sea[i][j].setState(newState: .free)
+        for row in 0...9 {
+            for column in 0...9 {
+                self.sea[row][column].setState(newState: .free)
             }
         }
-        for i in ships {
-            i.clearFields()
+        for ship in ships {
+            ship.clearFields()
         }
     }
     
@@ -223,11 +226,6 @@ final class Player {
             return false
         }
     }
-}
-
-protocol PlayerDelegate: AnyObject {
-    func notifyChangesOfPlayer(_ player: Player)
-    func sendMessage(_ player: Player, owner: String, message: String)
 }
 
 extension Player: ShipDelegate {

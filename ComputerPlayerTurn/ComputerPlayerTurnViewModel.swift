@@ -24,6 +24,7 @@ protocol ComputerPlayerTurnViewModelDelegate: AnyObject {
 }
 
 final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
+    
     weak var computerPlayerTurnViewModelDelegate: ComputerPlayerTurnViewModelDelegate?
     private var turnIndicator: turn?
     private var computerPlayerHitIndicator = false
@@ -132,8 +133,8 @@ extension ComputerPlayerTurnViewModel: ComputerPlayerTurnModelDelegate {
 extension ComputerPlayerTurnViewModel {
     
     private func saveAccess(row: Int, column: Int) -> Bool {
-        let isAccesToThisIndexSave = column >= 0 && column <= 9 && row >= 0 && row <= 9
-        return isAccesToThisIndexSave
+        let isAccessToThisIndexSave = column >= 0 && column <= 9 && row >= 0 && row <= 9
+        return isAccessToThisIndexSave
     }
     
     private func isShootingToThisFieldWise(row: Int, column: Int) -> Bool {
@@ -259,14 +260,14 @@ extension ComputerPlayerTurnViewModel {
     
     private func prepareToShot() -> Int {
         if !computerPlayerHitIndicator {
-            indexOfNextFieldToShot = iVeGotNothingOnRadar()
+            indexOfNextFieldToShot = thereIsNothingOnRadar()
         } else {
-            indexOfNextFieldToShot = iHaveSomethingOnRadar()
+            indexOfNextFieldToShot = thereIsSomethingOnRadar()
         }
         return indexOfNextFieldToShot
     }
     
-    private func iVeGotNothingOnRadar() -> Int {
+    private func thereIsNothingOnRadar() -> Int {
         var nextShotPossibility = false
         while nextShotPossibility == false {
             indexOfNextFieldToShot = Int.random(in: 0...99)
@@ -277,7 +278,7 @@ extension ComputerPlayerTurnViewModel {
         return indexOfNextFieldToShot
     }
     
-    private func iHaveSomethingOnRadar() -> Int {
+    private func thereIsSomethingOnRadar() -> Int {
         if !computerPlayerPossibleNorth.isEmpty {
             indexOfNextFieldToShot = computerPlayerPossibleNorth[0]
             computerPlayerPossibleNorth.remove(at: 0)
@@ -321,14 +322,14 @@ extension ComputerPlayerTurnViewModel {
     }
     
     private func checkShips() {
-        humanPlayerShips.forEach {$0.checkIfTheShipisStillAlive()}
+        humanPlayerShips.forEach {$0.checkIfTheShipIsStillAlive()}
     }
     
     private func validateGameOverIndicator() {
         hitCounter = 0
-        for i in 0...9 {
-            for j in 0...9 {
-                if computerPlayerEnemySea![i][j].getState() == .hitOccupied {
+        for row in 0...9 {
+            for column in 0...9 {
+                if computerPlayerEnemySea![row][column].getState() == .hitOccupied {
                     hitCounter! += 1
                 }
             }

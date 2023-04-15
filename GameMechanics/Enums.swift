@@ -57,13 +57,11 @@ enum deployPossibility {
 }
 
 func getColumn(forIndexPathRowValue: Int) -> Int {
-    let numberOfTheRow = Int(forIndexPathRowValue / 10)
-    return numberOfTheRow
+    return Int(forIndexPathRowValue / 10)
 }
 
 func getRow(forIndexPathRowValue: Int) -> Int {
-    let numberOfTheColumn: Int = forIndexPathRowValue % 10
-    return numberOfTheColumn
+    return forIndexPathRowValue % 10
 }
 
 infix operator ++
@@ -75,5 +73,3 @@ func ++(firstValue: Int, secondValue: Int) -> Int {
     let combinedInteger = Int(combinedString)
     return combinedInteger!
 }
-
-

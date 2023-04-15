@@ -8,6 +8,7 @@
 import UIKit
 
 class CustomCollectionViewCell: UICollectionViewCell {
+    
     let identifier = "customCell"
     var state: fieldState = .free
     
@@ -23,7 +24,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
         state = newState
         switch state {
         case .free:
-            contentView.backgroundColor = CustomColors.tealAndGrayblue
+            contentView.backgroundColor = CustomColors.tealAndGrayBlue
         case .occupied:
             contentView.backgroundColor = CustomColors.occupiedColor
         case .hit:

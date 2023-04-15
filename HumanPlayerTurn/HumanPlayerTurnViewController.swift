@@ -8,6 +8,7 @@
 import UIKit
 
 class HumanPlayerTurnViewController: UIViewController {
+    
     private var humanPlayer: Player?
     private var computerPlayer: Player?
     private var humanPlayerEnemySeaMatrix: [[Field]]?
@@ -19,7 +20,6 @@ class HumanPlayerTurnViewController: UIViewController {
     
     private var humanPlayerSeaCollectionView: UICollectionView!
     private var mainScrollView: UIScrollView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -9,11 +9,6 @@ import UIKit
 
 final class ViewController: UIViewController {
     
-    //    @IBAction private func newGameButtonTapped(_ sender: UIButton) {
-    //        let vc = CreateGameViewController()
-    //        navigationController?.pushViewController(vc, animated: true)
-    //    }
-    
     private let w = UIScreen.main.bounds.width
     private let h = UIScreen.main.bounds.height
     
@@ -23,7 +18,7 @@ final class ViewController: UIViewController {
         let h = UIScreen.main.bounds.height
         button.setTitle("Start New Game", for: .normal)
         button.setTitleColor(CustomColors.fontColor, for: .normal)
-        button.backgroundColor = CustomColors.tealAndGrayblue
+        button.backgroundColor = CustomColors.tealAndGrayBlue
         button.layer.cornerRadius = h * 0.025
         button.addTarget(self, action: #selector(newGameButtonTapped(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false

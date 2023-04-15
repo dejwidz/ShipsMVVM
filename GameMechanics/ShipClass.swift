@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol ShipDelegate: AnyObject {
+    func notifyShipChanges(_ ship: Ship)
+    func shipHasBennDestroyed(_ ship: Ship, owner: String, message: String)
+}
 
 final class Ship {
     
@@ -17,8 +21,8 @@ final class Ship {
     private let size: Int
     private var fields: [Field]
     private var isLive: Bool {
-        willSet {
-            guard newValue != isLive else {return}
+        didSet {
+            guard oldValue != isLive else {return}
             shipDelegate?.shipHasBennDestroyed(self, owner: owner, message: "Ship of size \(size) has been destroyed")
         }
     }
@@ -31,10 +35,10 @@ final class Ship {
         isLive = true
     }
     
-    @discardableResult func checkIfTheShipisStillAlive() -> Bool {
+    @discardableResult func checkIfTheShipIsStillAlive() -> Bool {
         var shipIsStillAlive = false
-        for i in fields {
-            if i.getState() == .occupied {
+        for field in fields {
+            if field.getState() == .occupied {
                 shipIsStillAlive = true
                 break
             }
@@ -50,8 +54,8 @@ final class Ship {
     }
     
     func actualizeFields() {
-        for i in fields {
-            i.setState(newState: .occupied)
+        for field in fields {
+            field.setState(newState: .occupied)
         }
     }
     
@@ -67,9 +71,3 @@ final class Ship {
         fields = []
     }
 }
-
-protocol ShipDelegate: AnyObject {
-    func notifyShipChanges(_ ship: Ship)
-    func shipHasBennDestroyed(_ ship: Ship, owner: String, message: String)
-}
-

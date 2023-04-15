@@ -66,8 +66,8 @@ final class CreateGameViewController: UIViewController {
         
         orientationSegmentedControl = UISegmentedControl(items: ["Vertical", "Horizontal"])
         orientationSegmentedControl.selectedSegmentIndex = 0
-        orientationSegmentedControl.backgroundColor = CustomColors.tealAndGrayblue
-        orientationSegmentedControl.selectedSegmentTintColor = CustomColors.tealAndGrayblue
+        orientationSegmentedControl.backgroundColor = CustomColors.tealAndGrayBlue
+        orientationSegmentedControl.selectedSegmentTintColor = CustomColors.tealAndGrayBlue
         UISegmentedControl.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: CustomColors.fontColor], for: .normal)
         UISegmentedControl.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: CustomColors.fontColor], for: .selected)
         orientationSegmentedControl.addTarget(self, action: #selector(orientationSegmentedControlValueChanged(_:)), for: .valueChanged)
@@ -76,8 +76,8 @@ final class CreateGameViewController: UIViewController {
         
         chooseShipSegmentedControl = UISegmentedControl(items: ["Ship 2", "Ship3", "Ship3", "Ship4", "Ship5"])
         chooseShipSegmentedControl.selectedSegmentIndex = 0
-        chooseShipSegmentedControl.backgroundColor = CustomColors.tealAndGrayblue
-        chooseShipSegmentedControl.selectedSegmentTintColor = CustomColors.tealAndGrayblue
+        chooseShipSegmentedControl.backgroundColor = CustomColors.tealAndGrayBlue
+        chooseShipSegmentedControl.selectedSegmentTintColor = CustomColors.tealAndGrayBlue
         UISegmentedControl.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: CustomColors.fontColor], for: .normal)
         UISegmentedControl.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: CustomColors.fontColor], for: .selected)
         chooseShipSegmentedControl.addTarget(self, action: #selector(chooseShipSegmentedControlValueChanged(_:)), for: .valueChanged)
@@ -88,7 +88,7 @@ final class CreateGameViewController: UIViewController {
         generateShipPositionsButton.translatesAutoresizingMaskIntoConstraints = false
         generateShipPositionsButton.setTitle("Generate Ship Positions", for: .normal)
         generateShipPositionsButton.setTitleColor(CustomColors.fontColor, for: .normal)
-        generateShipPositionsButton.backgroundColor = CustomColors.tealAndGrayblue
+        generateShipPositionsButton.backgroundColor = CustomColors.tealAndGrayBlue
         generateShipPositionsButton.layer.cornerRadius = h * 0.025
         generateShipPositionsButton.addTarget(self, action: #selector(generateShipSPositionsButtonTapped(_:)), for: .touchUpInside)
         
@@ -96,7 +96,7 @@ final class CreateGameViewController: UIViewController {
         startGameButton.translatesAutoresizingMaskIntoConstraints = false
         startGameButton.setTitle("Start Game", for: .normal)
         startGameButton.setTitleColor(CustomColors.fontColor, for: .normal)
-        startGameButton.backgroundColor = CustomColors.tealAndGrayblue
+        startGameButton.backgroundColor = CustomColors.tealAndGrayBlue
         startGameButton.layer.cornerRadius = h * 0.025
         startGameButton.addTarget(self, action: #selector(startGameButtonTapped(_:)), for: .touchUpInside)
         
@@ -193,8 +193,7 @@ final class CreateGameViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    
-   private  func AnimateStartButtonApperance() {
+   private  func AnimateStartButtonAppearance() {
         let h = UIScreen.main.bounds.height
         UIView.animate(withDuration: 2) {
             self.StartGameBottomConstraint.isActive = false
@@ -226,18 +225,18 @@ final class CreateGameViewController: UIViewController {
         animation.duration = 0.15
         cell?.contentView.layer.add(animation, forKey: nil)
         let indexOfNextFieldToAnimate: Int
-        let conditionOfSaveAcces: Bool
+        let conditionOfSaveAccess: Bool
         if orientation == .horizontal {
             indexOfNextFieldToAnimate = index + 10
-            conditionOfSaveAcces = true
+            conditionOfSaveAccess = true
         }
         else {
             indexOfNextFieldToAnimate = index - 1
-            conditionOfSaveAcces = getRow(forIndexPathRowValue: index) > 0
+            conditionOfSaveAccess = getRow(forIndexPathRowValue: index) > 0
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             let sizeCounter = size - 1
-            if sizeCounter > 0 && conditionOfSaveAcces {
+            if sizeCounter > 0 && conditionOfSaveAccess {
                 self.animateDeployingPossibility(index: indexOfNextFieldToAnimate, size: sizeCounter, orientation: orientation, possibility: possibility)
             }
         }
@@ -289,7 +288,7 @@ extension CreateGameViewController: CreateGameViewModelDelegate {
     }
     
     func sendInfoThatStartGameButtonCanAppear(_ createGameViewModel: CreateGameViewModelProtocol) {
-        AnimateStartButtonApperance()
+        AnimateStartButtonAppearance()
     }
     
     func sendInfoAboutDeployingPossibility(_ createGameViewModel: CreateGameViewModelProtocol, info: deployPossibility) {

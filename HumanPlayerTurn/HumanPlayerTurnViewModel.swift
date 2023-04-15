@@ -121,9 +121,9 @@ extension HumanPlayerTurnViewModel {
     
     private func validateHitCounter() {
         hitCounter = 0
-        for i in 0...9 {
-            for j in 0...9 {
-                if humanPlayerEnemySea![i][j].getState() == .hitOccupied {
+        for row in 0...9 {
+            for column in 0...9 {
+                if humanPlayerEnemySea![row][column].getState() == .hitOccupied {
                     hitCounter! += 1
                 }
             }
@@ -136,22 +136,4 @@ extension HumanPlayerTurnViewModel {
     private func checkComputerPlayerShips() {
         model.checkComputerPlayerShips()
     }
-    
-    
-    /* PYTANIE
-     
-     - Dlaczego sprawdzanie statków nie działa w taki sposób-
-     
-     func checkComputerPlayerShips() {
-     computerPlayerShips.forEach {$0.checkIfTheShipIsStillAlive}
-     }
-     
-     wtedy w ogóle nie widzi w statkach wywołania tej funkcji (sprawdzane printem), choć properka
-     computerPlayerShips poprawnie aktualizuje się delegatem z modelu (sprawdzane printem)
-     
-     Wydaje mi się, że wywalenie tego do modelu jest błędne i niezgodne z koncepcją MVVM, ale tam juz działa
-     
-     */
-    
-    
 }

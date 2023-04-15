@@ -29,6 +29,7 @@ protocol HumanPlayerTurnModelDelegate: AnyObject {
 }
 
 final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
+    
     var humanPlayerTurnModelDelegate: HumanPlayerTurnModelDelegate?
     private var humanPlayer: Player?
     private var computerPlayer: Player?
@@ -77,13 +78,12 @@ final class HumanPlayerTurnModel: HumanPlayerTurnModelProtocol {
     }
     
     func checkComputerPlayerShips() {
-        computerPlayer?.getShips().forEach {$0.checkIfTheShipisStillAlive()}
+        computerPlayer?.getShips().forEach {$0.checkIfTheShipIsStillAlive()}
     }
 }
 
 extension HumanPlayerTurnModel: PlayerDelegate {
     func sendMessage(_ player: Player, owner: String, message: String) {
-        print(owner, message)
         guard owner == "computerPlayer" else {return}
         humanPlayerTurnModelDelegate?.message(self, message: message)
     }

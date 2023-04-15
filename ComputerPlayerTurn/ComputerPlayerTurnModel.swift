@@ -74,7 +74,7 @@ final class ComputerPlayerTurnModel: ComputerPlayerTurnModelProtocol {
     }
     
     func checkHumanPlayerShips() {
-        humanPlayer?.getShips().forEach {$0.checkIfTheShipisStillAlive()}
+        humanPlayer?.getShips().forEach {$0.checkIfTheShipIsStillAlive()}
     }
     
     func setHumanPlayerSea(newSea: [[Field]]) {

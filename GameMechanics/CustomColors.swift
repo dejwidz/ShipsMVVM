@@ -13,8 +13,8 @@ struct CustomColors {
     static let fontColor = UIColor(named: "fontColor")
     static let freeDeploymentColor = UIColor(named: "freeDeploymentColor")
     static let hitColor = UIColor(named: "hitColor")
-    static let hitOccupiedColor = UIColor(named: "hitoccupiedColor")
-    static let tealAndGrayblue = UIColor(named: "teal&grayblue")
+    static let hitOccupiedColor = UIColor(named: "hitOccupiedColor")
+    static let tealAndGrayBlue = UIColor(named: "teal&grayBlue")
     static let occupiedColor = UIColor(named: "occupiedColor")
     static let occupiedDeploymentColor = UIColor(named: "occupiedDeploymentColor")
 }

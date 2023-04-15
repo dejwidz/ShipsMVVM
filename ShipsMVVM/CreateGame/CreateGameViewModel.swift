@@ -27,6 +27,7 @@ protocol CreateGameViewModelProtocol: AnyObject {
 }
 
 final class CreateGameViewModel {
+    
     weak var createGameViewModelDelegate: CreateGameViewModelDelegate?
     private var model: CreateGameModelProtocol
     var nextShipOrientation: orientation
@@ -77,9 +78,9 @@ extension CreateGameViewModel: CreateGameModelDelegate {
     
     func startGamePossibility() -> Bool {
         counter = 0
-        for i in 0...9 {
-            for j in 0...9 {
-                if humanPlayer?.getSea()[i][j].getState() == .occupied {
+        for row in 0...9 {
+            for column in 0...9 {
+                if humanPlayer?.getSea()[row][column].getState() == .occupied {
                     counter += 1
                 }
             }
@@ -105,22 +106,22 @@ extension CreateGameViewModel: CreateGameViewModelProtocol {
         }
     }
     
-    private func saveAcces(sea: [[Field]], column: Int, row: Int) -> Bool {
-        let isAccesToThisIndexSave = column >= 0 && column <= 9 && row >= 0 && row <= 9 ? true : false
-        return isAccesToThisIndexSave
+    private func saveAccess(sea: [[Field]], column: Int, row: Int) -> Bool {
+        let isAccessToThisIndexSave = column >= 0 && column <= 9 && row >= 0 && row <= 9 ? true : false
+        return isAccessToThisIndexSave
     }
     
     private func checkIfFieldIsFree(sea: [[Field]], column: Int, row: Int) -> Bool {
-        guard saveAcces(sea: sea, column: column, row: row) else {
+        guard saveAccess(sea: sea, column: column, row: row) else {
             return false
         }
         let fieldIsFree = sea[row][column].getState() == .free &&  checkIfSurroundingFieldsAreFree(sea: sea, column: column, row: row)
         return fieldIsFree
     }
     
-    private func checkIfSurroudingFieldIsFree(sea: [[Field]], column: Int,  row: Int) -> Bool {
+    private func checkIfSurroundingFieldIsFree(sea: [[Field]], column: Int,  row: Int) -> Bool {
         var fieldISFree = true
-        guard saveAcces(sea: sea, column: column, row: row) else {
+        guard saveAccess(sea: sea, column: column, row: row) else {
             return fieldISFree
         }
         fieldISFree = sea[row][column].getState() == .free
@@ -128,35 +129,35 @@ extension CreateGameViewModel: CreateGameViewModelProtocol {
     }
     
     private func checkIfSurroundingFieldsAreFree(sea: [[Field]], column: Int, row: Int) -> Bool {
-        let replacingPossibility = checkIfSurroudingFieldIsFree(sea: sea, column: column - 1, row: row - 1) &&
-        checkIfSurroudingFieldIsFree(sea: sea, column: column, row: row - 1) &&
-        checkIfSurroudingFieldIsFree(sea: sea, column: column + 1, row: row - 1) &&
-        checkIfSurroudingFieldIsFree(sea: sea, column: column - 1, row: row) &&
-        checkIfSurroudingFieldIsFree(sea: sea, column: column + 1, row: row) &&
-        checkIfSurroudingFieldIsFree(sea: sea, column: column - 1, row: row + 1) &&
-        checkIfSurroudingFieldIsFree(sea: sea, column: column, row: row + 1) &&
-        checkIfSurroudingFieldIsFree(sea: sea, column: column + 1, row: row + 1)
+        let replacingPossibility = checkIfSurroundingFieldIsFree(sea: sea, column: column - 1, row: row - 1) &&
+        checkIfSurroundingFieldIsFree(sea: sea, column: column, row: row - 1) &&
+        checkIfSurroundingFieldIsFree(sea: sea, column: column + 1, row: row - 1) &&
+        checkIfSurroundingFieldIsFree(sea: sea, column: column - 1, row: row) &&
+        checkIfSurroundingFieldIsFree(sea: sea, column: column + 1, row: row) &&
+        checkIfSurroundingFieldIsFree(sea: sea, column: column - 1, row: row + 1) &&
+        checkIfSurroundingFieldIsFree(sea: sea, column: column, row: row + 1) &&
+        checkIfSurroundingFieldIsFree(sea: sea, column: column + 1, row: row + 1)
         return replacingPossibility
     }
     
     private func checkVerticalReplacementPossibility(sea: [[Field]], column: Int, row: Int, shipSize: Int) -> Bool {
-        var verticalPerplacementPossibility = false
+        var verticalReplacementPossibility = false
         var sizeCounter = 1
         let column = column
         var row = row
         guard shipSize - 1 <= row else {
-            verticalPerplacementPossibility = false
-            return verticalPerplacementPossibility
+            verticalReplacementPossibility = false
+            return verticalReplacementPossibility
         }
         while sizeCounter <= shipSize {
-            verticalPerplacementPossibility = checkIfFieldIsFree(sea: sea, column: column, row: row)
-            guard verticalPerplacementPossibility else {
-                return verticalPerplacementPossibility
+            verticalReplacementPossibility = checkIfFieldIsFree(sea: sea, column: column, row: row)
+            guard verticalReplacementPossibility else {
+                return verticalReplacementPossibility
             }
             sizeCounter += 1
             row -= 1
         }
-        return verticalPerplacementPossibility
+        return verticalReplacementPossibility
     }
     
     private func checkHorizontalReplacementPossibility(sea: [[Field]], column: Int, row: Int, shipSize: Int) -> Bool {

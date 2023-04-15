@@ -12,6 +12,7 @@ protocol ComputerTurnVCSendInfoBackDelegate: AnyObject {
 }
 
 class ComputerPlayerTurnViewController: UIViewController {
+    
     private var computerPlayer: Player?
     private var humanPlayer: Player?
     private var viewModel = ComputerPlayerTurnViewModel(model: ComputerPlayerTurnModel())

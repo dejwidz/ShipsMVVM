@@ -15,11 +15,21 @@ class ComputerPlayerTurnViewController: UIViewController {
     
     private var computerPlayer: Player?
     private var humanPlayer: Player?
-    private var viewModel = ComputerPlayerTurnViewModel(model: ComputerPlayerTurnModel())
+    private var viewModel = ComputerPlayerTurnViewModel(model: ComputerPlayerTurnModel(), rowAndColumnSupplier: RowAndColumn.shared)
     private var computerPlayerEnemySeaMatrix: [[Field]]?
     weak var computerVCDelegate: ComputerTurnVCSendInfoBackDelegate?
     private var computerPlayerSeaCollectionView: UICollectionView!
     private var mainScrollView: UIScrollView!
+    private var rowAndColumnSupplier: RowAndColumnSupplier?
+    
+    init(rowAndColumnSupplier: RowAndColumnSupplier) {
+        super.init(nibName: nil, bundle: nil)
+        self.rowAndColumnSupplier = rowAndColumnSupplier
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,8 +152,12 @@ extension ComputerPlayerTurnViewController: UICollectionViewDelegate, UICollecti
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = computerPlayerSeaCollectionView.dequeueReusableCell(withReuseIdentifier: "ComputerTurnCustomCollectionViewCell", for: indexPath) as! ComputerTurnCustomCollectionViewCell
-        let row = getRow(forIndexPathRowValue: indexPath.row)
-        let column = getColumn(forIndexPathRowValue: indexPath.row)
+        guard let row = rowAndColumnSupplier?.getRow(forIndexPathRowValue: indexPath.row) else {
+            return cell
+        }
+        guard let column = rowAndColumnSupplier?.getColumn(forIndexPathRowValue: indexPath.row) else {
+            return cell
+        }
         let temporaryState = computerPlayerEnemySeaMatrix![row][column].getState()
         cell.actualizeState(newState: temporaryState)
         

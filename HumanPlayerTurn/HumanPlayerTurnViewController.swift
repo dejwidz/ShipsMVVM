@@ -12,14 +12,24 @@ class HumanPlayerTurnViewController: UIViewController {
     private var humanPlayer: Player?
     private var computerPlayer: Player?
     private var humanPlayerEnemySeaMatrix: [[Field]]?
-    private var viewModel = HumanPlayerTurnViewModel(model: HumanPlayerTurnModel())
-    let vcComputerPlayerTurn = ComputerPlayerTurnViewController()
+    private var viewModel = HumanPlayerTurnViewModel(model: HumanPlayerTurnModel(), rowAndColumnSupplier: RowAndColumn.shared)
+    let vcComputerPlayerTurn = ComputerPlayerTurnViewController(rowAndColumnSupplier: RowAndColumn.shared)
     private var lastShotValidation: fieldState = .free
     private var indexOfLastShot: IndexPath?
     private var antiCanningProtector = true
+    private var rowAndColumnSupplier: RowAndColumnSupplier?
     
     private var humanPlayerSeaCollectionView: UICollectionView!
     private var mainScrollView: UIScrollView!
+    
+    init(rowAndColumnSupplier: RowAndColumnSupplier) {
+        super.init(nibName: nil, bundle: nil)
+        self.rowAndColumnSupplier = rowAndColumnSupplier
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,7 +112,16 @@ class HumanPlayerTurnViewController: UIViewController {
 extension HumanPlayerTurnViewController: HumanPlayerTurnViewModelDelegate {
     func infoAboutLastShotValidation(_ humanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol, humanPlayerLastShot: fieldState) {
         lastShotValidation = humanPlayerLastShot
-        humanPlayerEnemySeaMatrix![getRow(forIndexPathRowValue: indexOfLastShot!.row)][getColumn(forIndexPathRowValue: indexOfLastShot!.row)].setState(newState: humanPlayerLastShot)
+        guard let indexOfLastShot = indexOfLastShot else {
+            return
+        }
+        guard let row = rowAndColumnSupplier?.getRow(forIndexPathRowValue: indexOfLastShot.row) else {
+            return
+        }
+        guard let column = rowAndColumnSupplier?.getColumn(forIndexPathRowValue: indexOfLastShot.row) else {
+            return
+        }
+        humanPlayerEnemySeaMatrix![row][column].setState(newState: humanPlayerLastShot)
         if humanPlayerLastShot == .hitOccupied {
             antiCanningProtector = true
         }
@@ -134,8 +153,12 @@ extension HumanPlayerTurnViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = humanPlayerSeaCollectionView.dequeueReusableCell(withReuseIdentifier: "PlayerTurnCustomCollectionViewCell",
                                                                     for: indexPath) as! PlayerTurnCustomCollectionViewCell
-        let row = getRow(forIndexPathRowValue: indexPath.row)
-        let column = getColumn(forIndexPathRowValue: indexPath.row)
+        guard let row = rowAndColumnSupplier?.getRow(forIndexPathRowValue: indexPath.row) else {
+            return cell
+        }
+        guard let column = rowAndColumnSupplier?.getColumn(forIndexPathRowValue: indexPath.row) else {
+            return cell
+        }
         let temporaryState = (humanPlayerEnemySeaMatrix![row][column].getState())
         cell.actualizeState(newState: temporaryState)
         return cell

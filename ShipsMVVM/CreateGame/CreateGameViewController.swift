@@ -18,13 +18,23 @@ final class CreateGameViewController: UIViewController {
     
     private var StartGameBottomConstraint = NSLayoutConstraint()
     
-    private let vcHumanPlayerTurn = HumanPlayerTurnViewController()
-    private let viewModel = CreateGameViewModel(model: CreateGameModel())
+    private let vcHumanPlayerTurn = HumanPlayerTurnViewController(rowAndColumnSupplier: RowAndColumn.shared)
+    private let viewModel = CreateGameViewModel(model: CreateGameModel(), rowAndColumnSupplier: RowAndColumn.shared)
     private var projectSeaMatrix: [[Field]] = []
     private var humanPlayer: Player?
     private var computerPlayer: Player?
-    private var deployPossibility: deployPossibility = .unknown
+    private var deployPossibility: deploymentPossibility = .unknown
     private var isCellStillHighlighted = false
+    private var rowAndColumnSupplier: RowAndColumnSupplier?
+    
+    init(rowAndColumnSupplier: RowAndColumnSupplier) {
+        super.init(nibName: nil, bundle: nil)
+        self.rowAndColumnSupplier = rowAndColumnSupplier
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +45,6 @@ final class CreateGameViewController: UIViewController {
         viewModel.humanSea()
         viewModel.replaceShipsAutomatically(player: viewModel.computerPlayer!)
         StartGameBottomConstraint.constant = UIScreen.main.bounds.height * 1.2
-        
         projectSea.delegate = self
         projectSea.dataSource = self
     }
@@ -232,7 +241,7 @@ final class CreateGameViewController: UIViewController {
         }
         else {
             indexOfNextFieldToAnimate = index - 1
-            conditionOfSaveAccess = getRow(forIndexPathRowValue: index) > 0
+            conditionOfSaveAccess = rowAndColumnSupplier?.getRow(forIndexPathRowValue: index) ?? 0 > 0
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             let sizeCounter = size - 1
@@ -253,8 +262,8 @@ extension CreateGameViewController: UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = projectSea.dequeueReusableCell(withReuseIdentifier: "customCell",
                                                   for: indexPath) as! CustomCollectionViewCell
-        let row = getRow(forIndexPathRowValue: indexPath.row)
-        let column = getColumn(forIndexPathRowValue: indexPath.row)
+        let row = rowAndColumnSupplier?.getRow(forIndexPathRowValue: indexPath.row) ?? 0
+        let column = rowAndColumnSupplier?.getColumn(forIndexPathRowValue: indexPath.row) ?? 0
         let temporaryState = (humanPlayer?.getSea()[row][column].getState())!
         cell.actualizeState(newState: temporaryState)
         return cell
@@ -291,7 +300,7 @@ extension CreateGameViewController: CreateGameViewModelDelegate {
         AnimateStartButtonAppearance()
     }
     
-    func sendInfoAboutDeployingPossibility(_ createGameViewModel: CreateGameViewModelProtocol, info: deployPossibility) {
+    func sendInfoAboutDeployingPossibility(_ createGameViewModel: CreateGameViewModelProtocol, info: deploymentPossibility) {
         deployPossibility = info
     }
     

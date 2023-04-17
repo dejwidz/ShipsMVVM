@@ -42,10 +42,11 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
     private var computerPlayerWestIndicator: Bool
     private var computerPlayerEastIndicator: Bool
     private var indexOfNextFieldToShot: Int
+    private var rowAndColumnSupplier: RowAndColumnSupplier?
     
     private var model: ComputerPlayerTurnModelProtocol
     
-    init(model: ComputerPlayerTurnModelProtocol) {
+    init(model: ComputerPlayerTurnModelProtocol, rowAndColumnSupplier: RowAndColumnSupplier) {
         self.model = model
         computerPlayerPossibleNorth = []
         computerPlayerPossibleSouth = []
@@ -59,6 +60,7 @@ final class ComputerPlayerTurnViewModel: ComputerPlayerTurnViewModelProtocol {
         gameOverIndicator = true
         indexOfNextFieldToShot = 0
         model.computerPlayerTurnModelDelegate = self
+        self.rowAndColumnSupplier = rowAndColumnSupplier
     }
     
     func setComputerPlayer(computerPlayer: Player) {
@@ -209,8 +211,12 @@ extension ComputerPlayerTurnViewModel {
     
     func computerPlayerShot() {
         let nextShotField = prepareToShot()
-        let row = getRow(forIndexPathRowValue: nextShotField)
-        let column = getColumn(forIndexPathRowValue: nextShotField)
+        guard let row = rowAndColumnSupplier?.getRow(forIndexPathRowValue: nextShotField) else {
+            return
+        }
+        guard let column = rowAndColumnSupplier?.getColumn(forIndexPathRowValue: nextShotField) else {
+            return
+        }
         
         guard turnIndicator == .computerPlayerTurn && gameOverIndicator else {return}
         
@@ -271,8 +277,12 @@ extension ComputerPlayerTurnViewModel {
         var nextShotPossibility = false
         while nextShotPossibility == false {
             indexOfNextFieldToShot = Int.random(in: 0...99)
-            let row = getRow(forIndexPathRowValue: indexOfNextFieldToShot)
-            let column = getColumn(forIndexPathRowValue: indexOfNextFieldToShot)
+            guard let row = rowAndColumnSupplier?.getRow(forIndexPathRowValue: indexOfNextFieldToShot) else {
+                return 0
+            }
+            guard let column = rowAndColumnSupplier?.getColumn(forIndexPathRowValue: indexOfNextFieldToShot) else {
+                return 0
+            }
             nextShotPossibility = isShootingToThisFieldWise(row: row, column: column)
         }
         return indexOfNextFieldToShot

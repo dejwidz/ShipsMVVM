@@ -35,13 +35,15 @@ final class HumanPlayerTurnViewModel: HumanPlayerTurnViewModelProtocol {
     private var hitCounter: Int?
     private var antiCunningProtector: Bool?
     private var gameOverIndicator: Bool
+    private var rowAndColumnSupplier: RowAndColumnSupplier?
     
-    init(model: HumanPlayerTurnModelProtocol) {
+    init(model: HumanPlayerTurnModelProtocol, rowAndColumnSupplier: RowAndColumnSupplier) {
         self.model = model
         turnIndicator = .humanPlayerTurn
         antiCunningProtector = true
         gameOverIndicator = true
         model.humanPlayerTurnModelDelegate = self
+        self.rowAndColumnSupplier = rowAndColumnSupplier
     }
     
     func updateHumanPlayerInModel(humanPlayer: Player) {
@@ -90,8 +92,12 @@ extension HumanPlayerTurnViewModel {
         guard antiCunningProtector! && gameOverIndicator else {return false}
         
         antiCunningProtector = false
-        let row = getRow(forIndexPathRowValue: index)
-        let column = getColumn(forIndexPathRowValue: index)
+        guard let row = rowAndColumnSupplier?.getRow(forIndexPathRowValue: index) else {
+            return false
+        }
+        guard let column = rowAndColumnSupplier?.getColumn(forIndexPathRowValue: index) else {
+            return false
+        }
         var displayComputerViewController = true
         guard turnIndicator == .humanPlayerTurn else {return true}
         

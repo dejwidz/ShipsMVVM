@@ -229,7 +229,7 @@ final class Player {
 }
 
 extension Player: ShipDelegate {
-    func shipHasBennDestroyed(_ ship: Ship, owner: String, message: String) {
+    func shipHasBeenDestroyed(_ ship: Ship, owner: String, message: String) {
         playerDelegate?.sendMessage(self, owner: owner, message: message)
         playerDelegate?.notifyChangesOfPlayer(self)
     }

@@ -26,7 +26,7 @@ final class ViewController: UIViewController {
     }()
     
     @objc func newGameButtonTapped(_ sender: UIButton) {
-        let vc = CreateGameViewController()
+        let vc = CreateGameViewController(rowAndColumnSupplier: RowAndColumn.shared)
         navigationController?.pushViewController(vc, animated: true)
     }
     

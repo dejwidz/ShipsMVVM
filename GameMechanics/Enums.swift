@@ -17,6 +17,7 @@ enum direction {
     func nextFieldIndex(row: Int, column: Int) -> (row: Int, column: Int) {
         var row = row
         var column = column
+        
         switch self {
         case .north:
             row -= 1
@@ -50,18 +51,10 @@ enum turn {
     case computerPlayerTurn
 }
 
-enum deployPossibility {
+enum deploymentPossibility {
     case possible
     case impossible
     case unknown
-}
-
-func getColumn(forIndexPathRowValue: Int) -> Int {
-    return Int(forIndexPathRowValue / 10)
-}
-
-func getRow(forIndexPathRowValue: Int) -> Int {
-    return forIndexPathRowValue % 10
 }
 
 infix operator ++

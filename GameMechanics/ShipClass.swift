@@ -9,7 +9,7 @@ import Foundation
 
 protocol ShipDelegate: AnyObject {
     func notifyShipChanges(_ ship: Ship)
-    func shipHasBennDestroyed(_ ship: Ship, owner: String, message: String)
+    func shipHasBeenDestroyed(_ ship: Ship, owner: String, message: String)
 }
 
 final class Ship {
@@ -23,7 +23,7 @@ final class Ship {
     private var isLive: Bool {
         didSet {
             guard oldValue != isLive else {return}
-            shipDelegate?.shipHasBennDestroyed(self, owner: owner, message: "Ship of size \(size) has been destroyed")
+            shipDelegate?.shipHasBeenDestroyed(self, owner: owner, message: "Ship of size \(size) has been destroyed")
         }
     }
     

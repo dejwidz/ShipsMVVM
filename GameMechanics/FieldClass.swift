@@ -8,6 +8,7 @@
 import Foundation
 
 final class Field {
+    
     private var state: fieldState
     
     init() {
@@ -21,5 +22,4 @@ final class Field {
     func setState(newState: fieldState) {
         state = newState
     }
-    
 }

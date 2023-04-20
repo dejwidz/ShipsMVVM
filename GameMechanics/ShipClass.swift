@@ -7,49 +7,56 @@
 
 import Foundation
 
+protocol ShipDelegate: AnyObject {
+    func notifyShipChanges(_ ship: Ship)
+    func shipHasBeenDestroyed(_ ship: Ship, owner: String, message: String)
+}
 
 final class Ship {
     
+    weak var shipDelegate: ShipDelegate?
+    
+    private let owner: String
     private let id: Int
     private let size: Int
     private var fields: [Field]
-    private var isLive: Bool
+    private var isLive: Bool {
+        didSet {
+            guard oldValue != isLive else {return}
+            shipDelegate?.shipHasBeenDestroyed(self, owner: owner, message: "Ship of size \(size) has been destroyed")
+        }
+    }
     
-    init(id: Int, size: Int, fields: [Field]) {
+    init(owner: String,id: Int, size: Int, fields: [Field]) {
+        self.owner = owner
         self.id = id
         self.size = size
         self.fields = fields
         isLive = true
     }
     
-    func checkIfTheShipisStillAlive() -> Bool {
+    @discardableResult func checkIfTheShipIsStillAlive() -> Bool {
         var shipIsStillAlive = false
-        for i in fields {
-            if i.getState() == .occupied {
+        for field in fields {
+            if field.getState() == .occupied {
                 shipIsStillAlive = true
                 break
             }
         }
+        isLive = shipIsStillAlive
         return shipIsStillAlive
     }
     
     func setFields(fields: [Field]) {
         self.fields = fields
-        print("setFields", fields[0].getState())
-
-    }
-    
-    func getFields() -> [Field] {
-        return fields
+        actualizeFields()
+        shipDelegate?.notifyShipChanges(self)
     }
     
     func actualizeFields() {
-        for i in fields {
-            i.setState(newState: .occupied)
-            print("aktulizacja pol w statku", i.getState())
+        for field in fields {
+            field.setState(newState: .occupied)
         }
-//        print(fields[0].getState())
-        
     }
     
     func getId() -> Int {
@@ -59,11 +66,8 @@ final class Ship {
     func getSize() -> Int {
         return size
     }
-        
     
-
+    func clearFields() {
+        fields = []
+    }
 }
-
-
-    
-

@@ -1,15 +1,15 @@
 //
-//  CustomCollectionViewCell.swift
+//  ComputerTurnCustomCollectionViewCell.swift
 //  ShipsMVVM
 //
-//  Created by Dawid Zimoch on 17/05/2022.
+//  Created by Dawid Zimoch on 26/05/2022.
 //
 
 import UIKit
 
-class CustomCollectionViewCell: UICollectionViewCell {
+class ComputerTurnCustomCollectionViewCell: UICollectionViewCell {
     
-    let identifier = "customCell"
+    let identifier = "ComputerTurnCustomCollectionViewCell"
     var state: fieldState = .free
     
     override init(frame: CGRect) {
@@ -34,3 +34,6 @@ class CustomCollectionViewCell: UICollectionViewCell {
         }
     }
 }
+
+
+

@@ -7,17 +7,40 @@
 
 import Foundation
 
-//var player1 = Player()
-
+enum direction {
+    case north
+    case south
+    case west
+    case east
+    case allDirections
     
+    func nextFieldIndex(row: Int, column: Int) -> (row: Int, column: Int) {
+        var row = row
+        var column = column
+        
+        switch self {
+        case .north:
+            row -= 1
+        case .south:
+            row += 1
+        case .west:
+            column -= 1
+        case .east:
+            column += 1
+        case .allDirections:
+            print("nothing")
+        }
+        return (row: row, column: column)
+    }
+}
+
 enum fieldState {
     case free
     case occupied
-    case nearToOccupied
     case hit
     case hitOccupied
-    }
-    
+}
+
 enum orientation {
     case vertical
     case horizontal
@@ -27,17 +50,19 @@ enum turn {
     case humanPlayerTurn
     case computerPlayerTurn
 }
-    
-var asd = CreateGameViewController()
 
-func getRow(enter: Int) -> Int {
-    let numberOfTheRow = Int(enter/10)
-    return numberOfTheRow
+enum deploymentPossibility {
+    case possible
+    case impossible
+    case unknown
 }
 
-func getColumn(enter: Int) -> Int {
-    let numberOfTheColumn: Int = enter % 10
-    return numberOfTheColumn
+infix operator ++
+
+func ++(firstValue: Int, secondValue: Int) -> Int {
+    let firstString = "\(firstValue)"
+    let secondString = "\(secondValue)"
+    let combinedString = firstString + secondString
+    let combinedInteger = Int(combinedString)
+    return combinedInteger!
 }
-
-
